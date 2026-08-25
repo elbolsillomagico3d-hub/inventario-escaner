@@ -1,239 +1,281 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Mi Inventario</title>
+<meta charset="UTF-8">
 
-  <script src="https://unpkg.com/html5-qrcode"></script>
+<meta name="viewport"
+content="width=device-width, initial-scale=1">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      text-align: center;
-      margin: 0;
-      padding: 20px;
-    }
+<title>Mi Inventario</title>
 
-    h1 {
-      margin-bottom: 15px;
-    }
+<script src="https://unpkg.com/html5-qrcode"></script>
 
-    #reader {
-      max-width: 450px;
-      margin: auto;
-      background: white;
-      border-radius: 15px;
-      overflow: hidden;
-    }
+<style>
 
-    #producto {
-      display: none;
-      background: white;
-      margin: 20px auto;
-      padding: 20px;
-      max-width: 400px;
-      border-radius: 15px;
-    }
+body {
+  font-family: Arial;
+  background: #f5f5f5;
+  text-align: center;
+  padding: 20px;
+}
 
-    #foto {
-      max-width: 180px;
-      max-height: 180px;
-      border-radius: 10px;
-    }
+#reader {
+  max-width: 450px;
+  margin: auto;
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+}
 
-    button {
-      border: none;
-      border-radius: 10px;
-      padding: 15px 25px;
-      margin: 8px;
-      font-size: 20px;
-      color: white;
-    }
+#producto {
+  display: none;
+  background: white;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 15px;
+  max-width: 400px;
+}
 
-    #sumar {
-      background: #28a745;
-    }
+#foto {
+  max-width: 180px;
+  max-height: 180px;
+}
 
-    #restar {
-      background: #dc3545;
-    }
+button {
+  font-size: 20px;
+  padding: 15px 25px;
+  margin: 8px;
+  border: 0;
+  border-radius: 10px;
+  color: white;
+}
 
-    #mensaje {
-      margin: 15px;
-      font-weight: bold;
-    }
-  </style>
+#sumar {
+  background: #28a745;
+}
+
+#restar {
+  background: #dc3545;
+}
+
+#mensaje {
+  font-weight: bold;
+  margin: 20px;
+}
+
+</style>
+
 </head>
 
 <body>
 
 <h1>📦 Mi Inventario</h1>
 
-<div id="reader"></div>
-
 <div id="mensaje">
-  📷 Apunta al código de barras
+📷 Apunta al código de barras
 </div>
+
+<div id="reader"></div>
 
 <div id="producto">
 
-  <img id="foto" src="" alt="Producto">
+<img id="foto">
 
-  <h2 id="nombre"></h2>
+<h2 id="nombre"></h2>
 
-  <p>Stock: <strong id="stock"></strong></p>
+<p>
+Stock:
+<strong id="stock"></strong>
+</p>
 
-  <p>Precio: <strong id="precio"></strong> €</p>
+<p>
+Precio:
+<strong id="precio"></strong> €
+</p>
 
-  <button id="sumar">➕ +1</button>
+<button id="sumar">
+➕ SUMAR
+</button>
 
-  <button id="restar">➖ -1</button>
+<button id="restar">
+➖ RESTAR
+</button>
 
 </div>
 
 <script>
 
-const URL_APPS_SCRIPT =
-"https://script.google.com/macros/s/AKfycbx2andTKq40R86-8Oea4lKtTVRxOBwPZHNnvTcWyuLm2B9jfdM97fZp934kSPR9Nlv8GA/exec";
+const API =
+"https://script.google.com/macros/s/AKfycbxORNMWqtpXDx8RC8cRWcCTfn6Oa9G5c_kitHAmDtjFabdWeqSYpffP6r8XNuOEr5ujRg/exec";
 
 let productoActual = null;
-let scanner;
+
+let contador = 0;
+
 
 function mensaje(texto) {
-  document.getElementById("mensaje").textContent = texto;
+
+  document.getElementById("mensaje")
+    .textContent = texto;
+
 }
+
+
+function llamarAPI(url, funcion) {
+
+  const script =
+    document.createElement("script");
+
+  const nombre =
+    "respuestaAPI" + (++contador);
+
+  window[nombre] = function(resultado) {
+
+    funcion(resultado);
+
+    delete window[nombre];
+
+    script.remove();
+
+  };
+
+  script.src =
+    url +
+    "&callback=" +
+    nombre;
+
+  document.body.appendChild(script);
+}
+
 
 function buscarProducto(codigo) {
 
   mensaje("🔎 Buscando producto...");
 
-  fetch(URL_APPS_SCRIPT + "?codigo=" + encodeURIComponent(codigo))
-    .then(res => res.json())
-    .then(producto => {
+  llamarAPI(
 
-      if (!producto) {
+    API +
+    "?codigo=" +
+    encodeURIComponent(codigo),
 
-        mensaje("❌ Producto no encontrado");
+    function(resultado) {
+
+      if (!resultado.ok) {
+
+        mensaje("❌ " + resultado.mensaje);
 
         return;
+
       }
 
-      productoActual = producto;
+      productoActual = resultado;
 
-      document.getElementById("producto").style.display = "block";
+      document.getElementById("producto")
+        .style.display = "block";
 
-      document.getElementById("nombre").textContent =
-        producto.producto;
+      document.getElementById("nombre")
+        .textContent = resultado.producto;
 
-      document.getElementById("stock").textContent =
-        producto.stock;
+      document.getElementById("stock")
+        .textContent = resultado.stock;
 
-      document.getElementById("precio").textContent =
-        producto.precioVenta;
+      document.getElementById("precio")
+        .textContent = resultado.precioVenta;
 
-      if (producto.foto) {
-        document.getElementById("foto").src = producto.foto;
+      if (resultado.foto) {
+
+        document.getElementById("foto")
+          .src = resultado.foto;
+
       }
 
       mensaje("✅ Producto encontrado");
 
-    })
-    .catch(error => {
+    }
 
-      console.error(error);
+  );
 
-      mensaje("❌ Error conectando con Google Sheets");
-
-    });
 }
 
 
-function modificarStock(cantidad) {
+function cambiarStock(cantidad) {
 
   if (!productoActual) return;
 
   mensaje("⏳ Actualizando stock...");
 
-  fetch(URL_APPS_SCRIPT, {
+  llamarAPI(
 
-    method: "POST",
+    API +
+    "?codigo=" +
+    encodeURIComponent(productoActual.codigo) +
+    "&accion=stock" +
+    "&cantidad=" +
+    cantidad,
 
-    headers: {
-      "Content-Type": "application/json"
-    },
+    function(resultado) {
 
-    body: JSON.stringify({
+      if (!resultado.ok) {
 
-      codigo: productoActual.codigo,
+        mensaje("❌ " + resultado.mensaje);
 
-      cantidad: cantidad
+        return;
 
-    })
+      }
 
-  })
-
-  .then(res => res.json())
-
-  .then(resultado => {
-
-    if (resultado.producto) {
-
-      productoActual.stock = resultado.stock;
-
-      document.getElementById("stock").textContent =
+      productoActual.stock =
         resultado.stock;
+
+      document.getElementById("stock")
+        .textContent = resultado.stock;
 
       mensaje("✅ Stock actualizado");
 
-    } else {
-
-      mensaje("❌ Producto no encontrado");
-
     }
 
-  })
+  );
 
-  .catch(error => {
-
-    console.error(error);
-
-    mensaje("❌ Error actualizando stock");
-
-  });
 }
 
 
-document.getElementById("sumar").onclick = function() {
-  modificarStock(1);
-};
+document.getElementById("sumar")
+  .onclick = function() {
+
+    cambiarStock(1);
+
+  };
 
 
-document.getElementById("restar").onclick = function() {
-  modificarStock(-1);
-};
+document.getElementById("restar")
+  .onclick = function() {
+
+    cambiarStock(-1);
+
+  };
 
 
-scanner = new Html5QrcodeScanner(
+const scanner =
+  new Html5QrcodeScanner(
 
-  "reader",
+    "reader",
 
-  {
-    fps: 10,
+    {
+      fps: 10,
 
-    qrbox: {
-      width: 280,
-      height: 150
+      qrbox: {
+        width: 280,
+        height: 150
+      },
+
+      rememberLastUsedCamera: true
     },
 
-    rememberLastUsedCamera: true
-  },
+    false
 
-  false
+  );
 
-);
 
 scanner.render(
 
@@ -245,13 +287,12 @@ scanner.render(
 
   },
 
-  function(error) {
-
-  }
+  function() {}
 
 );
 
 </script>
 
 </body>
+
 </html>
