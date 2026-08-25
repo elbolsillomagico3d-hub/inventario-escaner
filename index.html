@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1,maximum-scale=1">
 
 <title>Mi Inventario</title>
 
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+ box-sizing:border-box;
+}
 
 body{
  margin:0;
@@ -39,14 +46,16 @@ nav{
  top:0;
  z-index:20;
  box-shadow:0 2px 8px #0002;
+ overflow-x:auto;
 }
 
 nav button{
  flex:1;
+ min-width:75px;
  border:0;
  border-radius:10px;
- padding:11px 3px;
- font-size:13px;
+ padding:11px 4px;
+ font-size:12px;
  font-weight:bold;
  background:#eee;
 }
@@ -108,11 +117,35 @@ button{
  margin-top:7px;
 }
 
-.negro{background:#111;color:white}
-.gris{background:#ddd;color:#222}
-.verde{background:#1c9b55;color:white}
-.rojo{background:#d9363e;color:white}
-.naranja{background:#ed8b00;color:white}
+.negro{
+ background:#111;
+ color:white;
+}
+
+.gris{
+ background:#ddd;
+ color:#222;
+}
+
+.verde{
+ background:#1c9b55;
+ color:white;
+}
+
+.rojo{
+ background:#d9363e;
+ color:white;
+}
+
+.naranja{
+ background:#ed8b00;
+ color:white;
+}
+
+.azul{
+ background:#1976d2;
+ color:white;
+}
 
 #reader{
  width:100%;
@@ -245,7 +278,12 @@ button{
  border-bottom:1px solid #eee;
 }
 
-.movimiento:last-child{
+.venta{
+ padding:13px 0;
+ border-bottom:1px solid #eee;
+}
+
+.venta:last-child{
  border-bottom:0;
 }
 
@@ -264,28 +302,86 @@ button{
  background:#eee;
  border-radius:10px;
 }
+
+.positivo{
+ color:#168344;
+ font-weight:bold;
+}
+
+.negativo{
+ color:#d9363e;
+ font-weight:bold;
+}
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <header>
+
 <h1>📦 Mi Inventario</h1>
+
 </header>
 
+
 <nav>
-<button id="nInicio" class="activo" onclick="ir('inicio')">🏠 Inicio</button>
-<button id="nEscaner" onclick="ir('escaner')">📷 Escanear</button>
-<button id="nInventario" onclick="ir('inventario')">📦 Stock</button>
-<button id="nAgregar" onclick="ir('agregar')">➕ Añadir</button>
+
+<button
+id="nInicio"
+class="activo"
+onclick="ir('inicio')">
+
+🏠 Inicio
+
+</button>
+
+<button
+id="nEscaner"
+onclick="ir('escaner')">
+
+📷 Escanear
+
+</button>
+
+<button
+id="nInventario"
+onclick="ir('inventario')">
+
+📦 Stock
+
+</button>
+
+<button
+id="nVentas"
+onclick="ir('ventas')">
+
+🛒 Ventas
+
+</button>
+
+<button
+id="nAgregar"
+onclick="ir('agregar')">
+
+➕ Añadir
+
+</button>
+
 </nav>
 
 
-<!-- =========================
- INICIO
-========================= -->
 
-<section id="inicio" class="seccion activa">
+<!-- =================================
+ INICIO
+================================= -->
+
+<section
+id="inicio"
+class="seccion activa">
 
 <div class="tarjeta">
 
@@ -294,37 +390,129 @@ button{
 <div class="stats">
 
 <div class="stat">
+
 Productos
-<b id="totalProductos">0</b>
+
+<b id="totalProductos">
+0
+</b>
+
 </div>
 
+
 <div class="stat">
+
 Unidades
-<b id="totalUnidades">0</b>
+
+<b id="totalUnidades">
+0
+</b>
+
 </div>
 
+
 <div class="stat">
+
 Valor compra
-<b id="valorCompra">0 €</b>
+
+<b id="valorCompra">
+0 €
+</b>
+
 </div>
 
+
 <div class="stat">
+
 Valor venta
-<b id="valorVenta">0 €</b>
+
+<b id="valorVenta">
+0 €
+</b>
+
 </div>
 
+
 <div class="stat">
+
 Beneficio potencial
-<b id="beneficioTotal">0 €</b>
+
+<b id="beneficioTotal">
+0 €
+</b>
+
 </div>
+
 
 <div class="stat">
+
 Stock bajo
-<b id="totalBajo">0</b>
+
+<b id="totalBajo">
+0
+</b>
+
 </div>
 
 </div>
+
 </div>
+
+
+
+<div class="tarjeta">
+
+<h3>🛒 Ventas de hoy</h3>
+
+<div class="stats">
+
+<div class="stat">
+
+Ventas
+
+<b id="ventasHoy">
+0
+</b>
+
+</div>
+
+
+<div class="stat">
+
+Ingresos
+
+<b id="ingresosHoy">
+0 €
+</b>
+
+</div>
+
+
+<div class="stat">
+
+Beneficio
+
+<b id="beneficioHoy">
+0 €
+</b>
+
+</div>
+
+
+<div class="stat">
+
+Unidades
+
+<b id="unidadesVendidasHoy">
+0
+</b>
+
+</div>
+
+</div>
+
+</div>
+
 
 
 <div class="tarjeta">
@@ -336,14 +524,33 @@ Stock bajo
 </div>
 
 
+
 <div class="tarjeta">
 
-<button class="btn negro" onclick="ir('escaner')">
+<button
+class="btn negro"
+onclick="ir('escaner')">
+
 📷 ESCANEAR PRODUCTO
+
 </button>
 
-<button class="btn gris" onclick="ir('inventario')">
+
+<button
+class="btn azul"
+onclick="ir('ventas')">
+
+🛒 VER VENTAS
+
+</button>
+
+
+<button
+class="btn gris"
+onclick="ir('inventario')">
+
 📦 VER INVENTARIO
+
 </button>
 
 </div>
@@ -351,65 +558,141 @@ Stock bajo
 </section>
 
 
-<!-- =========================
- ESCANER
-========================= -->
 
-<section id="escaner" class="seccion">
+<!-- =================================
+ ESCÁNER
+================================= -->
+
+<section
+id="escaner"
+class="seccion">
 
 <div class="tarjeta">
 
-<div id="mensaje" class="mensaje">
+<div
+id="mensaje"
+class="mensaje">
+
 Pulsa iniciar y apunta al código
+
 </div>
+
 
 <div id="reader"></div>
 
-<button id="btnIniciar" class="btn negro" onclick="iniciarEscaner()">
+
+<button
+id="btnIniciar"
+class="btn negro"
+onclick="iniciarEscaner()">
+
 📷 INICIAR ESCÁNER
+
 </button>
 
-<button id="btnParar" class="btn gris" onclick="pararEscaner()" style="display:none">
+
+<button
+id="btnParar"
+class="btn gris"
+onclick="pararEscaner()"
+style="display:none">
+
 ⏹️ PARAR CÁMARA
+
 </button>
 
 </div>
 
 
-<div id="resultado" class="tarjeta" style="display:none">
 
-<img id="fotoResultado" class="foto">
+<div
+id="resultado"
+class="tarjeta"
+style="display:none">
 
-<div id="nombreResultado" class="nombre"></div>
+<img
+id="fotoResultado"
+class="foto">
 
-<div id="codigoResultado" class="codigo"></div>
 
-<div id="stockResultado" class="stock-grande"></div>
+<div
+id="nombreResultado"
+class="nombre">
+</div>
 
-<div id="precioResultado" class="precio"></div>
 
-<div id="beneficioResultado" class="precio"></div>
+<div
+id="codigoResultado"
+class="codigo">
+</div>
+
+
+<div
+id="stockResultado"
+class="stock-grande">
+</div>
+
+
+<div
+id="precioResultado"
+class="precio">
+</div>
+
+
+<div
+id="beneficioResultado"
+class="precio">
+</div>
+
 
 <div class="dos">
 
-<button class="btn verde" onclick="cambiarStock(1)">
-➕ +1
+<button
+class="btn verde"
+onclick="entradaStock()">
+
+📦 +1
+
 </button>
 
-<button class="btn rojo" onclick="cambiarStock(-1)">
+
+<button
+class="btn rojo"
+onclick="salidaStock()">
+
 ➖ -1
+
 </button>
 
 </div>
 
-<div class="dos">
 
-<button class="btn naranja" onclick="editarActual()">
-✏️ Editar
+<button
+class="btn azul"
+onclick="venderProducto()">
+
+🛒 VENDER
+
 </button>
 
-<button class="btn rojo" onclick="eliminarActual()">
+
+<div class="dos">
+
+<button
+class="btn naranja"
+onclick="editarActual()">
+
+✏️ Editar
+
+</button>
+
+
+<button
+class="btn rojo"
+onclick="eliminarActual()">
+
 🗑️ Eliminar
+
 </button>
 
 </div>
@@ -419,15 +702,19 @@ Pulsa iniciar y apunta al código
 </section>
 
 
-<!-- =========================
- INVENTARIO
-========================= -->
 
-<section id="inventario" class="seccion">
+<!-- =================================
+ INVENTARIO
+================================= -->
+
+<section
+id="inventario"
+class="seccion">
 
 <div class="tarjeta">
 
 <h2>📦 Inventario</h2>
+
 
 <input
 id="buscador"
@@ -435,24 +722,119 @@ type="search"
 placeholder="🔎 Buscar producto o código..."
 oninput="mostrarInventario()">
 
-<div id="listaInventario"></div>
+
+<div
+id="listaInventario">
+</div>
 
 </div>
 
 </section>
 
 
-<!-- =========================
- AÑADIR / EDITAR
-========================= -->
 
-<section id="agregar" class="seccion">
+<!-- =================================
+ VENTAS
+================================= -->
+
+<section
+id="ventas"
+class="seccion">
 
 <div class="tarjeta">
 
-<h2 id="tituloForm">➕ Añadir producto</h2>
+<h2>🛒 Historial de ventas</h2>
 
-<label>📸 Foto</label>
+
+<div class="stats">
+
+<div class="stat">
+
+Ventas
+
+<b id="totalVentas">
+0
+</b>
+
+</div>
+
+
+<div class="stat">
+
+Ingresos
+
+<b id="totalIngresos">
+0 €
+</b>
+
+</div>
+
+
+<div class="stat">
+
+Beneficio
+
+<b id="totalBeneficioVentas">
+0 €
+</b>
+
+</div>
+
+
+<div class="stat">
+
+Unidades
+
+<b id="totalUnidadesVentas">
+0
+</b>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="tarjeta">
+
+<input
+id="buscarVentas"
+type="search"
+placeholder="🔎 Buscar venta o producto..."
+oninput="mostrarVentas()">
+
+
+<div
+id="listaVentas">
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =================================
+ AÑADIR / EDITAR
+================================= -->
+
+<section
+id="agregar"
+class="seccion">
+
+<div class="tarjeta">
+
+<h2 id="tituloForm">
+➕ Añadir producto
+</h2>
+
+
+<label>
+📸 Foto
+</label>
+
 
 <input
 id="fotoInput"
@@ -461,65 +843,129 @@ accept="image/*"
 capture="environment"
 onchange="cargarFoto(event)">
 
-<img id="fotoPreview">
+
+<img
+id="fotoPreview">
 
 
-<label>Producto</label>
-
-<input id="productoInput" placeholder="Nombre del producto">
-
-
-<label>Código de barras</label>
-
-<input id="codigoInput" placeholder="Ej: 8412345678905">
+<label>
+Producto
+</label>
 
 
-<label>Stock</label>
-
-<input id="stockInput" type="number" min="0" value="0">
-
-
-<label>Precio de compra (€)</label>
-
-<input id="compraInput" type="number" step="0.01" min="0">
+<input
+id="productoInput"
+placeholder="Nombre del producto">
 
 
-<label>Precio de venta (€)</label>
+<label>
+Código de barras
+</label>
 
-<input id="ventaInput" type="number" step="0.01" min="0">
+
+<input
+id="codigoInput"
+placeholder="Ej: 8412345678905">
 
 
-<button id="guardarBtn" class="btn negro" onclick="guardarProducto()">
+<label>
+Stock
+</label>
+
+
+<input
+id="stockInput"
+type="number"
+min="0"
+value="0">
+
+
+<label>
+Precio de compra (€)
+</label>
+
+
+<input
+id="compraInput"
+type="number"
+step="0.01"
+min="0">
+
+
+<label>
+Precio de venta (€)
+</label>
+
+
+<input
+id="ventaInput"
+type="number"
+step="0.01"
+min="0">
+
+
+<button
+id="guardarBtn"
+class="btn negro"
+onclick="guardarProducto()">
+
 💾 GUARDAR PRODUCTO
+
 </button>
 
-<button id="cancelarBtn" class="btn gris" onclick="cancelarEdicion()" style="display:none">
+
+<button
+id="cancelarBtn"
+class="btn gris"
+onclick="cancelarEdicion()"
+style="display:none">
+
 ❌ CANCELAR
+
 </button>
 
 </div>
 
 
+
 <div class="tarjeta">
 
-<h3>💾 Copias de seguridad</h3>
+<h3>
+💾 Copias de seguridad
+</h3>
+
 
 <p>
-Los productos se guardan en este iPhone.
+
+Los productos, movimientos y ventas se guardan
+en este iPhone.
+
 Haz una copia periódicamente.
+
 </p>
 
-<button class="btn negro" onclick="exportar()">
-📤 EXPORTAR INVENTARIO
+
+<button
+class="btn negro"
+onclick="exportar()">
+
+📤 EXPORTAR TODO
+
 </button>
 
-<label class="btn gris" style="text-align:center;cursor:pointer">
-📥 IMPORTAR INVENTARIO
+
+<label
+class="btn gris"
+style="text-align:center;cursor:pointer">
+
+📥 IMPORTAR COPIA
+
 <input
 type="file"
 accept=".json"
 style="display:none"
 onchange="importar(event)">
+
 </label>
 
 </div>
@@ -527,54 +973,107 @@ onchange="importar(event)">
 </section>
 
 
-<!-- =========================
- MOVIMIENTOS
-========================= -->
-
-<section id="movimientos" class="seccion">
-
-<div class="tarjeta">
-
-<h2>📜 Movimientos</h2>
-
-<div id="listaMovimientos"></div>
-
-</div>
-
-</section>
-
 
 <script>
 
+
 /* =================================
- DATOS
+ CLAVES
 ================================= */
 
-const CLAVE = "MI_INVENTARIO_V1";
-const CLAVE_MOV = "MI_INVENTARIO_MOVIMIENTOS";
+const CLAVE =
+"MI_INVENTARIO_V1";
 
-let productos = cargar();
-let movimientos = cargarMovimientos();
+const CLAVE_MOV =
+"MI_INVENTARIO_MOVIMIENTOS";
 
-let scanner = null;
-let escaneando = false;
-let productoActual = null;
-
-let indiceEditando = -1;
-let fotoBase64 = "";
+const CLAVE_VENTAS =
+"MI_INVENTARIO_VENTAS";
 
 
 /* =================================
- ALMACENAMIENTO
+ VARIABLES
+================================= */
+
+let productos =
+cargar();
+
+let movimientos =
+cargarMovimientos();
+
+let ventas =
+cargarVentas();
+
+let scanner =
+null;
+
+let escaneando =
+false;
+
+let productoActual =
+null;
+
+let indiceEditando =
+-1;
+
+let fotoBase64 =
+"";
+
+
+/* =================================
+ CARGAR DATOS
 ================================= */
 
 function cargar(){
 
 try{
 
-let datos=localStorage.getItem(CLAVE);
+let datos =
+localStorage.getItem(CLAVE);
 
-return datos ? JSON.parse(datos) : [];
+return datos
+? JSON.parse(datos)
+: [];
+
+}catch(e){
+
+return [];
+
+}
+
+}
+
+
+function cargarMovimientos(){
+
+try{
+
+let datos =
+localStorage.getItem(CLAVE_MOV);
+
+return datos
+? JSON.parse(datos)
+: [];
+
+}catch(e){
+
+return [];
+
+}
+
+}
+
+
+function cargarVentas(){
+
+try{
+
+let datos =
+localStorage.getItem(CLAVE_VENTAS);
+
+return datos
+? JSON.parse(datos)
+: [];
 
 }catch(e){
 
@@ -595,28 +1094,21 @@ JSON.stringify(productos)
 }
 
 
-function cargarMovimientos(){
-
-try{
-
-let datos=localStorage.getItem(CLAVE_MOV);
-
-return datos ? JSON.parse(datos) : [];
-
-}catch(e){
-
-return [];
-
-}
-
-}
-
-
 function guardarMovimientos(){
 
 localStorage.setItem(
 CLAVE_MOV,
 JSON.stringify(movimientos)
+);
+
+}
+
+
+function guardarVentas(){
+
+localStorage.setItem(
+CLAVE_VENTAS,
+JSON.stringify(ventas)
 );
 
 }
@@ -628,98 +1120,54 @@ JSON.stringify(movimientos)
 
 function ir(nombre){
 
-document.querySelectorAll(".seccion")
-.forEach(x=>x.classList.remove("activa"));
+document
+.querySelectorAll(".seccion")
+.forEach(x=>
+x.classList.remove("activa")
+);
 
-document.getElementById(nombre).classList.add("activa");
+document
+.getElementById(nombre)
+.classList.add("activa");
 
-document.querySelectorAll("nav button")
-.forEach(x=>x.classList.remove("activo"));
 
-let boton={
+document
+.querySelectorAll("nav button")
+.forEach(x=>
+x.classList.remove("activo")
+);
+
+
+let boton = {
+
 inicio:"nInicio",
 escaner:"nEscaner",
 inventario:"nInventario",
+ventas:"nVentas",
 agregar:"nAgregar"
+
 }[nombre];
 
-if(boton)
-document.getElementById(boton).classList.add("activo");
+
+if(boton){
+
+document
+.getElementById(boton)
+.classList.add("activo");
+
+}
+
 
 if(nombre==="inicio")
 actualizarInicio();
 
+
 if(nombre==="inventario")
 mostrarInventario();
 
-if(nombre==="movimientos")
-mostrarMovimientos();
 
-}
-
-
-/* =================================
- INICIO
-================================= */
-
-function actualizarInicio(){
-
-let unidades=0;
-let compra=0;
-let venta=0;
-let beneficio=0;
-let bajo=0;
-
-productos.forEach(p=>{
-
-let stock=Number(p.stock)||0;
-let pc=Number(p.precioCompra)||0;
-let pv=Number(p.precioVenta)||0;
-
-unidades+=stock;
-compra+=stock*pc;
-venta+=stock*pv;
-beneficio+=stock*(pv-pc);
-
-if(stock<=2)
-bajo++;
-
-});
-
-document.getElementById("totalProductos").textContent=productos.length;
-document.getElementById("totalUnidades").textContent=unidades;
-document.getElementById("valorCompra").textContent=euros(compra);
-document.getElementById("valorVenta").textContent=euros(venta);
-document.getElementById("beneficioTotal").textContent=euros(beneficio);
-document.getElementById("totalBajo").textContent=bajo;
-
-let lista=document.getElementById("listaBajo");
-
-let bajos=productos.filter(p=>(Number(p.stock)||0)<=2);
-
-if(!bajos.length){
-
-lista.innerHTML='<div class="vacio">✅ No hay productos con stock bajo</div>';
-
-return;
-
-}
-
-lista.innerHTML="";
-
-bajos.forEach(p=>{
-
-let div=document.createElement("div");
-
-div.className="alerta";
-
-div.innerHTML=
-"⚠️ <b>"+esc(p.producto)+"</b>"+
-" — Stock: <b>"+(p.stock||0)+"</b>";
-
-lista.appendChild(div);
-
-});
+if(nombre==="ventas")
+mostrarVentas();
 
 }
 
@@ -738,16 +1186,205 @@ return Number(numero||0)
 
 
 /* =================================
+ RESUMEN INICIO
+================================= */
+
+function actualizarInicio(){
+
+let unidades=0;
+let compra=0;
+let venta=0;
+let beneficio=0;
+let bajo=0;
+
+
+productos.forEach(p=>{
+
+let stock =
+Number(p.stock)||0;
+
+let pc =
+Number(p.precioCompra)||0;
+
+let pv =
+Number(p.precioVenta)||0;
+
+
+unidades += stock;
+
+compra +=
+stock*pc;
+
+venta +=
+stock*pv;
+
+beneficio +=
+stock*(pv-pc);
+
+
+if(stock<=2)
+bajo++;
+
+});
+
+
+document
+.getElementById("totalProductos")
+.textContent =
+productos.length;
+
+
+document
+.getElementById("totalUnidades")
+.textContent =
+unidades;
+
+
+document
+.getElementById("valorCompra")
+.textContent =
+euros(compra);
+
+
+document
+.getElementById("valorVenta")
+.textContent =
+euros(venta);
+
+
+document
+.getElementById("beneficioTotal")
+.textContent =
+euros(beneficio);
+
+
+document
+.getElementById("totalBajo")
+.textContent =
+bajo;
+
+
+/* VENTAS DE HOY */
+
+let hoy =
+new Date().toLocaleDateString(
+"es-ES"
+);
+
+
+let ventasHoy =
+ventas.filter(v=>
+new Date(v.fecha)
+.toLocaleDateString("es-ES")
+=== hoy
+);
+
+
+let ingresos=0;
+let beneficioVentas=0;
+let unidadesVendidas=0;
+
+
+ventasHoy.forEach(v=>{
+
+ingresos +=
+Number(v.total)||0;
+
+beneficioVentas +=
+Number(v.beneficio)||0;
+
+unidadesVendidas +=
+Number(v.cantidad)||0;
+
+});
+
+
+document
+.getElementById("ventasHoy")
+.textContent =
+ventasHoy.length;
+
+
+document
+.getElementById("ingresosHoy")
+.textContent =
+euros(ingresos);
+
+
+document
+.getElementById("beneficioHoy")
+.textContent =
+euros(beneficioVentas);
+
+
+document
+.getElementById("unidadesVendidasHoy")
+.textContent =
+unidadesVendidas;
+
+
+/* STOCK BAJO */
+
+let lista =
+document.getElementById("listaBajo");
+
+
+let bajos =
+productos.filter(p=>
+(Number(p.stock)||0)<=2
+);
+
+
+if(!bajos.length){
+
+lista.innerHTML =
+'<div class="vacio">✅ No hay productos con stock bajo</div>';
+
+return;
+
+}
+
+
+lista.innerHTML="";
+
+
+bajos.forEach(p=>{
+
+let div =
+document.createElement("div");
+
+div.className =
+"alerta";
+
+div.innerHTML =
+"⚠️ <b>"+
+esc(p.producto)+
+"</b> — Stock: <b>"+
+(p.stock||0)+
+"</b>";
+
+lista.appendChild(div);
+
+});
+
+}
+
+
+/* =================================
  ESCÁNER
 ================================= */
 
 function iniciarEscaner(){
 
-if(escaneando)return;
+if(escaneando)
+return;
 
-scanner=new Html5Qrcode("reader");
 
-let config={
+scanner =
+new Html5Qrcode("reader");
+
+
+let config = {
 
 fps:10,
 
@@ -759,20 +1396,33 @@ height:150
 aspectRatio:1.7777778,
 
 formatsToSupport:[
+
 Html5QrcodeSupportedFormats.EAN_13,
+
 Html5QrcodeSupportedFormats.EAN_8,
+
 Html5QrcodeSupportedFormats.UPC_A,
+
 Html5QrcodeSupportedFormats.UPC_E,
+
 Html5QrcodeSupportedFormats.CODE_128,
+
 Html5QrcodeSupportedFormats.CODE_39,
+
 Html5QrcodeSupportedFormats.ITF
+
 ]
 
 };
 
-scanner.start(
+
+scanner
+.start(
+
 {facingMode:"environment"},
+
 config,
+
 codigo=>{
 
 pararEscaner();
@@ -780,23 +1430,40 @@ pararEscaner();
 buscar(codigo);
 
 },
+
 ()=>{}
 
-).then(()=>{
+)
+
+.then(()=>{
 
 escaneando=true;
 
-document.getElementById("btnIniciar").style.display="none";
-document.getElementById("btnParar").style.display="block";
 
-document.getElementById("mensaje").textContent=
+document
+.getElementById("btnIniciar")
+.style.display="none";
+
+
+document
+.getElementById("btnParar")
+.style.display="block";
+
+
+document
+.getElementById("mensaje")
+.textContent =
 "📷 Apunta al código de barras";
 
-}).catch(error=>{
+})
+
+.catch(error=>{
 
 console.error(error);
 
-document.getElementById("mensaje").textContent=
+document
+.getElementById("mensaje")
+.textContent =
 "❌ No se pudo abrir la cámara";
 
 });
@@ -806,54 +1473,83 @@ document.getElementById("mensaje").textContent=
 
 function pararEscaner(){
 
-if(!scanner)return;
+if(!scanner)
+return;
 
-scanner.stop().then(()=>{
+
+scanner
+.stop()
+.then(()=>{
 
 scanner.clear();
 
 scanner=null;
+
 escaneando=false;
 
-document.getElementById("btnIniciar").style.display="block";
-document.getElementById("btnParar").style.display="none";
 
-}).catch(()=>{});
+document
+.getElementById("btnIniciar")
+.style.display="block";
+
+
+document
+.getElementById("btnParar")
+.style.display="none";
+
+})
+
+.catch(()=>{});
 
 }
 
 
 /* =================================
- BUSCAR
+ BUSCAR PRODUCTO
 ================================= */
 
 function buscar(codigo){
 
-codigo=String(codigo).trim();
+codigo =
+String(codigo)
+.trim();
 
-let producto=productos.find(
-p=>String(p.codigo).trim()===codigo
+
+let producto =
+productos.find(p=>
+String(p.codigo)
+.trim()===codigo
 );
+
 
 if(!producto){
 
-document.getElementById("mensaje").textContent=
+document
+.getElementById("mensaje")
+.textContent =
 "❌ Producto no encontrado";
 
+
 if(confirm(
-"El código "+codigo+
-" no está registrado.\n\n¿Quieres añadirlo?"
+"El código "+
+codigo+
+" no está registrado.\n\n"+
+"¿Quieres añadirlo?"
 )){
 
 ir("agregar");
 
-document.getElementById("codigoInput").value=codigo;
+document
+.getElementById("codigoInput")
+.value =
+codigo;
 
 }
 
 return;
 
 }
+
 
 mostrarProducto(producto);
 
@@ -866,79 +1562,330 @@ mostrarProducto(producto);
 
 function mostrarProducto(p){
 
-productoActual=p;
+productoActual =
+p;
 
-document.getElementById("resultado").style.display="block";
 
-document.getElementById("nombreResultado").textContent=p.producto;
+document
+.getElementById("resultado")
+.style.display="block";
 
-document.getElementById("codigoResultado").textContent=
-"Código: "+p.codigo;
 
-document.getElementById("stockResultado").textContent=
-"Stock: "+(p.stock||0);
+document
+.getElementById("nombreResultado")
+.textContent =
+p.producto;
 
-document.getElementById("precioResultado").textContent=
-"Venta: "+euros(p.precioVenta);
 
-document.getElementById("beneficioResultado").textContent=
+document
+.getElementById("codigoResultado")
+.textContent =
+"Código: "+
+p.codigo;
+
+
+document
+.getElementById("stockResultado")
+.textContent =
+"Stock: "+
+(p.stock||0);
+
+
+document
+.getElementById("precioResultado")
+.textContent =
+"Venta: "+
+euros(p.precioVenta);
+
+
+document
+.getElementById("beneficioResultado")
+.textContent =
 "Beneficio/unidad: "+
 euros(
 (Number(p.precioVenta)||0)-
 (Number(p.precioCompra)||0)
 );
 
-let foto=document.getElementById("fotoResultado");
+
+let foto =
+document.getElementById("fotoResultado");
+
 
 if(p.foto){
 
-foto.src=p.foto;
-foto.style.display="block";
+foto.src =
+p.foto;
+
+foto.style.display =
+"block";
 
 }else{
 
-foto.style.display="none";
+foto.style.display =
+"none";
 
 }
 
-document.getElementById("mensaje").textContent=
-"✅ "+p.producto;
+
+document
+.getElementById("mensaje")
+.textContent =
+"✅ "+
+p.producto;
 
 }
 
 
 /* =================================
- STOCK
+ ENTRADA STOCK
+================================= */
+
+function entradaStock(){
+
+if(!productoActual)
+return;
+
+
+cambiarStock(1);
+
+}
+
+
+/* =================================
+ SALIDA STOCK
+================================= */
+
+function salidaStock(){
+
+if(!productoActual)
+return;
+
+
+cambiarStock(-1);
+
+}
+
+
+/* =================================
+ CAMBIAR STOCK
 ================================= */
 
 function cambiarStock(cantidad){
 
-if(!productoActual)return;
+if(!productoActual)
+return;
 
-let nuevo=
-(Number(productoActual.stock)||0)+cantidad;
+
+let nuevo =
+(Number(productoActual.stock)||0)
++
+cantidad;
+
 
 if(nuevo<0){
 
-alert("❌ No puedes tener stock negativo.");
+alert(
+"❌ No puedes tener stock negativo."
+);
 
 return;
 
 }
 
-productoActual.stock=nuevo;
+
+productoActual.stock =
+nuevo;
+
 
 guardar();
 
+
 registrarMovimiento(
+
 productoActual,
-cantidad>0 ? "Entrada":"Salida",
+
+cantidad>0
+? "Entrada"
+: "Salida",
+
 Math.abs(cantidad)
+
 );
 
-mostrarProducto(productoActual);
+
+mostrarProducto(
+productoActual
+);
+
+
 actualizarInicio();
+
 mostrarInventario();
+
+}
+
+
+/* =================================
+ VENDER PRODUCTO
+================================= */
+
+function venderProducto(){
+
+if(!productoActual)
+return;
+
+
+let stock =
+Number(productoActual.stock)||0;
+
+
+if(stock<=0){
+
+alert(
+"❌ No hay stock disponible."
+);
+
+return;
+
+}
+
+
+let cantidad =
+prompt(
+"¿Cuántas unidades quieres vender?",
+"1"
+);
+
+
+if(cantidad===null)
+return;
+
+
+cantidad =
+parseInt(cantidad);
+
+
+if(!cantidad ||
+cantidad<1){
+
+alert(
+"Introduce una cantidad válida."
+);
+
+return;
+
+}
+
+
+if(cantidad>stock){
+
+alert(
+"❌ No tienes suficiente stock.\n\n"+
+"Stock disponible: "+
+stock
+);
+
+return;
+
+}
+
+
+let precio =
+Number(productoActual.precioVenta)||0;
+
+
+let compra =
+Number(productoActual.precioCompra)||0;
+
+
+let total =
+precio*cantidad;
+
+
+let beneficio =
+(precio-compra)*cantidad;
+
+
+/* DESCONTAR STOCK */
+
+productoActual.stock =
+stock-cantidad;
+
+
+guardar();
+
+
+/* REGISTRAR VENTA */
+
+let venta={
+
+id:Date.now(),
+
+fecha:new Date().toISOString(),
+
+codigo:productoActual.codigo,
+
+producto:productoActual.producto,
+
+cantidad:cantidad,
+
+precioUnitario:precio,
+
+total:total,
+
+beneficio:beneficio
+
+};
+
+
+ventas.unshift(
+venta
+);
+
+
+guardarVentas();
+
+
+/* MOVIMIENTO */
+
+registrarMovimiento(
+
+productoActual,
+
+"Venta",
+
+cantidad
+
+);
+
+
+mostrarProducto(
+productoActual
+);
+
+
+actualizarInicio();
+
+mostrarVentas();
+
+
+alert(
+
+"🛒 Venta registrada\n\n"+
+
+productoActual.producto+
+
+"\n\nUnidades: "+
+cantidad+
+
+"\nImporte: "+
+euros(total)+
+
+"\nBeneficio: "+
+euros(beneficio)
+
+);
 
 }
 
@@ -947,11 +1894,15 @@ mostrarInventario();
  MOVIMIENTOS
 ================================= */
 
-function registrarMovimiento(p,tipo,cantidad){
+function registrarMovimiento(
+p,
+tipo,
+cantidad
+){
 
 movimientos.unshift({
 
-fecha:new Date().toLocaleString("es-ES"),
+fecha:new Date().toISOString(),
 
 codigo:p.codigo,
 
@@ -963,47 +1914,12 @@ cantidad:cantidad
 
 });
 
+
 if(movimientos.length>500)
 movimientos.pop();
 
+
 guardarMovimientos();
-
-}
-
-
-function mostrarMovimientos(){
-
-let lista=document.getElementById("listaMovimientos");
-
-if(!movimientos.length){
-
-lista.innerHTML=
-'<div class="vacio">No hay movimientos todavía.</div>';
-
-return;
-
-}
-
-lista.innerHTML="";
-
-movimientos.forEach(m=>{
-
-let div=document.createElement("div");
-
-div.className="movimiento";
-
-div.innerHTML=
-"<b>"+esc(m.producto)+"</b><br>"+
-m.tipo+" · "+m.cantidad+
-"<br><small>"+
-esc(m.fecha)+
-" · "+
-esc(m.codigo)+
-"</small>";
-
-lista.appendChild(div);
-
-});
 
 }
 
@@ -1014,98 +1930,197 @@ lista.appendChild(div);
 
 function mostrarInventario(){
 
-let lista=document.getElementById("listaInventario");
+let lista =
+document.getElementById(
+"listaInventario"
+);
 
-let texto=
-(document.getElementById("buscador")?.value||"")
+
+let texto =
+(
+document.getElementById(
+"buscador"
+)?.value||""
+)
 .toLowerCase();
 
-let filtrados=productos.filter(p=>
-String(p.producto).toLowerCase().includes(texto)||
-String(p.codigo).toLowerCase().includes(texto)
+
+let filtrados =
+productos.filter(p=>
+
+String(p.producto)
+.toLowerCase()
+.includes(texto)
+
+||
+
+String(p.codigo)
+.toLowerCase()
+.includes(texto)
+
 );
+
 
 if(!filtrados.length){
 
-lista.innerHTML=
+lista.innerHTML =
 '<div class="vacio">No hay productos.</div>';
 
 return;
 
 }
 
+
 lista.innerHTML="";
+
 
 filtrados.forEach(p=>{
 
-let indice=productos.indexOf(p);
+let indice =
+productos.indexOf(p);
 
-let div=document.createElement("div");
 
-div.className="producto";
+let div =
+document.createElement("div");
 
-let img=document.createElement("img");
+div.className =
+"producto";
 
-if(p.foto)img.src=p.foto;
 
-let info=document.createElement("div");
+let img =
+document.createElement("img");
 
-info.className="producto-info";
 
-info.innerHTML=
-"<strong>"+esc(p.producto)+"</strong>"+
-"<small>Código: "+esc(p.codigo)+"</small>";
+if(p.foto)
+img.src=p.foto;
 
-let stock=document.createElement("div");
 
-stock.className="stock";
+let info =
+document.createElement("div");
+
+info.className =
+"producto-info";
+
+
+info.innerHTML =
+"<strong>"+
+esc(p.producto)+
+"</strong>"+
+"<small>Código: "+
+esc(p.codigo)+
+"</small>";
+
+
+let stock =
+document.createElement("div");
+
+stock.className =
+"stock";
+
 
 if(Number(p.stock)<=2)
-stock.classList.add("stock-bajo");
+stock.classList.add(
+"stock-bajo"
+);
 
-stock.textContent=p.stock||0;
 
-let botones=document.createElement("div");
+stock.textContent =
+p.stock||0;
 
-botones.className="dos";
 
-let editar=document.createElement("button");
+let botones =
+document.createElement("div");
 
-editar.className="btn naranja";
+botones.className =
+"dos";
 
-editar.textContent="✏️";
 
-editar.onclick=()=>iniciarEdicion(indice);
+let editar =
+document.createElement("button");
 
-let borrar=document.createElement("button");
+editar.className =
+"btn naranja";
 
-borrar.className="btn rojo";
+editar.textContent =
+"✏️";
 
-borrar.textContent="🗑️";
 
-borrar.onclick=()=>eliminar(indice);
+editar.onclick =
+e=>{
 
-botones.appendChild(editar);
-botones.appendChild(borrar);
+e.stopPropagation();
 
-let derecha=document.createElement("div");
+iniciarEdicion(
+indice
+);
 
-derecha.appendChild(stock);
-derecha.appendChild(botones);
+};
+
+
+let borrar =
+document.createElement("button");
+
+borrar.className =
+"btn rojo";
+
+borrar.textContent =
+"🗑️";
+
+
+borrar.onclick =
+e=>{
+
+e.stopPropagation();
+
+eliminar(
+indice
+);
+
+};
+
+
+botones.appendChild(
+editar
+);
+
+botones.appendChild(
+borrar
+);
+
+
+let derecha =
+document.createElement("div");
+
+
+derecha.appendChild(
+stock
+);
+
+derecha.appendChild(
+botones
+);
+
 
 div.appendChild(img);
+
 div.appendChild(info);
+
 div.appendChild(derecha);
 
-div.onclick=e=>{
 
-if(e.target.tagName==="BUTTON")return;
+div.onclick =
+e=>{
+
+if(e.target.tagName==="BUTTON")
+return;
+
 
 mostrarProducto(p);
 
 ir("escaner");
 
 };
+
 
 lista.appendChild(div);
 
@@ -1115,43 +2130,318 @@ lista.appendChild(div);
 
 
 /* =================================
- AÑADIR / EDITAR
+ MOSTRAR VENTAS
+================================= */
+
+function mostrarVentas(){
+
+let lista =
+document.getElementById(
+"listaVentas"
+);
+
+
+let texto =
+(
+document.getElementById(
+"buscarVentas"
+)?.value||""
+)
+.toLowerCase();
+
+
+let filtradas =
+ventas.filter(v=>
+
+String(v.producto)
+.toLowerCase()
+.includes(texto)
+
+||
+
+String(v.codigo)
+.toLowerCase()
+.includes(texto)
+
+);
+
+
+let ingresos=0;
+let beneficio=0;
+let unidades=0;
+
+
+ventas.forEach(v=>{
+
+ingresos +=
+Number(v.total)||0;
+
+beneficio +=
+Number(v.beneficio)||0;
+
+unidades +=
+Number(v.cantidad)||0;
+
+});
+
+
+document
+.getElementById("totalVentas")
+.textContent =
+ventas.length;
+
+
+document
+.getElementById("totalIngresos")
+.textContent =
+euros(ingresos);
+
+
+document
+.getElementById("totalBeneficioVentas")
+.textContent =
+euros(beneficio);
+
+
+document
+.getElementById("totalUnidadesVentas")
+.textContent =
+unidades;
+
+
+if(!filtradas.length){
+
+lista.innerHTML =
+'<div class="vacio">No hay ventas registradas.</div>';
+
+return;
+
+}
+
+
+lista.innerHTML="";
+
+
+filtradas.forEach(v=>{
+
+let div =
+document.createElement("div");
+
+div.className =
+"venta";
+
+
+let fecha =
+new Date(v.fecha)
+.toLocaleString("es-ES");
+
+
+div.innerHTML =
+
+"<b>🛒 "+
+esc(v.producto)+
+"</b><br>"+
+
+"📅 "+
+esc(fecha)+
+"<br>"+
+
+"📦 Cantidad: "+
+v.cantidad+
+"<br>"+
+
+"💰 Precio: "+
+euros(v.precioUnitario)+
+"<br>"+
+
+"💵 Total: "+
+euros(v.total)+
+"<br>"+
+
+"<span class='positivo'>"+
+"📈 Beneficio: "+
+euros(v.beneficio)+
+"</span>";
+
+
+let borrar =
+document.createElement("button");
+
+borrar.className =
+"btn rojo";
+
+borrar.textContent =
+"🗑️ Eliminar venta";
+
+
+borrar.onclick =
+()=>eliminarVenta(v.id);
+
+
+div.appendChild(
+borrar
+);
+
+lista.appendChild(
+div
+);
+
+});
+
+}
+
+
+/* =================================
+ ELIMINAR VENTA
+================================= */
+
+function eliminarVenta(id){
+
+let indice =
+ventas.findIndex(
+v=>v.id===id
+);
+
+
+if(indice<0)
+return;
+
+
+let v =
+ventas[indice];
+
+
+if(!confirm(
+
+"¿Eliminar esta venta?\n\n"+
+v.producto+
+"\nCantidad: "+
+v.cantidad
+
+)){
+
+return;
+
+}
+
+
+/*
+ IMPORTANTE:
+
+Eliminar la venta NO modifica
+automáticamente el stock.
+
+Así evitamos modificar
+inventario accidentalmente.
+*/
+
+
+ventas.splice(
+indice,
+1
+);
+
+
+guardarVentas();
+
+mostrarVentas();
+
+actualizarInicio();
+
+alert(
+"🗑️ Venta eliminada del historial."
+);
+
+}
+
+
+/* =================================
+ EDITAR
 ================================= */
 
 function iniciarEdicion(indice){
 
-let p=productos[indice];
+let p =
+productos[indice];
 
-indiceEditando=indice;
 
-document.getElementById("tituloForm").textContent=
+indiceEditando =
+indice;
+
+
+document
+.getElementById("tituloForm")
+.textContent =
 "✏️ Editar producto";
 
-document.getElementById("productoInput").value=p.producto||"";
-document.getElementById("codigoInput").value=p.codigo||"";
-document.getElementById("stockInput").value=p.stock||0;
-document.getElementById("compraInput").value=p.precioCompra||0;
-document.getElementById("ventaInput").value=p.precioVenta||0;
 
-fotoBase64=p.foto||"";
+document
+.getElementById("productoInput")
+.value =
+p.producto||"";
 
-let preview=document.getElementById("fotoPreview");
+
+document
+.getElementById("codigoInput")
+.value =
+p.codigo||"";
+
+
+document
+.getElementById("stockInput")
+.value =
+p.stock||0;
+
+
+document
+.getElementById("compraInput")
+.value =
+p.precioCompra||0;
+
+
+document
+.getElementById("ventaInput")
+.value =
+p.precioVenta||0;
+
+
+fotoBase64 =
+p.foto||"";
+
+
+let preview =
+document.getElementById(
+"fotoPreview"
+);
+
 
 if(fotoBase64){
 
-preview.src=fotoBase64;
-preview.style.display="block";
+preview.src =
+fotoBase64;
+
+preview.style.display =
+"block";
 
 }else{
 
-preview.style.display="none";
+preview.style.display =
+"none";
 
 }
 
-document.getElementById("guardarBtn").textContent=
+
+document
+.getElementById("guardarBtn")
+.textContent =
 "💾 GUARDAR CAMBIOS";
 
-document.getElementById("cancelarBtn").style.display="block";
+
+document
+.getElementById("cancelarBtn")
+.style.display =
+"block";
+
 
 ir("agregar");
 
@@ -1160,74 +2450,150 @@ ir("agregar");
 
 function editarActual(){
 
-if(!productoActual)return;
+if(!productoActual)
+return;
 
-let indice=productos.indexOf(productoActual);
+
+let indice =
+productos.indexOf(
+productoActual
+);
+
 
 if(indice>=0)
-iniciarEdicion(indice);
+iniciarEdicion(
+indice
+);
 
 }
 
+
+/* =================================
+ GUARDAR PRODUCTO
+================================= */
 
 function guardarProducto(){
 
-let nombre=document.getElementById("productoInput").value.trim();
+let nombre =
+document
+.getElementById("productoInput")
+.value.trim();
 
-let codigo=document.getElementById("codigoInput").value.trim();
 
-let stock=Number(document.getElementById("stockInput").value)||0;
+let codigo =
+document
+.getElementById("codigoInput")
+.value.trim();
 
-let compra=Number(document.getElementById("compraInput").value)||0;
 
-let venta=Number(document.getElementById("ventaInput").value)||0;
+let stock =
+Number(
+document
+.getElementById("stockInput")
+.value
+)||0;
+
+
+let compra =
+Number(
+document
+.getElementById("compraInput")
+.value
+)||0;
+
+
+let venta =
+Number(
+document
+.getElementById("ventaInput")
+.value
+)||0;
+
 
 if(!nombre){
 
-alert("Escribe el nombre del producto.");
+alert(
+"Escribe el nombre del producto."
+);
 
 return;
 
 }
+
 
 if(!codigo){
 
-alert("Introduce el código de barras.");
+alert(
+"Introduce el código de barras."
+);
 
 return;
 
 }
 
-let repetido=productos.findIndex((p,i)=>
+
+let repetido =
+productos.findIndex(
+(p,i)=>
 i!==indiceEditando &&
 String(p.codigo)===codigo
 );
 
+
 if(repetido>=0){
 
-alert("Ya existe otro producto con ese código.");
+alert(
+"Ya existe otro producto con ese código."
+);
 
 return;
 
 }
 
+
+/* EDITAR */
+
 if(indiceEditando>=0){
 
-let p=productos[indiceEditando];
+let p =
+productos[indiceEditando];
 
-p.producto=nombre;
-p.codigo=codigo;
-p.stock=stock;
-p.precioCompra=compra;
-p.precioVenta=venta;
-p.beneficio=venta-compra;
-p.foto=fotoBase64;
 
-productoActual=p;
+p.producto =
+nombre;
 
-alert("✅ Producto actualizado.");
+p.codigo =
+codigo;
 
-}else{
+p.stock =
+stock;
+
+p.precioCompra =
+compra;
+
+p.precioVenta =
+venta;
+
+p.beneficio =
+venta-compra;
+
+p.foto =
+fotoBase64;
+
+
+productoActual =
+p;
+
+
+alert(
+"✅ Producto actualizado."
+);
+
+}
+
+/* NUEVO */
+
+else{
 
 let p={
 
@@ -1249,11 +2615,16 @@ beneficio:venta-compra
 
 };
 
+
 productos.push(p);
 
-alert("✅ Producto añadido.");
+
+alert(
+"✅ Producto añadido."
+);
 
 }
+
 
 guardar();
 
@@ -1272,71 +2643,136 @@ ir("inventario");
 
 function cancelarEdicion(){
 
-indiceEditando=-1;
+indiceEditando =
+-1;
 
-fotoBase64="";
+fotoBase64 =
+"";
 
-document.getElementById("tituloForm").textContent=
+
+document
+.getElementById("tituloForm")
+.textContent =
 "➕ Añadir producto";
 
-document.getElementById("guardarBtn").textContent=
+
+document
+.getElementById("guardarBtn")
+.textContent =
 "💾 GUARDAR PRODUCTO";
 
-document.getElementById("cancelarBtn").style.display="none";
 
-document.getElementById("productoInput").value="";
-document.getElementById("codigoInput").value="";
-document.getElementById("stockInput").value=0;
-document.getElementById("compraInput").value="";
-document.getElementById("ventaInput").value="";
-document.getElementById("fotoInput").value="";
+document
+.getElementById("cancelarBtn")
+.style.display =
+"none";
 
-document.getElementById("fotoPreview").style.display="none";
+
+document
+.getElementById("productoInput")
+.value="";
+
+
+document
+.getElementById("codigoInput")
+.value="";
+
+
+document
+.getElementById("stockInput")
+.value=0;
+
+
+document
+.getElementById("compraInput")
+.value="";
+
+
+document
+.getElementById("ventaInput")
+.value="";
+
+
+document
+.getElementById("fotoInput")
+.value="";
+
+
+document
+.getElementById("fotoPreview")
+.style.display="none";
 
 }
 
 
 /* =================================
- ELIMINAR
+ ELIMINAR PRODUCTO
 ================================= */
 
 function eliminar(indice){
 
-let p=productos[indice];
+let p =
+productos[indice];
 
-if(!p)return;
+
+if(!p)
+return;
+
 
 if(!confirm(
+
 "¿Eliminar este producto?\n\n"+
 p.producto+
-"\nStock: "+p.stock
-))return;
+"\nStock: "+
+p.stock
 
-productos.splice(indice,1);
+))
+return;
+
+
+productos.splice(
+indice,
+1
+);
+
 
 guardar();
+
 
 if(productoActual===p){
 
 productoActual=null;
 
-document.getElementById("resultado").style.display="none";
+document
+.getElementById("resultado")
+.style.display="none";
 
 }
 
+
 actualizarInicio();
+
 mostrarInventario();
 
-alert("🗑️ Producto eliminado.");
+
+alert(
+"🗑️ Producto eliminado."
+);
 
 }
 
 
 function eliminarActual(){
 
-if(!productoActual)return;
+if(!productoActual)
+return;
 
-let indice=productos.indexOf(productoActual);
+
+let indice =
+productos.indexOf(
+productoActual
+);
+
 
 if(indice>=0)
 eliminar(indice);
@@ -1350,113 +2786,215 @@ eliminar(indice);
 
 function cargarFoto(event){
 
-let archivo=event.target.files[0];
+let archivo =
+event.target.files[0];
 
-if(!archivo)return;
 
-let lector=new FileReader();
+if(!archivo)
+return;
 
-lector.onload=e=>{
 
-fotoBase64=e.target.result;
+let lector =
+new FileReader();
 
-let preview=document.getElementById("fotoPreview");
 
-preview.src=fotoBase64;
+lector.onload =
+e=>{
 
-preview.style.display="block";
+fotoBase64 =
+e.target.result;
+
+
+let preview =
+document.getElementById(
+"fotoPreview"
+);
+
+
+preview.src =
+fotoBase64;
+
+
+preview.style.display =
+"block";
 
 };
 
-lector.readAsDataURL(archivo);
+
+lector.readAsDataURL(
+archivo
+);
 
 }
 
 
 /* =================================
- EXPORTAR
+ EXPORTAR TODO
 ================================= */
 
 function exportar(){
 
 let copia={
 
-productos:productos,
+version:2,
 
-movimientos:movimientos
+fecha:
+new Date().toISOString(),
+
+productos:
+productos,
+
+movimientos:
+movimientos,
+
+ventas:
+ventas
 
 };
 
-let blob=new Blob(
-[JSON.stringify(copia,null,2)],
-{type:"application/json"}
+
+let blob =
+new Blob(
+
+[
+JSON.stringify(
+copia,
+null,
+2
+)
+],
+
+{
+type:"application/json"
+}
+
 );
 
-let url=URL.createObjectURL(blob);
 
-let a=document.createElement("a");
+let url =
+URL.createObjectURL(
+blob
+);
 
-a.href=url;
 
-a.download=
-"inventario-"+new Date()
+let a =
+document.createElement("a");
+
+
+a.href =
+url;
+
+
+a.download =
+"inventario-completo-"+
+new Date()
 .toISOString()
-.slice(0,10)+".json";
+.slice(0,10)+
+".json";
+
 
 a.click();
 
-URL.revokeObjectURL(url);
+
+URL.revokeObjectURL(
+url
+);
 
 }
 
 
 /* =================================
- IMPORTAR
+ IMPORTAR TODO
 ================================= */
 
 function importar(event){
 
-let archivo=event.target.files[0];
+let archivo =
+event.target.files[0];
 
-if(!archivo)return;
 
-let lector=new FileReader();
+if(!archivo)
+return;
 
-lector.onload=e=>{
+
+let lector =
+new FileReader();
+
+
+lector.onload =
+e=>{
 
 try{
 
-let datos=JSON.parse(e.target.result);
+let datos =
+JSON.parse(
+e.target.result
+);
+
 
 if(Array.isArray(datos)){
 
-productos=datos;
+/*
+ COMPATIBILIDAD
+ CON LA COPIA ANTIGUA
+ */
 
-}else{
-
-productos=datos.productos||[];
-
-movimientos=datos.movimientos||[];
+productos =
+datos;
 
 }
 
+else{
+
+productos =
+datos.productos||[];
+
+movimientos =
+datos.movimientos||[];
+
+ventas =
+datos.ventas||[];
+
+}
+
+
 guardar();
+
 guardarMovimientos();
 
+guardarVentas();
+
+
 actualizarInicio();
+
 mostrarInventario();
 
-alert("✅ Inventario importado.");
+mostrarVentas();
 
-}catch(error){
 
-alert("❌ Archivo no válido.");
+alert(
+"✅ Copia restaurada correctamente."
+);
+
+
+}
+
+catch(error){
+
+console.error(error);
+
+alert(
+"❌ El archivo no es válido."
+);
 
 }
 
 };
 
-lector.readAsText(archivo);
+
+lector.readAsText(
+archivo
+);
 
 }
 
@@ -1467,12 +3005,34 @@ lector.readAsText(archivo);
 
 function esc(texto){
 
-return String(texto??"")
-.replaceAll("&","&amp;")
-.replaceAll("<","&lt;")
-.replaceAll(">","&gt;")
-.replaceAll('"',"&quot;")
-.replaceAll("'","&#039;");
+return String(
+texto??""
+)
+
+.replaceAll(
+"&",
+"&amp;"
+)
+
+.replaceAll(
+"<",
+"&lt;"
+)
+
+.replaceAll(
+">",
+"&gt;"
+)
+
+.replaceAll(
+'"',
+"&quot;"
+)
+
+.replaceAll(
+"'",
+"&#039;"
+);
 
 }
 
@@ -1482,9 +3042,11 @@ return String(texto??"")
 ================================= */
 
 actualizarInicio();
+
 mostrarInventario();
 
 </script>
 
 </body>
+
 </html>
