@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Mi Inventario</title>
+
+  <script src="https://unpkg.com/html5-qrcode"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 15px;
+    }
+
+    #reader {
+      max-width: 450px;
+      margin: auto;
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    #producto {
+      display: none;
+      background: white;
+      margin: 20px auto;
+      padding: 20px;
+      max-width: 400px;
+      border-radius: 15px;
+    }
+
+    #foto {
+      max-width: 180px;
+      max-height: 180px;
+      border-radius: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 15px 25px;
+      margin: 8px;
+      font-size: 20px;
+      color: white;
+    }
+
+    #sumar {
+      background: #28a745;
+    }
+
+    #restar {
+      background: #dc3545;
+    }
+
+    #mensaje {
+      margin: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>📦 Mi Inventario</h1>
+
+<div id="reader"></div>
+
+<div id="mensaje">
+  📷 Apunta al código de barras
+</div>
+
+<div id="producto">
+
+  <img id="foto" src="" alt="Producto">
+
+  <h2 id="nombre"></h2>
+
+  <p>Stock: <strong id="stock"></strong></p>
+
+  <p>Precio: <strong id="precio"></strong> €</p>
+
+  <button id="sumar">➕ +1</button>
+
+  <button id="restar">➖ -1</button>
+
+</div>
+
+<script>
+
+const URL_APPS_SCRIPT =
+"https://script.google.com/macros/s/AKfycbx2andTKq40R86-8Oea4lKtTVRxOBwPZHNnvTcWyuLm2B9jfdM97fZp934kSPR9Nlv8GA/exec";
+
+let productoActual = null;
+let scanner;
+
+function mensaje(texto) {
+  document.getElementById("mensaje").textContent = texto;
+}
+
+function buscarProducto(codigo) {
+
+  mensaje("🔎 Buscando producto...");
+
+  fetch(URL_APPS_SCRIPT + "?codigo=" + encodeURIComponent(codigo))
+    .then(res => res.json())
+    .then(producto => {
+
+      if (!producto) {
+
+        mensaje("❌ Producto no encontrado");
+
+        return;
+      }
+
+      productoActual = producto;
+
+      document.getElementById("producto").style.display = "block";
+
+      document.getElementById("nombre").textContent =
+        producto.producto;
+
+      document.getElementById("stock").textContent =
+        producto.stock;
+
+      document.getElementById("precio").textContent =
+        producto.precioVenta;
+
+      if (producto.foto) {
+        document.getElementById("foto").src = producto.foto;
+      }
+
+      mensaje("✅ Producto encontrado");
+
+    })
+    .catch(error => {
+
+      console.error(error);
+
+      mensaje("❌ Error conectando con Google Sheets");
+
+    });
+}
+
+
+function modificarStock(cantidad) {
+
+  if (!productoActual) return;
+
+  mensaje("⏳ Actualizando stock...");
+
+  fetch(URL_APPS_SCRIPT, {
+
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json"
+    },
+
+    body: JSON.stringify({
+
+      codigo: productoActual.codigo,
+
+      cantidad: cantidad
+
+    })
+
+  })
+
+  .then(res => res.json())
+
+  .then(resultado => {
+
+    if (resultado.producto) {
+
+      productoActual.stock = resultado.stock;
+
+      document.getElementById("stock").textContent =
+        resultado.stock;
+
+      mensaje("✅ Stock actualizado");
+
+    } else {
+
+      mensaje("❌ Producto no encontrado");
+
+    }
+
+  })
+
+  .catch(error => {
+
+    console.error(error);
+
+    mensaje("❌ Error actualizando stock");
+
+  });
+}
+
+
+document.getElementById("sumar").onclick = function() {
+  modificarStock(1);
+};
+
+
+document.getElementById("restar").onclick = function() {
+  modificarStock(-1);
+};
+
+
+scanner = new Html5QrcodeScanner(
+
+  "reader",
+
+  {
+    fps: 10,
+
+    qrbox: {
+      width: 280,
+      height: 150
+    },
+
+    rememberLastUsedCamera: true
+  },
+
+  false
+
+);
+
+scanner.render(
+
+  function(codigo) {
+
+    scanner.clear();
+
+    buscarProducto(codigo);
+
+  },
+
+  function(error) {
+
+  }
+
+);
+
+</script>
+
+</body>
+</html>
