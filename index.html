@@ -1,464 +1,500 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 
 <title>Mi Inventario</title>
 
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
+*{box-sizing:border-box}
 
-* {
-  box-sizing: border-box;
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#f4f4f4;
+ color:#222;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
-  color: #222;
+header{
+ background:#111;
+ color:white;
+ padding:18px;
+ text-align:center;
 }
 
-header {
-  background: #111;
-  color: white;
-  padding: 18px;
-  text-align: center;
+header h1{
+ margin:0;
+ font-size:24px;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 24px;
+nav{
+ display:flex;
+ gap:5px;
+ padding:8px;
+ background:white;
+ position:sticky;
+ top:0;
+ z-index:20;
+ box-shadow:0 2px 8px #0002;
 }
 
-nav {
-  display: flex;
-  gap: 6px;
-  padding: 10px;
-  background: white;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+nav button{
+ flex:1;
+ border:0;
+ border-radius:10px;
+ padding:11px 3px;
+ font-size:13px;
+ font-weight:bold;
+ background:#eee;
 }
 
-nav button {
-  flex: 1;
-  padding: 12px 5px;
-  border: 0;
-  border-radius: 10px;
-  background: #eee;
-  font-size: 14px;
-  font-weight: bold;
+nav button.activo{
+ background:#111;
+ color:white;
 }
 
-nav button.activo {
-  background: #111;
-  color: white;
+.seccion{
+ display:none;
+ padding:12px;
+ max-width:650px;
+ margin:auto;
 }
 
-.seccion {
-  display: none;
-  padding: 15px;
+.seccion.activa{
+ display:block;
 }
 
-.seccion.activa {
-  display: block;
+.tarjeta{
+ background:white;
+ border-radius:15px;
+ padding:16px;
+ margin-bottom:14px;
+ box-shadow:0 2px 9px #0001;
 }
 
-#reader {
-  width: 100%;
-  max-width: 500px;
-  margin: 15px auto;
-  background: white;
-  border-radius: 15px;
-  overflow: hidden;
+h2,h3{
+ margin-top:0;
 }
 
-.mensaje {
-  text-align: center;
-  font-weight: bold;
-  margin: 15px;
+input{
+ width:100%;
+ padding:13px;
+ border:1px solid #ccc;
+ border-radius:10px;
+ font-size:16px;
+ margin:6px 0 12px;
 }
 
-.tarjeta {
-  background: white;
-  border-radius: 15px;
-  padding: 18px;
-  margin: 15px auto;
-  max-width: 500px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.08);
+label{
+ font-weight:bold;
+ display:block;
+ margin-top:7px;
 }
 
-.foto-producto {
-  display: block;
-  width: 180px;
-  height: 180px;
-  object-fit: contain;
-  margin: 0 auto 15px;
-  border-radius: 12px;
-  background: #eee;
+button{
+ cursor:pointer;
 }
 
-.nombre-producto {
-  text-align: center;
-  font-size: 23px;
-  font-weight: bold;
+.btn{
+ width:100%;
+ border:0;
+ border-radius:11px;
+ padding:14px;
+ font-size:16px;
+ font-weight:bold;
+ margin-top:7px;
 }
 
-.codigo {
-  text-align: center;
-  color: #777;
+.negro{background:#111;color:white}
+.gris{background:#ddd;color:#222}
+.verde{background:#1c9b55;color:white}
+.rojo{background:#d9363e;color:white}
+.naranja{background:#ed8b00;color:white}
+
+#reader{
+ width:100%;
+ max-width:500px;
+ margin:10px auto;
+ border-radius:15px;
+ overflow:hidden;
+ background:white;
 }
 
-.stock-grande {
-  text-align: center;
-  font-size: 38px;
-  font-weight: bold;
-  margin: 15px;
+.mensaje{
+ text-align:center;
+ font-weight:bold;
+ margin:10px;
 }
 
-.precio {
-  text-align: center;
-  font-size: 20px;
+.producto{
+ background:white;
+ border-radius:14px;
+ padding:12px;
+ margin:9px 0;
+ display:flex;
+ gap:10px;
+ align-items:center;
+ box-shadow:0 1px 5px #0001;
 }
 
-.botones-stock {
-  display: flex;
-  gap: 10px;
+.producto img{
+ width:70px;
+ height:70px;
+ object-fit:contain;
+ background:#eee;
+ border-radius:9px;
 }
 
-.botones-stock button {
-  flex: 1;
-  padding: 18px;
-  border: 0;
-  border-radius: 12px;
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
+.producto-info{
+ flex:1;
 }
 
-.btn-sumar {
-  background: #21a366;
+.producto-info strong{
+ display:block;
+ font-size:17px;
 }
 
-.btn-restar {
-  background: #dc3545;
+.producto-info small{
+ color:#777;
 }
 
-.btn-principal {
-  width: 100%;
-  padding: 15px;
-  border: 0;
-  border-radius: 12px;
-  background: #111;
-  color: white;
-  font-size: 17px;
-  font-weight: bold;
-  margin-top: 8px;
+.stock{
+ font-size:20px;
+ font-weight:bold;
 }
 
-.btn-secundario {
-  width: 100%;
-  padding: 13px;
-  border: 0;
-  border-radius: 12px;
-  background: #ddd;
-  font-size: 16px;
-  margin-top: 8px;
+.stock-bajo{
+ color:#d9363e;
 }
 
-input {
-  width: 100%;
-  padding: 14px;
-  margin: 7px 0;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 16px;
+.foto{
+ display:block;
+ width:190px;
+ height:190px;
+ object-fit:contain;
+ margin:10px auto;
+ border-radius:12px;
+ background:#eee;
 }
 
-label {
-  display: block;
-  font-weight: bold;
-  margin-top: 10px;
+.nombre{
+ text-align:center;
+ font-size:23px;
+ font-weight:bold;
 }
 
-.producto-lista {
-  background: white;
-  padding: 12px;
-  margin: 8px 0;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.codigo{
+ text-align:center;
+ color:#777;
+ margin:5px;
 }
 
-.producto-lista img {
-  width: 65px;
-  height: 65px;
-  object-fit: contain;
-  border-radius: 8px;
-  background: #eee;
+.stock-grande{
+ text-align:center;
+ font-size:38px;
+ font-weight:bold;
+ margin:10px;
 }
 
-.producto-info {
-  flex: 1;
+.precio{
+ text-align:center;
+ font-size:18px;
+ margin:5px;
 }
 
-.producto-info strong {
-  display: block;
-  font-size: 17px;
+.dos{
+ display:flex;
+ gap:8px;
 }
 
-.producto-info small {
-  color: #777;
+.dos>*{
+ flex:1;
 }
 
-.producto-stock {
-  font-size: 20px;
-  font-weight: bold;
+.stats{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:9px;
 }
 
-.vacio {
-  text-align: center;
-  color: #777;
-  padding: 30px;
+.stat{
+ background:#f4f4f4;
+ border-radius:12px;
+ padding:13px;
 }
 
-#fotoPreview {
-  display: none;
-  width: 150px;
-  height: 150px;
-  object-fit: contain;
-  margin: 10px auto;
-  border-radius: 10px;
-  background: #eee;
+.stat b{
+ display:block;
+ font-size:22px;
+ margin-top:4px;
 }
 
-.aviso {
-  background: #fff3cd;
-  padding: 12px;
-  border-radius: 10px;
-  font-size: 14px;
-  margin: 10px 0;
+.alerta{
+ background:#fff0f0;
+ border:1px solid #ffbaba;
+ padding:12px;
+ border-radius:11px;
+ margin-bottom:8px;
 }
 
+.movimiento{
+ padding:10px 0;
+ border-bottom:1px solid #eee;
+}
+
+.movimiento:last-child{
+ border-bottom:0;
+}
+
+.vacio{
+ text-align:center;
+ color:#777;
+ padding:25px;
+}
+
+#fotoPreview{
+ width:160px;
+ height:160px;
+ display:none;
+ object-fit:contain;
+ margin:10px auto;
+ background:#eee;
+ border-radius:10px;
+}
 </style>
-
 </head>
-
 
 <body>
 
 <header>
-
 <h1>📦 Mi Inventario</h1>
-
 </header>
 
-
 <nav>
-
-<button
-id="navEscaner"
-class="activo"
-onclick="mostrarSeccion('escaner')">
-📷 Escanear
-</button>
-
-<button
-id="navInventario"
-onclick="mostrarSeccion('inventario')">
-📦 Inventario
-</button>
-
-<button
-id="navAgregar"
-onclick="mostrarSeccion('agregar')">
-➕ Añadir
-</button>
-
+<button id="nInicio" class="activo" onclick="ir('inicio')">🏠 Inicio</button>
+<button id="nEscaner" onclick="ir('escaner')">📷 Escanear</button>
+<button id="nInventario" onclick="ir('inventario')">📦 Stock</button>
+<button id="nAgregar" onclick="ir('agregar')">➕ Añadir</button>
 </nav>
 
 
-<!-- =====================================
-     ESCÁNER
-===================================== -->
+<!-- =========================
+ INICIO
+========================= -->
 
-<section
-id="escaner"
-class="seccion activa">
+<section id="inicio" class="seccion activa">
 
-<div class="mensaje" id="mensaje">
-📷 Pulsa iniciar y apunta al código
+<div class="tarjeta">
+
+<h2>📊 Resumen</h2>
+
+<div class="stats">
+
+<div class="stat">
+Productos
+<b id="totalProductos">0</b>
+</div>
+
+<div class="stat">
+Unidades
+<b id="totalUnidades">0</b>
+</div>
+
+<div class="stat">
+Valor compra
+<b id="valorCompra">0 €</b>
+</div>
+
+<div class="stat">
+Valor venta
+<b id="valorVenta">0 €</b>
+</div>
+
+<div class="stat">
+Beneficio potencial
+<b id="beneficioTotal">0 €</b>
+</div>
+
+<div class="stat">
+Stock bajo
+<b id="totalBajo">0</b>
+</div>
+
+</div>
+</div>
+
+
+<div class="tarjeta">
+
+<h3>⚠️ Stock bajo</h3>
+
+<div id="listaBajo"></div>
+
+</div>
+
+
+<div class="tarjeta">
+
+<button class="btn negro" onclick="ir('escaner')">
+📷 ESCANEAR PRODUCTO
+</button>
+
+<button class="btn gris" onclick="ir('inventario')">
+📦 VER INVENTARIO
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+ ESCANER
+========================= -->
+
+<section id="escaner" class="seccion">
+
+<div class="tarjeta">
+
+<div id="mensaje" class="mensaje">
+Pulsa iniciar y apunta al código
 </div>
 
 <div id="reader"></div>
 
-<div
-class="tarjeta"
-id="productoEscaneado"
-style="display:none;">
+<button id="btnIniciar" class="btn negro" onclick="iniciarEscaner()">
+📷 INICIAR ESCÁNER
+</button>
 
-<img
-id="fotoEscaneada"
-class="foto-producto">
+<button id="btnParar" class="btn gris" onclick="pararEscaner()" style="display:none">
+⏹️ PARAR CÁMARA
+</button>
 
-<div
-id="nombreEscaneado"
-class="nombre-producto">
 </div>
 
-<div
-id="codigoEscaneado"
-class="codigo">
-</div>
 
-<div
-id="stockEscaneado"
-class="stock-grande">
-</div>
+<div id="resultado" class="tarjeta" style="display:none">
 
-<div
-id="precioEscaneado"
-class="precio">
-</div>
+<img id="fotoResultado" class="foto">
 
-<div class="botones-stock">
+<div id="nombreResultado" class="nombre"></div>
 
-<button
-class="btn-sumar"
-onclick="cambiarStock(1)">
+<div id="codigoResultado" class="codigo"></div>
+
+<div id="stockResultado" class="stock-grande"></div>
+
+<div id="precioResultado" class="precio"></div>
+
+<div id="beneficioResultado" class="precio"></div>
+
+<div class="dos">
+
+<button class="btn verde" onclick="cambiarStock(1)">
 ➕ +1
 </button>
 
-<button
-class="btn-restar"
-onclick="cambiarStock(-1)">
+<button class="btn rojo" onclick="cambiarStock(-1)">
 ➖ -1
 </button>
 
 </div>
 
+<div class="dos">
+
+<button class="btn naranja" onclick="editarActual()">
+✏️ Editar
+</button>
+
+<button class="btn rojo" onclick="eliminarActual()">
+🗑️ Eliminar
+</button>
+
 </div>
 
-<button
-id="botonIniciar"
-class="btn-principal"
-onclick="iniciarEscaner()">
-📷 INICIAR ESCÁNER
-</button>
-
-<button
-id="botonParar"
-class="btn-secundario"
-onclick="pararEscaner()"
-style="display:none;">
-⏹️ PARAR CÁMARA
-</button>
+</div>
 
 </section>
 
 
-<!-- =====================================
-     INVENTARIO
-===================================== -->
+<!-- =========================
+ INVENTARIO
+========================= -->
 
-<section
-id="inventario"
-class="seccion">
+<section id="inventario" class="seccion">
 
 <div class="tarjeta">
 
 <h2>📦 Inventario</h2>
 
 <input
-id="buscar"
+id="buscador"
 type="search"
-placeholder="🔎 Buscar producto..."
+placeholder="🔎 Buscar producto o código..."
 oninput="mostrarInventario()">
 
-<div id="listaProductos"></div>
+<div id="listaInventario"></div>
 
 </div>
 
 </section>
 
 
-<!-- =====================================
-     AÑADIR PRODUCTO
-===================================== -->
+<!-- =========================
+ AÑADIR / EDITAR
+========================= -->
 
-<section
-id="agregar"
-class="seccion">
+<section id="agregar" class="seccion">
 
 <div class="tarjeta">
 
-<h2>➕ Añadir producto</h2>
+<h2 id="tituloForm">➕ Añadir producto</h2>
 
-<label>Foto</label>
+<label>📸 Foto</label>
 
 <input
 id="fotoInput"
 type="file"
 accept="image/*"
+capture="environment"
 onchange="cargarFoto(event)">
 
-<img
-id="fotoPreview">
+<img id="fotoPreview">
+
 
 <label>Producto</label>
 
-<input
-id="nuevoProducto"
-placeholder="Nombre del producto">
+<input id="productoInput" placeholder="Nombre del producto">
+
 
 <label>Código de barras</label>
 
-<input
-id="nuevoCodigo"
-placeholder="Ej: 8412345678905">
+<input id="codigoInput" placeholder="Ej: 8412345678905">
 
-<button
-class="btn-secundario"
-onclick="escanearParaNuevo()">
-📷 Escanear código
-</button>
 
 <label>Stock</label>
 
-<input
-id="nuevoStock"
-type="number"
-value="0">
+<input id="stockInput" type="number" min="0" value="0">
 
-<label>Precio de compra</label>
 
-<input
-id="nuevoPrecioCompra"
-type="number"
-step="0.01"
-placeholder="0.00">
+<label>Precio de compra (€)</label>
 
-<label>Precio de venta</label>
+<input id="compraInput" type="number" step="0.01" min="0">
 
-<input
-id="nuevoPrecioVenta"
-type="number"
-step="0.01"
-placeholder="0.00">
 
-<button
-class="btn-principal"
-onclick="guardarProducto()">
+<label>Precio de venta (€)</label>
+
+<input id="ventaInput" type="number" step="0.01" min="0">
+
+
+<button id="guardarBtn" class="btn negro" onclick="guardarProducto()">
 💾 GUARDAR PRODUCTO
+</button>
+
+<button id="cancelarBtn" class="btn gris" onclick="cancelarEdicion()" style="display:none">
+❌ CANCELAR
 </button>
 
 </div>
@@ -466,29 +502,42 @@ onclick="guardarProducto()">
 
 <div class="tarjeta">
 
-<h3>💾 Copia de seguridad</h3>
+<h3>💾 Copias de seguridad</h3>
 
-<div class="aviso">
-Los productos se guardan en este dispositivo.
-Haz una copia de seguridad periódicamente.
-</div>
+<p>
+Los productos se guardan en este iPhone.
+Haz una copia periódicamente.
+</p>
 
-<button
-class="btn-principal"
-onclick="exportarInventario()">
+<button class="btn negro" onclick="exportar()">
 📤 EXPORTAR INVENTARIO
 </button>
 
-<label
-class="btn-secundario"
-style="display:block;text-align:center;cursor:pointer;">
+<label class="btn gris" style="text-align:center;cursor:pointer">
 📥 IMPORTAR INVENTARIO
 <input
 type="file"
 accept=".json"
-style="display:none;"
-onchange="importarInventario(event)">
+style="display:none"
+onchange="importar(event)">
 </label>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+ MOVIMIENTOS
+========================= -->
+
+<section id="movimientos" class="seccion">
+
+<div class="tarjeta">
+
+<h2>📜 Movimientos</h2>
+
+<div id="listaMovimientos"></div>
 
 </div>
 
@@ -497,996 +546,945 @@ onchange="importarInventario(event)">
 
 <script>
 
-/* =====================================
-   DATOS
-===================================== */
+/* =================================
+ DATOS
+================================= */
 
-const CLAVE =
-"MI_INVENTARIO_V1";
+const CLAVE = "MI_INVENTARIO_V1";
+const CLAVE_MOV = "MI_INVENTARIO_MOVIMIENTOS";
 
-let productos =
-cargarInventario();
+let productos = cargar();
+let movimientos = cargarMovimientos();
 
 let scanner = null;
-
-let scannerFuncionando = false;
-
+let escaneando = false;
 let productoActual = null;
 
+let indiceEditando = -1;
 let fotoBase64 = "";
 
 
-/* =====================================
-   INVENTARIO LOCAL
-===================================== */
+/* =================================
+ ALMACENAMIENTO
+================================= */
 
-function cargarInventario() {
+function cargar(){
 
-  try {
+try{
 
-    const datos =
-      localStorage.getItem(CLAVE);
+let datos=localStorage.getItem(CLAVE);
 
-    if (!datos) {
-      return [];
-    }
+return datos ? JSON.parse(datos) : [];
 
-    return JSON.parse(datos);
+}catch(e){
 
-  } catch (error) {
+return [];
 
-    console.error(error);
-
-    return [];
-
-  }
+}
 
 }
 
 
-function guardarInventario() {
+function guardar(){
 
-  localStorage.setItem(
-    CLAVE,
-    JSON.stringify(productos)
-  );
-
-}
-
-
-/* =====================================
-   NAVEGACIÓN
-===================================== */
-
-function mostrarSeccion(nombre) {
-
-  document
-    .querySelectorAll(".seccion")
-    .forEach(function(seccion) {
-
-      seccion.classList.remove("activa");
-
-    });
-
-
-  document
-    .getElementById(nombre)
-    .classList.add("activa");
-
-
-  document
-    .querySelectorAll("nav button")
-    .forEach(function(boton) {
-
-      boton.classList.remove("activo");
-
-    });
-
-
-  if (nombre === "escaner") {
-
-    document
-      .getElementById("navEscaner")
-      .classList.add("activo");
-
-  }
-
-  if (nombre === "inventario") {
-
-    document
-      .getElementById("navInventario")
-      .classList.add("activo");
-
-    mostrarInventario();
-
-  }
-
-  if (nombre === "agregar") {
-
-    document
-      .getElementById("navAgregar")
-      .classList.add("activo");
-
-  }
+localStorage.setItem(
+CLAVE,
+JSON.stringify(productos)
+);
 
 }
 
 
-/* =====================================
-   ESCÁNER
-===================================== */
+function cargarMovimientos(){
 
-function iniciarEscaner() {
+try{
 
-  if (scannerFuncionando) {
-    return;
-  }
+let datos=localStorage.getItem(CLAVE_MOV);
 
+return datos ? JSON.parse(datos) : [];
 
-  scanner =
-    new Html5Qrcode("reader");
+}catch(e){
 
+return [];
 
-  const configuracion = {
-
-    fps: 10,
-
-    qrbox: {
-      width: 280,
-      height: 150
-    },
-
-    aspectRatio: 1.7777778,
-
-    rememberLastUsedCamera: true,
-
-    formatsToSupport: [
-
-      Html5QrcodeSupportedFormats.EAN_13,
-
-      Html5QrcodeSupportedFormats.EAN_8,
-
-      Html5QrcodeSupportedFormats.UPC_A,
-
-      Html5QrcodeSupportedFormats.UPC_E,
-
-      Html5QrcodeSupportedFormats.CODE_128,
-
-      Html5QrcodeSupportedFormats.CODE_39,
-
-      Html5QrcodeSupportedFormats.CODE_93,
-
-      Html5QrcodeSupportedFormats.ITF
-
-    ]
-
-  };
-
-
-  scanner
-    .start(
-
-      {
-        facingMode: "environment"
-      },
-
-      configuracion,
-
-      function(codigo) {
-
-        codigoEscaneado(codigo);
-
-      },
-
-      function(error) {
-
-        // Errores normales mientras busca
-        // un código. No mostramos nada.
-
-      }
-
-    )
-
-    .then(function() {
-
-      scannerFuncionando = true;
-
-      document
-        .getElementById("botonIniciar")
-        .style.display = "none";
-
-      document
-        .getElementById("botonParar")
-        .style.display = "block";
-
-      mensaje(
-        "📷 Apunta al código de barras"
-      );
-
-    })
-
-    .catch(function(error) {
-
-      console.error(error);
-
-      mensaje(
-        "❌ No se pudo abrir la cámara. " +
-        "Comprueba que Safari tiene permiso."
-      );
-
-    });
+}
 
 }
 
 
-function pararEscaner() {
+function guardarMovimientos(){
 
-  if (!scanner) {
-    return;
-  }
-
-
-  scanner
-    .stop()
-    .then(function() {
-
-      scanner.clear();
-
-      scannerFuncionando = false;
-
-      document
-        .getElementById("botonIniciar")
-        .style.display = "block";
-
-      document
-        .getElementById("botonParar")
-        .style.display = "none";
-
-    })
-    .catch(function(error) {
-
-      console.error(error);
-
-    });
+localStorage.setItem(
+CLAVE_MOV,
+JSON.stringify(movimientos)
+);
 
 }
 
 
-function codigoEscaneado(codigo) {
+/* =================================
+ NAVEGACIÓN
+================================= */
 
-  codigo = String(codigo).trim();
+function ir(nombre){
 
+document.querySelectorAll(".seccion")
+.forEach(x=>x.classList.remove("activa"));
 
-  // Evitar múltiples lecturas seguidas
-  if (!scannerFuncionando) {
-    return;
-  }
+document.getElementById(nombre).classList.add("activa");
 
+document.querySelectorAll("nav button")
+.forEach(x=>x.classList.remove("activo"));
 
-  pararEscaner();
+let boton={
+inicio:"nInicio",
+escaner:"nEscaner",
+inventario:"nInventario",
+agregar:"nAgregar"
+}[nombre];
 
+if(boton)
+document.getElementById(boton).classList.add("activo");
 
-  buscarProducto(codigo);
+if(nombre==="inicio")
+actualizarInicio();
 
-}
+if(nombre==="inventario")
+mostrarInventario();
 
-
-/* =====================================
-   BUSCAR PRODUCTO
-===================================== */
-
-function buscarProducto(codigo) {
-
-  const producto =
-    productos.find(function(p) {
-
-      return String(p.codigo).trim() ===
-             String(codigo).trim();
-
-    });
-
-
-  if (!producto) {
-
-    mensaje(
-      "❌ No existe ese producto"
-    );
-
-
-    if (
-      confirm(
-        "El código " +
-        codigo +
-        " no existe.\n\n" +
-        "¿Quieres añadirlo ahora?"
-      )
-    ) {
-
-      mostrarSeccion("agregar");
-
-      document
-        .getElementById("nuevoCodigo")
-        .value = codigo;
-
-    }
-
-    return;
-
-  }
-
-
-  mostrarProducto(producto);
+if(nombre==="movimientos")
+mostrarMovimientos();
 
 }
 
 
-function mostrarProducto(producto) {
+/* =================================
+ INICIO
+================================= */
 
-  productoActual = producto;
+function actualizarInicio(){
 
+let unidades=0;
+let compra=0;
+let venta=0;
+let beneficio=0;
+let bajo=0;
 
-  document
-    .getElementById("productoEscaneado")
-    .style.display = "block";
+productos.forEach(p=>{
 
+let stock=Number(p.stock)||0;
+let pc=Number(p.precioCompra)||0;
+let pv=Number(p.precioVenta)||0;
 
-  document
-    .getElementById("nombreEscaneado")
-    .textContent =
-    producto.producto;
+unidades+=stock;
+compra+=stock*pc;
+venta+=stock*pv;
+beneficio+=stock*(pv-pc);
 
+if(stock<=2)
+bajo++;
 
-  document
-    .getElementById("codigoEscaneado")
-    .textContent =
-    "Código: " + producto.codigo;
+});
 
+document.getElementById("totalProductos").textContent=productos.length;
+document.getElementById("totalUnidades").textContent=unidades;
+document.getElementById("valorCompra").textContent=euros(compra);
+document.getElementById("valorVenta").textContent=euros(venta);
+document.getElementById("beneficioTotal").textContent=euros(beneficio);
+document.getElementById("totalBajo").textContent=bajo;
 
-  document
-    .getElementById("stockEscaneado")
-    .textContent =
-    "Stock: " + producto.stock;
+let lista=document.getElementById("listaBajo");
 
+let bajos=productos.filter(p=>(Number(p.stock)||0)<=2);
 
-  document
-    .getElementById("precioEscaneado")
-    .textContent =
-    "Precio: " +
-    Number(producto.precioVenta || 0)
-      .toFixed(2) +
-    " €";
+if(!bajos.length){
 
+lista.innerHTML='<div class="vacio">✅ No hay productos con stock bajo</div>';
 
-  const foto =
-    document.getElementById(
-      "fotoEscaneada"
-    );
+return;
 
+}
 
-  if (producto.foto) {
+lista.innerHTML="";
 
-    foto.src =
-      producto.foto;
+bajos.forEach(p=>{
 
-    foto.style.display =
-      "block";
+let div=document.createElement("div");
 
-  } else {
+div.className="alerta";
 
-    foto.style.display =
-      "none";
+div.innerHTML=
+"⚠️ <b>"+esc(p.producto)+"</b>"+
+" — Stock: <b>"+(p.stock||0)+"</b>";
 
-  }
+lista.appendChild(div);
 
-
-  mensaje(
-    "✅ " +
-    producto.producto
-  );
+});
 
 }
 
 
-function cambiarStock(cantidad) {
+/* =================================
+ EUROS
+================================= */
 
-  if (!productoActual) {
-    return;
-  }
+function euros(numero){
 
-
-  const nuevoStock =
-    Number(productoActual.stock || 0) +
-    Number(cantidad);
-
-
-  if (nuevoStock < 0) {
-
-    alert(
-      "No puedes tener stock negativo."
-    );
-
-    return;
-
-  }
-
-
-  productoActual.stock =
-    nuevoStock;
-
-
-  guardarInventario();
-
-
-  mostrarProducto(
-    productoActual
-  );
-
-
-  mostrarInventario();
+return Number(numero||0)
+.toFixed(2)
+.replace(".",",")+" €";
 
 }
 
 
-/* =====================================
-   LISTA INVENTARIO
-===================================== */
+/* =================================
+ ESCÁNER
+================================= */
 
-function mostrarInventario() {
+function iniciarEscaner(){
 
-  const contenedor =
-    document.getElementById(
-      "listaProductos"
-    );
+if(escaneando)return;
 
+scanner=new Html5Qrcode("reader");
 
-  const busqueda =
-    String(
-      document.getElementById(
-        "buscar"
-      ).value || ""
-    )
-      .toLowerCase()
-      .trim();
+let config={
 
+fps:10,
 
-  const filtrados =
-    productos.filter(function(p) {
+qrbox:{
+width:280,
+height:150
+},
 
-      return (
+aspectRatio:1.7777778,
 
-        String(p.producto)
-          .toLowerCase()
-          .includes(busqueda)
+formatsToSupport:[
+Html5QrcodeSupportedFormats.EAN_13,
+Html5QrcodeSupportedFormats.EAN_8,
+Html5QrcodeSupportedFormats.UPC_A,
+Html5QrcodeSupportedFormats.UPC_E,
+Html5QrcodeSupportedFormats.CODE_128,
+Html5QrcodeSupportedFormats.CODE_39,
+Html5QrcodeSupportedFormats.ITF
+]
 
-        ||
+};
 
-        String(p.codigo)
-          .toLowerCase()
-          .includes(busqueda)
+scanner.start(
+{facingMode:"environment"},
+config,
+codigo=>{
 
-      );
+pararEscaner();
 
-    });
+buscar(codigo);
 
+},
+()=>{}
 
-  if (filtrados.length === 0) {
+).then(()=>{
 
-    contenedor.innerHTML =
-      '<div class="vacio">' +
-      'No hay productos todavía.' +
-      '</div>';
+escaneando=true;
 
-    return;
+document.getElementById("btnIniciar").style.display="none";
+document.getElementById("btnParar").style.display="block";
 
-  }
+document.getElementById("mensaje").textContent=
+"📷 Apunta al código de barras";
 
+}).catch(error=>{
 
-  contenedor.innerHTML = "";
+console.error(error);
 
+document.getElementById("mensaje").textContent=
+"❌ No se pudo abrir la cámara";
 
-  filtrados.forEach(function(p) {
-
-    const div =
-      document.createElement("div");
-
-    div.className =
-      "producto-lista";
-
-
-    const img =
-      document.createElement("img");
-
-
-    if (p.foto) {
-
-      img.src = p.foto;
-
-    }
-
-
-    const info =
-      document.createElement("div");
-
-    info.className =
-      "producto-info";
-
-
-    const nombre =
-      document.createElement("strong");
-
-    nombre.textContent =
-      p.producto;
-
-
-    const codigo =
-      document.createElement("small");
-
-    codigo.textContent =
-      "Código: " + p.codigo;
-
-
-    info.appendChild(nombre);
-
-    info.appendChild(codigo);
-
-
-    const stock =
-      document.createElement("div");
-
-    stock.className =
-      "producto-stock";
-
-    stock.textContent =
-      p.stock;
-
-
-    div.appendChild(img);
-
-    div.appendChild(info);
-
-    div.appendChild(stock);
-
-
-    div.onclick =
-      function() {
-
-        mostrarSeccion(
-          "escaner"
-        );
-
-        mostrarProducto(p);
-
-      };
-
-
-    contenedor.appendChild(div);
-
-  });
+});
 
 }
 
 
-/* =====================================
-   FOTO
-===================================== */
+function pararEscaner(){
 
-function cargarFoto(event) {
+if(!scanner)return;
 
-  const archivo =
-    event.target.files[0];
+scanner.stop().then(()=>{
 
+scanner.clear();
 
-  if (!archivo) {
-    return;
-  }
+scanner=null;
+escaneando=false;
 
+document.getElementById("btnIniciar").style.display="block";
+document.getElementById("btnParar").style.display="none";
 
-  const lector =
-    new FileReader();
-
-
-  lector.onload =
-    function(e) {
-
-      fotoBase64 =
-        e.target.result;
-
-
-      const preview =
-        document.getElementById(
-          "fotoPreview"
-        );
-
-
-      preview.src =
-        fotoBase64;
-
-      preview.style.display =
-        "block";
-
-    };
-
-
-  lector.readAsDataURL(
-    archivo
-  );
+}).catch(()=>{});
 
 }
 
 
-/* =====================================
-   AÑADIR PRODUCTO
-===================================== */
+/* =================================
+ BUSCAR
+================================= */
 
-function guardarProducto() {
+function buscar(codigo){
 
-  const nombre =
-    document
-      .getElementById(
-        "nuevoProducto"
-      )
-      .value
-      .trim();
+codigo=String(codigo).trim();
 
+let producto=productos.find(
+p=>String(p.codigo).trim()===codigo
+);
 
-  const codigo =
-    document
-      .getElementById(
-        "nuevoCodigo"
-      )
-      .value
-      .trim();
+if(!producto){
 
+document.getElementById("mensaje").textContent=
+"❌ Producto no encontrado";
 
-  const stock =
-    Number(
-      document
-        .getElementById(
-          "nuevoStock"
-        )
-        .value
-    ) || 0;
+if(confirm(
+"El código "+codigo+
+" no está registrado.\n\n¿Quieres añadirlo?"
+)){
 
+ir("agregar");
 
-  const precioCompra =
-    Number(
-      document
-        .getElementById(
-          "nuevoPrecioCompra"
-        )
-        .value
-    ) || 0;
+document.getElementById("codigoInput").value=codigo;
 
+}
 
-  const precioVenta =
-    Number(
-      document
-        .getElementById(
-          "nuevoPrecioVenta"
-        )
-        .value
-    ) || 0;
+return;
 
+}
 
-  if (!nombre) {
-
-    alert(
-      "Escribe el nombre del producto."
-    );
-
-    return;
-
-  }
-
-
-  if (!codigo) {
-
-    alert(
-      "Introduce el código de barras."
-    );
-
-    return;
-
-  }
-
-
-  const existente =
-    productos.find(function(p) {
-
-      return String(p.codigo) ===
-             String(codigo);
-
-    });
-
-
-  if (existente) {
-
-    alert(
-      "Ya existe un producto con ese código."
-    );
-
-    return;
-
-  }
-
-
-  const beneficio =
-    precioVenta -
-    precioCompra;
-
-
-  const producto = {
-
-    id:
-      Date.now(),
-
-    foto:
-      fotoBase64,
-
-    producto:
-      nombre,
-
-    codigo:
-      codigo,
-
-    stock:
-      stock,
-
-    precioCompra:
-      precioCompra,
-
-    precioVenta:
-      precioVenta,
-
-    beneficio:
-      beneficio
-
-  };
-
-
-  productos.push(
-    producto
-  );
-
-
-  guardarInventario();
-
-
-  alert(
-    "✅ Producto guardado"
-  );
-
-
-  limpiarFormulario();
-
-
-  mostrarSeccion(
-    "inventario"
-  );
+mostrarProducto(producto);
 
 }
 
 
-function limpiarFormulario() {
+/* =================================
+ MOSTRAR PRODUCTO
+================================= */
 
-  document
-    .getElementById(
-      "nuevoProducto"
-    ).value = "";
+function mostrarProducto(p){
 
+productoActual=p;
 
-  document
-    .getElementById(
-      "nuevoCodigo"
-    ).value = "";
+document.getElementById("resultado").style.display="block";
 
+document.getElementById("nombreResultado").textContent=p.producto;
 
-  document
-    .getElementById(
-      "nuevoStock"
-    ).value = "0";
+document.getElementById("codigoResultado").textContent=
+"Código: "+p.codigo;
 
+document.getElementById("stockResultado").textContent=
+"Stock: "+(p.stock||0);
 
-  document
-    .getElementById(
-      "nuevoPrecioCompra"
-    ).value = "";
+document.getElementById("precioResultado").textContent=
+"Venta: "+euros(p.precioVenta);
 
+document.getElementById("beneficioResultado").textContent=
+"Beneficio/unidad: "+
+euros(
+(Number(p.precioVenta)||0)-
+(Number(p.precioCompra)||0)
+);
 
-  document
-    .getElementById(
-      "nuevoPrecioVenta"
-    ).value = "";
+let foto=document.getElementById("fotoResultado");
 
+if(p.foto){
 
-  document
-    .getElementById(
-      "fotoInput"
-    ).value = "";
+foto.src=p.foto;
+foto.style.display="block";
 
+}else{
 
-  document
-    .getElementById(
-      "fotoPreview"
-    ).style.display = "none";
+foto.style.display="none";
 
+}
 
-  fotoBase64 = "";
+document.getElementById("mensaje").textContent=
+"✅ "+p.producto;
 
 }
 
 
-/* =====================================
-   ESCANEAR PARA AÑADIR
-===================================== */
+/* =================================
+ STOCK
+================================= */
 
-function escanearParaNuevo() {
+function cambiarStock(cantidad){
 
-  mostrarSeccion(
-    "escaner"
-  );
+if(!productoActual)return;
 
+let nuevo=
+(Number(productoActual.stock)||0)+cantidad;
 
-  alert(
-    "Pulsa INICIAR ESCÁNER y apunta al código."
-  );
+if(nuevo<0){
+
+alert("❌ No puedes tener stock negativo.");
+
+return;
+
+}
+
+productoActual.stock=nuevo;
+
+guardar();
+
+registrarMovimiento(
+productoActual,
+cantidad>0 ? "Entrada":"Salida",
+Math.abs(cantidad)
+);
+
+mostrarProducto(productoActual);
+actualizarInicio();
+mostrarInventario();
 
 }
 
 
-/* =====================================
-   EXPORTAR
-===================================== */
+/* =================================
+ MOVIMIENTOS
+================================= */
 
-function exportarInventario() {
+function registrarMovimiento(p,tipo,cantidad){
 
-  const datos =
-    JSON.stringify(
-      productos,
-      null,
-      2
-    );
+movimientos.unshift({
 
+fecha:new Date().toLocaleString("es-ES"),
 
-  const blob =
-    new Blob(
-      [datos],
-      {
-        type:
-          "application/json"
-      }
-    );
+codigo:p.codigo,
 
+producto:p.producto,
 
-  const url =
-    URL.createObjectURL(
-      blob
-    );
+tipo:tipo,
 
+cantidad:cantidad
 
-  const enlace =
-    document.createElement(
-      "a"
-    );
+});
 
+if(movimientos.length>500)
+movimientos.pop();
 
-  enlace.href =
-    url;
-
-
-  const fecha =
-    new Date()
-      .toISOString()
-      .slice(0,10);
-
-
-  enlace.download =
-    "inventario-" +
-    fecha +
-    ".json";
-
-
-  enlace.click();
-
-
-  URL.revokeObjectURL(
-    url
-  );
+guardarMovimientos();
 
 }
 
 
-/* =====================================
-   IMPORTAR
-===================================== */
+function mostrarMovimientos(){
 
-function importarInventario(event) {
+let lista=document.getElementById("listaMovimientos");
 
-  const archivo =
-    event.target.files[0];
+if(!movimientos.length){
 
+lista.innerHTML=
+'<div class="vacio">No hay movimientos todavía.</div>';
 
-  if (!archivo) {
-    return;
-  }
+return;
 
+}
 
-  const lector =
-    new FileReader();
+lista.innerHTML="";
 
+movimientos.forEach(m=>{
 
-  lector.onload =
-    function(e) {
+let div=document.createElement("div");
 
-      try {
+div.className="movimiento";
 
-        const datos =
-          JSON.parse(
-            e.target.result
-          );
+div.innerHTML=
+"<b>"+esc(m.producto)+"</b><br>"+
+m.tipo+" · "+m.cantidad+
+"<br><small>"+
+esc(m.fecha)+
+" · "+
+esc(m.codigo)+
+"</small>";
 
+lista.appendChild(div);
 
-        if (!Array.isArray(datos)) {
-
-          throw new Error(
-            "Archivo no válido"
-          );
-
-        }
-
-
-        if (
-          !confirm(
-            "Esto sustituirá el inventario actual. ¿Continuar?"
-          )
-        ) {
-
-          return;
-
-        }
-
-
-        productos =
-          datos;
-
-
-        guardarInventario();
-
-
-        mostrarInventario();
-
-
-        alert(
-          "✅ Inventario importado"
-        );
-
-
-      } catch (error) {
-
-        alert(
-          "❌ El archivo no es válido."
-        );
-
-      }
-
-    };
-
-
-  lector.readAsText(
-    archivo
-  );
+});
 
 }
 
 
-/* =====================================
-   INICIO
-===================================== */
+/* =================================
+ INVENTARIO
+================================= */
 
+function mostrarInventario(){
+
+let lista=document.getElementById("listaInventario");
+
+let texto=
+(document.getElementById("buscador")?.value||"")
+.toLowerCase();
+
+let filtrados=productos.filter(p=>
+String(p.producto).toLowerCase().includes(texto)||
+String(p.codigo).toLowerCase().includes(texto)
+);
+
+if(!filtrados.length){
+
+lista.innerHTML=
+'<div class="vacio">No hay productos.</div>';
+
+return;
+
+}
+
+lista.innerHTML="";
+
+filtrados.forEach(p=>{
+
+let indice=productos.indexOf(p);
+
+let div=document.createElement("div");
+
+div.className="producto";
+
+let img=document.createElement("img");
+
+if(p.foto)img.src=p.foto;
+
+let info=document.createElement("div");
+
+info.className="producto-info";
+
+info.innerHTML=
+"<strong>"+esc(p.producto)+"</strong>"+
+"<small>Código: "+esc(p.codigo)+"</small>";
+
+let stock=document.createElement("div");
+
+stock.className="stock";
+
+if(Number(p.stock)<=2)
+stock.classList.add("stock-bajo");
+
+stock.textContent=p.stock||0;
+
+let botones=document.createElement("div");
+
+botones.className="dos";
+
+let editar=document.createElement("button");
+
+editar.className="btn naranja";
+
+editar.textContent="✏️";
+
+editar.onclick=()=>iniciarEdicion(indice);
+
+let borrar=document.createElement("button");
+
+borrar.className="btn rojo";
+
+borrar.textContent="🗑️";
+
+borrar.onclick=()=>eliminar(indice);
+
+botones.appendChild(editar);
+botones.appendChild(borrar);
+
+let derecha=document.createElement("div");
+
+derecha.appendChild(stock);
+derecha.appendChild(botones);
+
+div.appendChild(img);
+div.appendChild(info);
+div.appendChild(derecha);
+
+div.onclick=e=>{
+
+if(e.target.tagName==="BUTTON")return;
+
+mostrarProducto(p);
+
+ir("escaner");
+
+};
+
+lista.appendChild(div);
+
+});
+
+}
+
+
+/* =================================
+ AÑADIR / EDITAR
+================================= */
+
+function iniciarEdicion(indice){
+
+let p=productos[indice];
+
+indiceEditando=indice;
+
+document.getElementById("tituloForm").textContent=
+"✏️ Editar producto";
+
+document.getElementById("productoInput").value=p.producto||"";
+document.getElementById("codigoInput").value=p.codigo||"";
+document.getElementById("stockInput").value=p.stock||0;
+document.getElementById("compraInput").value=p.precioCompra||0;
+document.getElementById("ventaInput").value=p.precioVenta||0;
+
+fotoBase64=p.foto||"";
+
+let preview=document.getElementById("fotoPreview");
+
+if(fotoBase64){
+
+preview.src=fotoBase64;
+preview.style.display="block";
+
+}else{
+
+preview.style.display="none";
+
+}
+
+document.getElementById("guardarBtn").textContent=
+"💾 GUARDAR CAMBIOS";
+
+document.getElementById("cancelarBtn").style.display="block";
+
+ir("agregar");
+
+}
+
+
+function editarActual(){
+
+if(!productoActual)return;
+
+let indice=productos.indexOf(productoActual);
+
+if(indice>=0)
+iniciarEdicion(indice);
+
+}
+
+
+function guardarProducto(){
+
+let nombre=document.getElementById("productoInput").value.trim();
+
+let codigo=document.getElementById("codigoInput").value.trim();
+
+let stock=Number(document.getElementById("stockInput").value)||0;
+
+let compra=Number(document.getElementById("compraInput").value)||0;
+
+let venta=Number(document.getElementById("ventaInput").value)||0;
+
+if(!nombre){
+
+alert("Escribe el nombre del producto.");
+
+return;
+
+}
+
+if(!codigo){
+
+alert("Introduce el código de barras.");
+
+return;
+
+}
+
+let repetido=productos.findIndex((p,i)=>
+i!==indiceEditando &&
+String(p.codigo)===codigo
+);
+
+if(repetido>=0){
+
+alert("Ya existe otro producto con ese código.");
+
+return;
+
+}
+
+if(indiceEditando>=0){
+
+let p=productos[indiceEditando];
+
+p.producto=nombre;
+p.codigo=codigo;
+p.stock=stock;
+p.precioCompra=compra;
+p.precioVenta=venta;
+p.beneficio=venta-compra;
+p.foto=fotoBase64;
+
+productoActual=p;
+
+alert("✅ Producto actualizado.");
+
+}else{
+
+let p={
+
+id:Date.now(),
+
+foto:fotoBase64,
+
+producto:nombre,
+
+codigo:codigo,
+
+stock:stock,
+
+precioCompra:compra,
+
+precioVenta:venta,
+
+beneficio:venta-compra
+
+};
+
+productos.push(p);
+
+alert("✅ Producto añadido.");
+
+}
+
+guardar();
+
+cancelarEdicion();
+
+actualizarInicio();
+
+ir("inventario");
+
+}
+
+
+/* =================================
+ CANCELAR
+================================= */
+
+function cancelarEdicion(){
+
+indiceEditando=-1;
+
+fotoBase64="";
+
+document.getElementById("tituloForm").textContent=
+"➕ Añadir producto";
+
+document.getElementById("guardarBtn").textContent=
+"💾 GUARDAR PRODUCTO";
+
+document.getElementById("cancelarBtn").style.display="none";
+
+document.getElementById("productoInput").value="";
+document.getElementById("codigoInput").value="";
+document.getElementById("stockInput").value=0;
+document.getElementById("compraInput").value="";
+document.getElementById("ventaInput").value="";
+document.getElementById("fotoInput").value="";
+
+document.getElementById("fotoPreview").style.display="none";
+
+}
+
+
+/* =================================
+ ELIMINAR
+================================= */
+
+function eliminar(indice){
+
+let p=productos[indice];
+
+if(!p)return;
+
+if(!confirm(
+"¿Eliminar este producto?\n\n"+
+p.producto+
+"\nStock: "+p.stock
+))return;
+
+productos.splice(indice,1);
+
+guardar();
+
+if(productoActual===p){
+
+productoActual=null;
+
+document.getElementById("resultado").style.display="none";
+
+}
+
+actualizarInicio();
+mostrarInventario();
+
+alert("🗑️ Producto eliminado.");
+
+}
+
+
+function eliminarActual(){
+
+if(!productoActual)return;
+
+let indice=productos.indexOf(productoActual);
+
+if(indice>=0)
+eliminar(indice);
+
+}
+
+
+/* =================================
+ FOTO
+================================= */
+
+function cargarFoto(event){
+
+let archivo=event.target.files[0];
+
+if(!archivo)return;
+
+let lector=new FileReader();
+
+lector.onload=e=>{
+
+fotoBase64=e.target.result;
+
+let preview=document.getElementById("fotoPreview");
+
+preview.src=fotoBase64;
+
+preview.style.display="block";
+
+};
+
+lector.readAsDataURL(archivo);
+
+}
+
+
+/* =================================
+ EXPORTAR
+================================= */
+
+function exportar(){
+
+let copia={
+
+productos:productos,
+
+movimientos:movimientos
+
+};
+
+let blob=new Blob(
+[JSON.stringify(copia,null,2)],
+{type:"application/json"}
+);
+
+let url=URL.createObjectURL(blob);
+
+let a=document.createElement("a");
+
+a.href=url;
+
+a.download=
+"inventario-"+new Date()
+.toISOString()
+.slice(0,10)+".json";
+
+a.click();
+
+URL.revokeObjectURL(url);
+
+}
+
+
+/* =================================
+ IMPORTAR
+================================= */
+
+function importar(event){
+
+let archivo=event.target.files[0];
+
+if(!archivo)return;
+
+let lector=new FileReader();
+
+lector.onload=e=>{
+
+try{
+
+let datos=JSON.parse(e.target.result);
+
+if(Array.isArray(datos)){
+
+productos=datos;
+
+}else{
+
+productos=datos.productos||[];
+
+movimientos=datos.movimientos||[];
+
+}
+
+guardar();
+guardarMovimientos();
+
+actualizarInicio();
+mostrarInventario();
+
+alert("✅ Inventario importado.");
+
+}catch(error){
+
+alert("❌ Archivo no válido.");
+
+}
+
+};
+
+lector.readAsText(archivo);
+
+}
+
+
+/* =================================
+ SEGURIDAD HTML
+================================= */
+
+function esc(texto){
+
+return String(texto??"")
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
+
+}
+
+
+/* =================================
+ INICIO
+================================= */
+
+actualizarInicio();
 mostrarInventario();
 
 </script>
 
 </body>
-
 </html>
