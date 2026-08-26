@@ -1,3 +1,5 @@
+index.html — Mi Inventario
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -86,10 +88,6 @@ label{
 button{
   cursor:pointer;
 }
-button:disabled{
-  opacity:.6;
-  cursor:not-allowed;
-}
 .btn{
   width:100%;
   border:0;
@@ -99,34 +97,13 @@ button:disabled{
   font-weight:bold;
   margin-top:7px;
 }
-.negro{
-  background:#111;
-  color:white;
-}
-.gris{
-  background:#ddd;
-  color:#222;
-}
-.verde{
-  background:#1c9b55;
-  color:white;
-}
-.rojo{
-  background:#d9363e;
-  color:white;
-}
-.naranja{
-  background:#ed8b00;
-  color:white;
-}
-.azul{
-  background:#1976d2;
-  color:white;
-}
-.morado{
-  background:#673ab7;
-  color:white;
-}
+.negro{background:#111;color:white}
+.gris{background:#ddd;color:#222}
+.verde{background:#1c9b55;color:white}
+.rojo{background:#d9363e;color:white}
+.naranja{background:#ed8b00;color:white}
+.azul{background:#1976d2;color:white}
+.morado{background:#673ab7;color:white}
 #reader{
   width:100%;
   max-width:500px;
@@ -275,12 +252,21 @@ button:disabled{
   color:#168344;
   font-weight:bold;
 }
+#diagnostico{
+  display:none;
+  margin-top:10px;
+  font-size:12px;
+  text-align:left;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
 </style>
 </head>
 <body>
 <header>
   <h1>📦 Mi Inventario</h1>
   <div id="estadoConexion">⏳ Conectando con Firebase...</div>
+  <div id="diagnostico" class="error"></div>
 </header>
 <nav>
   <button id="nInicio" class="activo" onclick="ir('inicio')">🏠 Inicio</button>
@@ -290,172 +276,176 @@ button:disabled{
   <button id="nAgregar" onclick="ir('agregar')">➕ Añadir</button>
   <button id="nCopia" onclick="ir('copia')">💾 Copia</button>
 </nav>
+<!-- INICIO -->
 <section id="inicio" class="seccion activa">
   <div id="errorFirebaseInicio"></div>
   <div class="tarjeta">
     <h2>📊 Resumen</h2>
-<div class="stats">
-  <div class="stat">Productos<b id="totalProductos">0</b></div>
-  <div class="stat">Unidades<b id="totalUnidades">0</b></div>
-  <div class="stat">Valor compra<b id="valorCompra">0 €</b></div>
-  <div class="stat">Valor venta<b id="valorVenta">0 €</b></div>
-  <div class="stat">Beneficio potencial<b id="beneficioTotal">0 €</b></div>
-  <div class="stat">Stock bajo<b id="totalBajo">0</b></div>
-</div>
+    <div class="stats">
+      <div class="stat">Productos<b id="totalProductos">0</b></div>
+      <div class="stat">Unidades<b id="totalUnidades">0</b></div>
+      <div class="stat">Valor compra<b id="valorCompra">0 €</b></div>
+      <div class="stat">Valor venta<b id="valorVenta">0 €</b></div>
+      <div class="stat">Beneficio potencial<b id="beneficioTotal">0 €</b></div>
+      <div class="stat">Stock bajo<b id="totalBajo">0</b></div>
+    </div>
   </div>
   <div class="tarjeta">
     <h3>🛒 Ventas de hoy</h3>
-<div class="stats">
-  <div class="stat">Ventas<b id="ventasHoy">0</b></div>
-  <div class="stat">Ingresos<b id="ingresosHoy">0 €</b></div>
-  <div class="stat">Beneficio<b id="beneficioHoy">0 €</b></div>
-  <div class="stat">Unidades<b id="unidadesVendidasHoy">0</b></div>
-</div>
+    <div class="stats">
+      <div class="stat">Ventas<b id="ventasHoy">0</b></div>
+      <div class="stat">Ingresos<b id="ingresosHoy">0 €</b></div>
+      <div class="stat">Beneficio<b id="beneficioHoy">0 €</b></div>
+      <div class="stat">Unidades<b id="unidadesVendidasHoy">0</b></div>
+    </div>
   </div>
   <div class="tarjeta">
     <h3>⚠️ Stock bajo</h3>
     <div id="listaBajo"></div>
   </div>
 </section>
+<!-- ESCANER -->
 <section id="escaner" class="seccion">
   <div class="tarjeta">
-<div id="mensaje" class="mensaje">
-  Pulsa iniciar y apunta al código
-</div>
-<div id="reader"></div>
-<button id="btnIniciar" class="btn negro" onclick="iniciarEscaner()">
-  📷 INICIAR ESCÁNER
-</button>
-<button id="btnParar" class="btn gris" onclick="pararEscaner()" style="display:none">
-  ⏹️ PARAR CÁMARA
-</button>
+    <div id="mensaje" class="mensaje">
+      Pulsa iniciar y apunta al código
+    </div>
+    <div id="reader"></div>
+    <button id="btnIniciar" class="btn negro" onclick="iniciarEscaner()">
+      📷 INICIAR ESCÁNER
+    </button>
+    <button id="btnParar" class="btn gris" onclick="pararEscaner()" style="display:none">
+      ⏹️ PARAR CÁMARA
+    </button>
   </div>
   <div id="resultado" class="tarjeta" style="display:none">
-<img id="fotoResultado" class="foto">
-<div id="nombreResultado" class="nombre"></div>
-<div id="codigoResultado" class="codigo"></div>
-<div id="stockResultado" class="stock-grande"></div>
-<div id="precioResultado" class="precio"></div>
-<div id="beneficioResultado" class="precio"></div>
-<div class="dos">
-  <button class="btn verde" onclick="entradaStock()">📦 +1</button>
-  <button class="btn rojo" onclick="salidaStock()">➖ -1</button>
-</div>
-<button class="btn azul" onclick="venderProducto()">
-  🛒 VENDER
-</button>
-<div class="dos">
-  <button class="btn naranja" onclick="editarActual()">✏️ Editar</button>
-  <button class="btn rojo" onclick="eliminarActual()">🗑️ Eliminar</button>
-</div>
+    <img id="fotoResultado" class="foto">
+    <div id="nombreResultado" class="nombre"></div>
+    <div id="codigoResultado" class="codigo"></div>
+    <div id="stockResultado" class="stock-grande"></div>
+    <div id="precioResultado" class="precio"></div>
+    <div id="beneficioResultado" class="precio"></div>
+    <div class="dos">
+      <button class="btn verde" onclick="entradaStock()">📦 +1</button>
+      <button class="btn rojo" onclick="salidaStock()">➖ -1</button>
+    </div>
+    <button class="btn azul" onclick="venderProducto()">
+      🛒 VENDER
+    </button>
+    <div class="dos">
+      <button class="btn naranja" onclick="editarActual()">✏️ Editar</button>
+      <button class="btn rojo" onclick="eliminarActual()">🗑️ Eliminar</button>
+    </div>
   </div>
 </section>
+<!-- INVENTARIO -->
 <section id="inventario" class="seccion">
   <div class="tarjeta">
-<h2>📦 Inventario</h2>
-<input
-  id="buscador"
-  type="search"
-  placeholder="🔎 Buscar producto o código..."
-  oninput="mostrarInventario()"
->
-<div id="listaInventario"></div>
+    <h2>📦 Inventario</h2>
+    <input
+      id="buscador"
+      type="search"
+      placeholder="🔎 Buscar producto o código..."
+      oninput="mostrarInventario()"
+    >
+    <div id="listaInventario"></div>
   </div>
 </section>
+<!-- VENTAS -->
 <section id="ventas" class="seccion">
   <div class="tarjeta">
-<h2>🛒 Historial de ventas</h2>
-<div class="stats">
-  <div class="stat">Ventas<b id="totalVentas">0</b></div>
-  <div class="stat">Ingresos<b id="totalIngresos">0 €</b></div>
-  <div class="stat">Beneficio<b id="totalBeneficioVentas">0 €</b></div>
-  <div class="stat">Unidades<b id="totalUnidadesVentas">0</b></div>
-</div>
+    <h2>🛒 Historial de ventas</h2>
+    <div class="stats">
+      <div class="stat">Ventas<b id="totalVentas">0</b></div>
+      <div class="stat">Ingresos<b id="totalIngresos">0 €</b></div>
+      <div class="stat">Beneficio<b id="totalBeneficioVentas">0 €</b></div>
+      <div class="stat">Unidades<b id="totalUnidadesVentas">0</b></div>
+    </div>
   </div>
   <div class="tarjeta">
-<input
-  id="buscarVentas"
-  type="search"
-  placeholder="🔎 Buscar venta o producto..."
-  oninput="mostrarVentas()"
->
-<div id="listaVentas"></div>
+    <input
+      id="buscarVentas"
+      type="search"
+      placeholder="🔎 Buscar venta o producto..."
+      oninput="mostrarVentas()"
+    >
+    <div id="listaVentas"></div>
   </div>
 </section>
+<!-- AÑADIR -->
 <section id="agregar" class="seccion">
   <div class="tarjeta">
-<h2 id="tituloForm">➕ Añadir producto</h2>
-<div id="mensajeGuardar"></div>
-<label for="fotoInput">📸 Foto del producto</label>
-<input
-  id="fotoInput"
-  type="file"
-  accept="image/*"
-  onchange="cargarFoto(event)"
->
-<img id="fotoPreview">
-<label for="productoInput">🏷️ Producto</label>
-<input
-  id="productoInput"
-  type="text"
-  placeholder="Nombre del producto"
->
-<label for="codigoInput">🔢 Código de barras</label>
-<input
-  id="codigoInput"
-  type="text"
-  inputmode="numeric"
-  placeholder="Código de barras"
->
-<label for="stockInput">📦 Stock</label>
-<input
-  id="stockInput"
-  type="number"
-  min="0"
-  step="1"
-  value="0"
-  placeholder="Cantidad"
->
-<label for="compraInput">💰 Precio de compra (€)</label>
-<input
-  id="compraInput"
-  type="number"
-  min="0"
-  step="0.01"
-  placeholder="0.00"
->
-<label for="ventaInput">💵 Precio de venta (€)</label>
-<input
-  id="ventaInput"
-  type="number"
-  min="0"
-  step="0.01"
-  placeholder="0.00"
->
-<button id="guardarBtn" class="btn negro" onclick="guardarProducto()">
-  💾 GUARDAR PRODUCTO
-</button>
-<button id="cancelarBtn" class="btn gris" onclick="cancelarEdicion()" style="display:none">
-  ❌ CANCELAR
-</button>
+    <h2 id="tituloForm">➕ Añadir producto</h2>
+    <div id="mensajeGuardar"></div>
+    <label for="fotoInput">📸 Foto</label>
+    <input
+      id="fotoInput"
+      type="file"
+      accept="image/*"
+      onchange="cargarFoto(event)"
+    >
+    <img id="fotoPreview">
+    <label for="productoInput">Producto</label>
+    <input
+      id="productoInput"
+      type="text"
+      placeholder="Nombre del producto"
+    >
+    <label for="codigoInput">Código de barras</label>
+    <input
+      id="codigoInput"
+      type="text"
+      inputmode="numeric"
+      placeholder="Código de barras"
+    >
+    <label for="stockInput">Stock</label>
+    <input
+      id="stockInput"
+      type="number"
+      min="0"
+      value="0"
+    >
+    <label for="compraInput">Precio de compra (€)</label>
+    <input
+      id="compraInput"
+      type="number"
+      min="0"
+      step="0.01"
+      placeholder="0.00"
+    >
+    <label for="ventaInput">Precio de venta (€)</label>
+    <input
+      id="ventaInput"
+      type="number"
+      min="0"
+      step="0.01"
+      placeholder="0.00"
+    >
+    <button id="guardarBtn" class="btn negro" onclick="guardarProducto()">
+      💾 GUARDAR PRODUCTO
+    </button>
+    <button id="cancelarBtn" class="btn gris" onclick="cancelarEdicion()" style="display:none">
+      ❌ CANCELAR
+    </button>
   </div>
 </section>
+<!-- COPIA -->
 <section id="copia" class="seccion">
   <div class="tarjeta">
-<h2>💾 Copia de seguridad</h2>
-<p>
-  Guarda una copia de todos tus productos y ventas en tu móvil.
-</p>
-<button class="btn morado" onclick="exportarCopia()">
-  💾 DESCARGAR COPIA DE SEGURIDAD
-</button>
-<div id="mensajeCopia"></div>
+    <h2>💾 Copia de seguridad</h2>
+    <p>
+      Guarda una copia de todos tus productos y ventas en tu móvil.
+    </p>
+    <button class="btn morado" onclick="exportarCopia()">
+      💾 DESCARGAR COPIA DE SEGURIDAD
+    </button>
+    <div id="mensajeCopia"></div>
   </div>
 </section>
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script type="module">
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import { initializeApp } from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 import {
   getFirestore,
   collection,
@@ -467,15 +457,16 @@ import {
   query,
   where,
   onSnapshot
-}
-from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+} from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 import {
   getAuth,
-  signInAnonymously
-}
-from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+  signInAnonymously,
+  onAuthStateChanged
+} from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 /* =====================================================
-   CONFIGURACIÓN FIREBASE
+   FIREBASE
    ===================================================== */
 const firebaseConfig = {
   apiKey: "AIzaSyArKREs5r_6zt5FpiJn9m2Tb-J9XkitzQI",
@@ -499,7 +490,7 @@ let productoActual = null;
 let indiceEditando = null;
 let fotoBase64 = "";
 /* =====================================================
-   FUNCIONES GENERALES
+   UTILIDADES
    ===================================================== */
 function escapar(texto){
   return String(texto ?? "")
@@ -515,12 +506,13 @@ function euros(numero){
     .replace(".",",") + " €";
 }
 function errorTexto(error){
-  let texto = "";
-  if(error?.code){
-    texto += error.code + " — ";
+  if(!error){
+    return "Error desconocido";
   }
-  texto += error?.message || String(error);
-  return texto;
+  return (
+    (error.code ? error.code + " — " : "") +
+    (error.message || String(error))
+  );
 }
 function mostrarError(texto,destino="errorFirebaseInicio"){
   console.error(texto);
@@ -535,41 +527,55 @@ function mostrarError(texto,destino="errorFirebaseInicio"){
   }
 }
 /* =====================================================
-   CONEXIÓN FIREBASE
+   CONECTAR FIREBASE
    ===================================================== */
 async function conectar(){
+  const estado =
+    document.getElementById("estadoConexion");
   try{
-    app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
-    auth = getAuth(app);
-    document.getElementById("estadoConexion")
-      .textContent = "⏳ Iniciando sesión segura...";
+    estado.textContent =
+      "⏳ Iniciando Firebase...";
+    app =
+      initializeApp(firebaseConfig);
+    estado.textContent =
+      "⏳ Conectando con Firestore...";
+    db =
+      getFirestore(app);
+    auth =
+      getAuth(app);
+    estado.textContent =
+      "⏳ Iniciando sesión..." ;
     await signInAnonymously(auth);
-    if(!auth.currentUser){
-      throw new Error(
-        "Firebase no ha creado la sesión anónima."
-      );
-    }
-    document.getElementById("estadoConexion")
-      .textContent = "☁️ Inventario sincronizado";
-    escucharDatos();
+    onAuthStateChanged(auth,function(usuario){
+      if(usuario){
+        estado.textContent =
+          "☁️ Inventario sincronizado";
+        escucharDatos();
+      }
+    });
   }catch(error){
-    document.getElementById("estadoConexion")
-      .textContent = "❌ Error Firebase";
+    estado.textContent =
+      "❌ Error de conexión";
     mostrarError(
+      "NO SE PUDO CONECTAR CON FIREBASE.\n\n" +
       errorTexto(error)
     );
+    const diagnostico =
+      document.getElementById("diagnostico");
+    diagnostico.style.display="block";
+    diagnostico.textContent =
+      errorTexto(error);
   }
 }
 /* =====================================================
-   ESCUCHAR DATOS
+   ESCUCHAR PRODUCTOS Y VENTAS
    ===================================================== */
 function escucharDatos(){
   onSnapshot(
     collection(db,"productos"),
-    snapshot => {
+    function(snapshot){
       productos = [];
-      snapshot.forEach(d => {
+      snapshot.forEach(function(d){
         productos.push({
           id:d.id,
           ...d.data()
@@ -578,34 +584,33 @@ function escucharDatos(){
       actualizarInicio();
       mostrarInventario();
     },
-    error => {
+    function(error){
       mostrarError(
-        "Error leyendo productos:\n\n" +
+        "ERROR LEYENDO PRODUCTOS.\n\n" +
         errorTexto(error)
       );
     }
   );
   onSnapshot(
     collection(db,"ventas"),
-    snapshot => {
+    function(snapshot){
       ventas = [];
-      snapshot.forEach(d => {
+      snapshot.forEach(function(d){
         ventas.push({
           id:d.id,
           ...d.data()
         });
       });
-      ventas.sort(
-        (a,b) =>
-        new Date(b.fecha) -
-        new Date(a.fecha)
-      );
+      ventas.sort(function(a,b){
+        return new Date(b.fecha) -
+               new Date(a.fecha);
+      });
       actualizarInicio();
       mostrarVentas();
     },
-    error => {
+    function(error){
       mostrarError(
-        "Error leyendo ventas:\n\n" +
+        "ERROR LEYENDO VENTAS.\n\n" +
         errorTexto(error)
       );
     }
@@ -617,9 +622,9 @@ function escucharDatos(){
 window.ir = function(nombre){
   document
     .querySelectorAll(".seccion")
-    .forEach(x =>
-      x.classList.remove("activa")
-    );
+    .forEach(function(x){
+      x.classList.remove("activa");
+    });
   const seccion =
     document.getElementById(nombre);
   if(seccion){
@@ -627,9 +632,9 @@ window.ir = function(nombre){
   }
   document
     .querySelectorAll("nav button")
-    .forEach(x =>
-      x.classList.remove("activo")
-    );
+    .forEach(function(x){
+      x.classList.remove("activo");
+    });
   const mapa = {
     inicio:"nInicio",
     escaner:"nEscaner",
@@ -650,91 +655,84 @@ window.ir = function(nombre){
 window.guardarProducto = async function(){
   const mensaje =
     document.getElementById("mensajeGuardar");
-  const boton =
-    document.getElementById("guardarBtn");
   mensaje.innerHTML = "";
-  try{
-    if(!db){
-      throw new Error(
-        "Firebase todavía no está conectado."
-      );
-    }
-    if(!auth || !auth.currentUser){
-      throw new Error(
-        "No hay sesión iniciada en Firebase. Recarga la página."
-      );
-    }
-    const nombre =
+  if(!db){
+    mostrarError(
+      "Firebase todavía no está conectado.",
+      "mensajeGuardar"
+    );
+    return;
+  }
+  const nombre =
+    document
+      .getElementById("productoInput")
+      .value
+      .trim();
+  const codigo =
+    document
+      .getElementById("codigoInput")
+      .value
+      .trim();
+  const stock =
+    Number(
       document
-        .getElementById("productoInput")
+        .getElementById("stockInput")
         .value
-        .trim();
-    const codigo =
+    ) || 0;
+  const compra =
+    Number(
       document
-        .getElementById("codigoInput")
+        .getElementById("compraInput")
         .value
-        .trim();
-    const stock =
-      Number(
-        document
-          .getElementById("stockInput")
-          .value
-      ) || 0;
-    const compra =
-      Number(
-        document
-          .getElementById("compraInput")
-          .value
-      ) || 0;
-    const venta =
-      Number(
-        document
-          .getElementById("ventaInput")
-          .value
-      ) || 0;
-    if(!nombre){
-      throw new Error(
-        "Escribe el nombre del producto."
-      );
-    }
-    if(!codigo){
-      throw new Error(
-        "Introduce el código de barras."
-      );
-    }
-    if(stock < 0){
-      throw new Error(
-        "El stock no puede ser negativo."
-      );
-    }
-    if(compra < 0 || venta < 0){
-      throw new Error(
-        "Los precios no pueden ser negativos."
-      );
-    }
-    const repetido =
-      productos.find(
-        p =>
+    ) || 0;
+  const venta =
+    Number(
+      document
+        .getElementById("ventaInput")
+        .value
+    ) || 0;
+  if(!nombre){
+    mostrarError(
+      "Escribe el nombre del producto.",
+      "mensajeGuardar"
+    );
+    return;
+  }
+  if(!codigo){
+    mostrarError(
+      "Introduce el código de barras.",
+      "mensajeGuardar"
+    );
+    return;
+  }
+  const repetido =
+    productos.find(function(p){
+      return (
         String(p.codigo).trim() === codigo &&
         p.id !== indiceEditando
       );
-    if(repetido){
-      throw new Error(
-        "Ya existe un producto con ese código de barras."
-      );
-    }
-    const datos = {
-      producto:nombre,
-      codigo:codigo,
-      stock:stock,
-      precioCompra:compra,
-      precioVenta:venta,
-      beneficio:venta-compra,
-      foto:fotoBase64 || ""
-    };
-    boton.disabled = true;
-    boton.textContent =
-      "⏳ Guardando en Firebase...";
+    });
+  if(repetido){
+    mostrarError(
+      "Ya existe un producto con ese código.",
+      "mensajeGuardar"
+    );
+    return;
+  }
+  const datos = {
+    producto:nombre,
+    codigo:codigo,
+    stock:stock,
+    precioCompra:compra,
+    precioVenta:venta,
+    beneficio:venta-compra,
+    foto:fotoBase64
+  };
+  const boton =
+    document.getElementById("guardarBtn");
+  try{
+    boton.disabled=true;
+    boton.textContent="⏳ Guardando...";
     if(indiceEditando){
       await updateDoc(
         doc(
@@ -746,7 +744,7 @@ window.guardarProducto = async function(){
       );
       mensaje.innerHTML =
         '<div class="ok">' +
-        '✅ Producto actualizado correctamente.' +
+        '✅ Producto actualizado.' +
         '</div>';
     }else{
       await addDoc(
@@ -758,30 +756,21 @@ window.guardarProducto = async function(){
         '✅ Producto añadido correctamente.' +
         '</div>';
     }
-    boton.textContent =
-      "✅ Guardado";
-    setTimeout(() => {
+    setTimeout(function(){
       cancelarEdicion();
       ir("inventario");
-    },800);
+    },700);
   }catch(error){
-    console.error(
-      "Error guardando producto:",
-      error
-    );
     mostrarError(
       "NO SE PUDO GUARDAR EL PRODUCTO.\n\n" +
       errorTexto(error),
       "mensajeGuardar"
     );
   }finally{
-    boton.disabled = false;
+    boton.disabled=false;
     if(!indiceEditando){
       boton.textContent =
         "💾 GUARDAR PRODUCTO";
-    }else{
-      boton.textContent =
-        "💾 GUARDAR CAMBIOS";
     }
   }
 };
@@ -789,79 +778,90 @@ window.guardarProducto = async function(){
    EDITAR
    ===================================================== */
 function iniciarEdicion(p){
-  indiceEditando = p.id;
-  document.getElementById("tituloForm")
-    .textContent = "✏️ Editar producto";
-  document.getElementById("productoInput")
-    .value = p.producto || "";
-  document.getElementById("codigoInput")
-    .value = p.codigo || "";
-  document.getElementById("stockInput")
-    .value = p.stock || 0;
-  document.getElementById("compraInput")
-    .value = p.precioCompra || 0;
-  document.getElementById("ventaInput")
-    .value = p.precioVenta || 0;
-  fotoBase64 = p.foto || "";
+  indiceEditando=p.id;
+  document
+    .getElementById("tituloForm")
+    .textContent="✏️ Editar producto";
+  document
+    .getElementById("productoInput")
+    .value=p.producto || "";
+  document
+    .getElementById("codigoInput")
+    .value=p.codigo || "";
+  document
+    .getElementById("stockInput")
+    .value=p.stock || 0;
+  document
+    .getElementById("compraInput")
+    .value=p.precioCompra || 0;
+  document
+    .getElementById("ventaInput")
+    .value=p.precioVenta || 0;
+  fotoBase64=p.foto || "";
+  const preview =
+    document.getElementById("fotoPreview");
   if(fotoBase64){
-    document.getElementById("fotoPreview")
-      .src = fotoBase64;
-    document.getElementById("fotoPreview")
-      .style.display = "block";
+    preview.src=fotoBase64;
+    preview.style.display="block";
+  }else{
+    preview.style.display="none";
   }
-  document.getElementById("cancelarBtn")
-    .style.display = "block";
-  document.getElementById("guardarBtn")
-    .textContent = "💾 GUARDAR CAMBIOS";
+  document
+    .getElementById("cancelarBtn")
+    .style.display="block";
+  document
+    .getElementById("guardarBtn")
+    .textContent="💾 GUARDAR CAMBIOS";
   ir("agregar");
 }
-window.editarActual = function(){
+window.editarActual=function(){
   if(productoActual){
     iniciarEdicion(productoActual);
   }
 };
-window.cancelarEdicion = function(){
-  indiceEditando = null;
-  fotoBase64 = "";
-  document.getElementById("tituloForm")
-    .textContent = "➕ Añadir producto";
-  document.getElementById("guardarBtn")
-    .textContent = "💾 GUARDAR PRODUCTO";
-  document.getElementById("cancelarBtn")
-    .style.display = "none";
-  document.getElementById("productoInput")
-    .value = "";
-  document.getElementById("codigoInput")
-    .value = "";
-  document.getElementById("stockInput")
-    .value = 0;
-  document.getElementById("compraInput")
-    .value = "";
-  document.getElementById("ventaInput")
-    .value = "";
-  document.getElementById("fotoInput")
-    .value = "";
-  document.getElementById("fotoPreview")
-    .src = "";
-  document.getElementById("fotoPreview")
-    .style.display = "none";
-  document.getElementById("mensajeGuardar")
-    .innerHTML = "";
+window.cancelarEdicion=function(){
+  indiceEditando=null;
+  fotoBase64="";
+  document
+    .getElementById("tituloForm")
+    .textContent="➕ Añadir producto";
+  document
+    .getElementById("guardarBtn")
+    .textContent="💾 GUARDAR PRODUCTO";
+  document
+    .getElementById("cancelarBtn")
+    .style.display="none";
+  document
+    .getElementById("productoInput")
+    .value="";
+  document
+    .getElementById("codigoInput")
+    .value="";
+  document
+    .getElementById("stockInput")
+    .value="0";
+  document
+    .getElementById("compraInput")
+    .value="";
+  document
+    .getElementById("ventaInput")
+    .value="";
+  document
+    .getElementById("fotoInput")
+    .value="";
+  document
+    .getElementById("fotoPreview")
+    .style.display="none";
+  document
+    .getElementById("mensajeGuardar")
+    .innerHTML="";
 };
 /* =====================================================
    ELIMINAR
    ===================================================== */
 async function eliminarProducto(p){
-  if(!db){
-    mostrarError(
-      "Firebase no está conectado."
-    );
-    return;
-  }
   if(!confirm(
-    "¿Quieres eliminar \"" +
-    p.producto +
-    "\"?"
+    "¿Eliminar " + p.producto + "?"
   )){
     return;
   }
@@ -873,9 +873,10 @@ async function eliminarProducto(p){
         p.id
       )
     );
-    productoActual = null;
-    document.getElementById("resultado")
-      .style.display = "none";
+    productoActual=null;
+    document
+      .getElementById("resultado")
+      .style.display="none";
   }catch(error){
     mostrarError(
       "NO SE PUDO ELIMINAR.\n\n" +
@@ -883,7 +884,7 @@ async function eliminarProducto(p){
     );
   }
 }
-window.eliminarActual = function(){
+window.eliminarActual=function(){
   if(productoActual){
     eliminarProducto(productoActual);
   }
@@ -893,46 +894,45 @@ window.eliminarActual = function(){
    ===================================================== */
 function mostrarInventario(){
   const lista =
-    document.getElementById(
-      "listaInventario"
-    );
+    document.getElementById("listaInventario");
   const texto =
     (
-      document.getElementById("buscador")
+      document
+        .getElementById("buscador")
         ?.value || ""
-    )
-    .toLowerCase();
-  const listaFiltrada =
-    productos.filter(p =>
-      String(p.producto || "")
-        .toLowerCase()
-        .includes(texto)
-      ||
-      String(p.codigo || "")
-        .toLowerCase()
-        .includes(texto)
-    );
-  if(!listaFiltrada.length){
+    ).toLowerCase();
+  const filtrados =
+    productos.filter(function(p){
+      return (
+        String(p.producto || "")
+          .toLowerCase()
+          .includes(texto)
+        ||
+        String(p.codigo || "")
+          .toLowerCase()
+          .includes(texto)
+      );
+    });
+  if(!filtrados.length){
     lista.innerHTML =
       '<div class="vacio">' +
       '📦 No hay productos.' +
       '</div>';
     return;
   }
-  lista.innerHTML = "";
-  listaFiltrada.forEach(p => {
+  lista.innerHTML="";
+  filtrados.forEach(function(p){
     const div =
       document.createElement("div");
-    div.className = "producto";
+    div.className="producto";
     const img =
       document.createElement("img");
     if(p.foto){
-      img.src = p.foto;
+      img.src=p.foto;
     }
     const info =
       document.createElement("div");
-    info.className =
-      "producto-info";
+    info.className="producto-info";
     info.innerHTML =
       "<strong>" +
       escapar(p.producto) +
@@ -942,35 +942,31 @@ function mostrarInventario(){
       "</small>";
     const stock =
       document.createElement("div");
-    stock.className = "stock";
+    stock.className="stock";
     stock.textContent =
       p.stock || 0;
-    if(Number(p.stock) <= 2){
-      stock.classList.add(
-        "stock-bajo"
-      );
+    if(Number(p.stock)<=2){
+      stock.classList.add("stock-bajo");
     }
     const editar =
       document.createElement("button");
-    editar.className =
-      "btn naranja";
-    editar.textContent = "✏️";
-    editar.onclick = e => {
+    editar.className="btn naranja";
+    editar.textContent="✏️";
+    editar.onclick=function(e){
       e.stopPropagation();
       iniciarEdicion(p);
     };
     const borrar =
       document.createElement("button");
-    borrar.className =
-      "btn rojo";
-    borrar.textContent = "🗑️";
-    borrar.onclick = e => {
+    borrar.className="btn rojo";
+    borrar.textContent="🗑️";
+    borrar.onclick=function(e){
       e.stopPropagation();
       eliminarProducto(p);
     };
     const botones =
       document.createElement("div");
-    botones.className = "dos";
+    botones.className="dos";
     botones.appendChild(editar);
     botones.appendChild(borrar);
     const derecha =
@@ -980,7 +976,7 @@ function mostrarInventario(){
     div.appendChild(img);
     div.appendChild(info);
     div.appendChild(derecha);
-    div.onclick = () => {
+    div.onclick=function(){
       mostrarProducto(p);
       ir("escaner");
     };
@@ -991,43 +987,626 @@ function mostrarInventario(){
    MOSTRAR PRODUCTO
    ===================================================== */
 function mostrarProducto(p){
-  productoActual = p;
-  document.getElementById("resultado")
-    .style.display = "block";
-  document.getElementById("nombreResultado")
-    .textContent = p.producto || "";
-  document.getElementById("codigoResultado")
-    .textContent =
+  productoActual=p;
+  document
+    .getElementById("resultado")
+    .style.display="block";
+  document
+    .getElementById("nombreResultado")
+    .textContent=p.producto || "";
+  document
+    .getElementById("codigoResultado")
+    .textContent=
       "Código: " + (p.codigo || "");
-  document.getElementById("stockResultado")
-    .textContent =
+  document
+    .getElementById("stockResultado")
+    .textContent=
       "Stock: " + (p.stock || 0);
-  document.getElementById("precioResultado")
-    .textContent =
+  document
+    .getElementById("precioResultado")
+    .textContent=
       "Venta: " +
       euros(p.precioVenta);
-  document.getElementById("beneficioResultado")
-    .textContent =
+  document
+    .getElementById("beneficioResultado")
+    .textContent=
       "Beneficio/unidad: " +
       euros(
-        (Number(p.precioVenta) || 0) -
-        (Number(p.precioCompra) || 0)
+        (Number(p.precioVenta)||0) -
+        (Number(p.precioCompra)||0)
       );
   const foto =
-    document.getElementById(
-      "fotoResultado"
-    );
+    document.getElementById("fotoResultado");
   if(p.foto){
-    foto.src = p.foto;
-    foto.style.display = "block";
+    foto.src=p.foto;
+    foto.style.display="block";
   }else{
-    foto.src = "";
-    foto.style.display = "none";
+    foto.style.display="none";
   }
 }
 /* =====================================================
-   BUSCAR CÓDIGO
+   ESCÁNER
    ===================================================== */
 async function buscarCodigoFirebase(codigo){
-  codigo =
-    String
+  codigo=String(codigo).trim();
+  document
+    .getElementById("mensaje")
+    .textContent=
+      "🔎 Buscando producto...";
+  try{
+    const consulta =
+      query(
+        collection(db,"productos"),
+        where("codigo","==",codigo)
+      );
+    const resultado =
+      await getDocs(consulta);
+    if(resultado.empty){
+      document
+        .getElementById("mensaje")
+        .textContent=
+          "❌ Producto no registrado";
+      const crear =
+        confirm(
+          "El código " +
+          codigo +
+          " no está registrado.\n\n" +
+          "¿Quieres añadirlo ahora?"
+        );
+      if(crear){
+        ir("agregar");
+        document
+          .getElementById("codigoInput")
+          .value=codigo;
+      }
+      return;
+    }
+    const d =
+      resultado.docs[0];
+    const producto = {
+      id:d.id,
+      ...d.data()
+    };
+    mostrarProducto(producto);
+  }catch(error){
+    mostrarError(
+      "NO SE PUDO BUSCAR EL CÓDIGO.\n\n" +
+      errorTexto(error),
+      "mensaje"
+    );
+  }
+}
+window.iniciarEscaner=function(){
+  if(escaneando){
+    return;
+  }
+  if(!db){
+    mostrarError(
+      "Firebase todavía no está conectado.",
+      "mensaje"
+    );
+    return;
+  }
+  scanner =
+    new Html5Qrcode("reader");
+  scanner.start(
+    {
+      facingMode:"environment"
+    },
+    {
+      fps:10,
+      qrbox:{
+        width:280,
+        height:150
+      }
+    },
+    function(codigo){
+      pararEscaner();
+      buscarCodigoFirebase(codigo);
+    },
+    function(){}
+  )
+  .then(function(){
+    escaneando=true;
+    document
+      .getElementById("btnIniciar")
+      .style.display="none";
+    document
+      .getElementById("btnParar")
+      .style.display="block";
+    document
+      .getElementById("mensaje")
+      .textContent=
+        "📷 Apunta al código de barras";
+  })
+  .catch(function(error){
+    mostrarError(
+      "NO SE PUDO ABRIR LA CÁMARA.\n\n" +
+      errorTexto(error),
+      "mensaje"
+    );
+  });
+};
+window.pararEscaner=function(){
+  if(!scanner){
+    return;
+  }
+  scanner.stop()
+    .then(function(){
+      scanner.clear();
+      scanner=null;
+      escaneando=false;
+      document
+        .getElementById("btnIniciar")
+        .style.display="block";
+      document
+        .getElementById("btnParar")
+        .style.display="none";
+    })
+    .catch(function(error){
+      console.error(error);
+      scanner=null;
+      escaneando=false;
+    });
+};
+/* =====================================================
+   STOCK
+   ===================================================== */
+window.entradaStock=function(){
+  if(productoActual){
+    cambiarStock(productoActual,1);
+  }
+};
+window.salidaStock=function(){
+  if(productoActual){
+    cambiarStock(productoActual,-1);
+  }
+};
+async function cambiarStock(p,cantidad){
+  const actual =
+    Number(p.stock)||0;
+  const nuevo =
+    actual + cantidad;
+  if(nuevo<0){
+    alert("❌ No hay suficiente stock.");
+    return;
+  }
+  try{
+    await updateDoc(
+      doc(
+        db,
+        "productos",
+        p.id
+      ),
+      {
+        stock:nuevo
+      }
+    );
+    await addDoc(
+      collection(db,"movimientos"),
+      {
+        fecha:new Date().toISOString(),
+        codigo:p.codigo,
+        producto:p.producto,
+        tipo:
+          cantidad>0
+            ? "Entrada"
+            : "Salida",
+        cantidad:
+          Math.abs(cantidad)
+      }
+    );
+  }catch(error){
+    mostrarError(
+      "NO SE PUDO CAMBIAR EL STOCK.\n\n" +
+      errorTexto(error)
+    );
+  }
+}
+/* =====================================================
+   VENTAS
+   ===================================================== */
+window.venderProducto=async function(){
+  if(!productoActual){
+    return;
+  }
+  const stock =
+    Number(productoActual.stock)||0;
+  if(stock<=0){
+    alert("❌ No hay stock.");
+    return;
+  }
+  let cantidad =
+    prompt(
+      "¿Cuántas unidades quieres vender?",
+      "1"
+    );
+  if(cantidad===null){
+    return;
+  }
+  cantidad=parseInt(cantidad);
+  if(!cantidad || cantidad<1){
+    alert("Cantidad no válida.");
+    return;
+  }
+  if(cantidad>stock){
+    alert(
+      "❌ Stock insuficiente.\n" +
+      "Disponible: " + stock
+    );
+    return;
+  }
+  const precio =
+    Number(productoActual.precioVenta)||0;
+  const compra =
+    Number(productoActual.precioCompra)||0;
+  const total =
+    precio*cantidad;
+  const beneficio =
+    (precio-compra)*cantidad;
+  try{
+    await updateDoc(
+      doc(
+        db,
+        "productos",
+        productoActual.id
+      ),
+      {
+        stock:stock-cantidad
+      }
+    );
+    await addDoc(
+      collection(db,"ventas"),
+      {
+        fecha:new Date().toISOString(),
+        codigo:productoActual.codigo,
+        producto:productoActual.producto,
+        cantidad:cantidad,
+        precioUnitario:precio,
+        total:total,
+        beneficio:beneficio
+      }
+    );
+    await addDoc(
+      collection(db,"movimientos"),
+      {
+        fecha:new Date().toISOString(),
+        codigo:productoActual.codigo,
+        producto:productoActual.producto,
+        tipo:"Venta",
+        cantidad:cantidad
+      }
+    );
+    alert(
+      "🛒 Venta registrada correctamente."
+    );
+  }catch(error){
+    mostrarError(
+      "NO SE PUDO REGISTRAR LA VENTA.\n\n" +
+      errorTexto(error)
+    );
+  }
+};
+/* =====================================================
+   VENTAS
+   ===================================================== */
+function mostrarVentas(){
+  const lista =
+    document.getElementById("listaVentas");
+  const texto =
+    (
+      document
+        .getElementById("buscarVentas")
+        ?.value || ""
+    ).toLowerCase();
+  const filtradas =
+    ventas.filter(function(v){
+      return (
+        String(v.producto||"")
+          .toLowerCase()
+          .includes(texto)
+        ||
+        String(v.codigo||"")
+          .toLowerCase()
+          .includes(texto)
+      );
+    });
+  let ingresos=0;
+  let beneficio=0;
+  let unidades=0;
+  ventas.forEach(function(v){
+    ingresos += Number(v.total)||0;
+    beneficio += Number(v.beneficio)||0;
+    unidades += Number(v.cantidad)||0;
+  });
+  document
+    .getElementById("totalVentas")
+    .textContent=ventas.length;
+  document
+    .getElementById("totalIngresos")
+    .textContent=euros(ingresos);
+  document
+    .getElementById("totalBeneficioVentas")
+    .textContent=euros(beneficio);
+  document
+    .getElementById("totalUnidadesVentas")
+    .textContent=unidades;
+  if(!filtradas.length){
+    lista.innerHTML =
+      '<div class="vacio">' +
+      '🛒 No hay ventas.' +
+      '</div>';
+    return;
+  }
+  lista.innerHTML="";
+  filtradas.forEach(function(v){
+    const div =
+      document.createElement("div");
+    div.className="venta";
+    div.innerHTML =
+      "<b>🛒 " +
+      escapar(v.producto) +
+      "</b><br>" +
+      "📅 " +
+      new Date(v.fecha)
+        .toLocaleString("es-ES") +
+      "<br>" +
+      "📦 Cantidad: " +
+      v.cantidad +
+      "<br>" +
+      "💵 Total: " +
+      euros(v.total) +
+      "<br>" +
+      "<span class='positivo'>" +
+      "📈 Beneficio: " +
+      euros(v.beneficio) +
+      "</span>";
+    lista.appendChild(div);
+  });
+}
+/* =====================================================
+   RESUMEN
+   ===================================================== */
+function actualizarInicio(){
+  let unidades=0;
+  let compra=0;
+  let venta=0;
+  let beneficio=0;
+  let bajo=0;
+  productos.forEach(function(p){
+    const stock =
+      Number(p.stock)||0;
+    const pc =
+      Number(p.precioCompra)||0;
+    const pv =
+      Number(p.precioVenta)||0;
+    unidades += stock;
+    compra += stock*pc;
+    venta += stock*pv;
+    beneficio += stock*(pv-pc);
+    if(stock<=2){
+      bajo++;
+    }
+  });
+  document
+    .getElementById("totalProductos")
+    .textContent=productos.length;
+  document
+    .getElementById("totalUnidades")
+    .textContent=unidades;
+  document
+    .getElementById("valorCompra")
+    .textContent=euros(compra);
+  document
+    .getElementById("valorVenta")
+    .textContent=euros(venta);
+  document
+    .getElementById("beneficioTotal")
+    .textContent=euros(beneficio);
+  document
+    .getElementById("totalBajo")
+    .textContent=bajo;
+  const hoy =
+    new Date()
+      .toLocaleDateString("es-ES");
+  const hoyVentas =
+    ventas.filter(function(v){
+      return new Date(v.fecha)
+        .toLocaleDateString("es-ES")
+        === hoy;
+    });
+  let ingresos=0;
+  let beneficioHoy=0;
+  let unidadesHoy=0;
+  hoyVentas.forEach(function(v){
+    ingresos += Number(v.total)||0;
+    beneficioHoy +=
+      Number(v.beneficio)||0;
+    unidadesHoy +=
+      Number(v.cantidad)||0;
+  });
+  document
+    .getElementById("ventasHoy")
+    .textContent=hoyVentas.length;
+  document
+    .getElementById("ingresosHoy")
+    .textContent=euros(ingresos);
+  document
+    .getElementById("beneficioHoy")
+    .textContent=euros(beneficioHoy);
+  document
+    .getElementById("unidadesVendidasHoy")
+    .textContent=unidadesHoy;
+  const lista =
+    document.getElementById("listaBajo");
+  const bajos =
+    productos.filter(function(p){
+      return (Number(p.stock)||0)<=2;
+    });
+  if(!bajos.length){
+    lista.innerHTML =
+      '<div class="vacio">' +
+      '✅ No hay stock bajo.' +
+      '</div>';
+  }else{
+    lista.innerHTML="";
+    bajos.forEach(function(p){
+      const div =
+        document.createElement("div");
+      div.className="alerta";
+      div.innerHTML =
+        "⚠️ <b>" +
+        escapar(p.producto) +
+        "</b> — Stock: " +
+        (p.stock||0);
+      lista.appendChild(div);
+    });
+  }
+}
+/* =====================================================
+   FOTO
+   ===================================================== */
+window.cargarFoto=function(event){
+  const archivo =
+    event.target.files[0];
+  if(!archivo){
+    return;
+  }
+  const lector =
+    new FileReader();
+  lector.onload=function(e){
+    const imagen =
+      new Image();
+    imagen.onload=function(){
+      const max=500;
+      let ancho=imagen.width;
+      let alto=imagen.height;
+      if(ancho>max || alto>max){
+        if(ancho>alto){
+          alto =
+            alto*(max/ancho);
+          ancho=max;
+        }else{
+          ancho =
+            ancho*(max/alto);
+          alto=max;
+        }
+      }
+      const canvas =
+        document.createElement("canvas");
+      canvas.width=ancho;
+      canvas.height=alto;
+      canvas
+        .getContext("2d")
+        .drawImage(
+          imagen,
+          0,
+          0,
+          ancho,
+          alto
+        );
+      fotoBase64 =
+        canvas.toDataURL(
+          "image/jpeg",
+          0.75
+        );
+      const preview =
+        document.getElementById("fotoPreview");
+      preview.src=fotoBase64;
+      preview.style.display="block";
+    };
+    imagen.src=e.target.result;
+  };
+  lector.readAsDataURL(archivo);
+};
+/* =====================================================
+   COPIA
+   ===================================================== */
+window.exportarCopia=function(){
+  try{
+    const copia={
+      fecha:
+        new Date().toISOString(),
+      productos:
+        productos.map(function(p){
+          return {
+            producto:p.producto||"",
+            codigo:p.codigo||"",
+            stock:Number(p.stock)||0,
+            precioCompra:
+              Number(p.precioCompra)||0,
+            precioVenta:
+              Number(p.precioVenta)||0,
+            beneficio:
+              Number(p.beneficio)||0,
+            foto:p.foto||""
+          };
+        }),
+      ventas:
+        ventas.map(function(v){
+          return {
+            fecha:v.fecha||"",
+            codigo:v.codigo||"",
+            producto:v.producto||"",
+            cantidad:
+              Number(v.cantidad)||0,
+            precioUnitario:
+              Number(v.precioUnitario)||0,
+            total:
+              Number(v.total)||0,
+            beneficio:
+              Number(v.beneficio)||0
+          };
+        })
+    };
+    const contenido =
+      JSON.stringify(
+        copia,
+        null,
+        2
+      );
+    const blob =
+      new Blob(
+        [contenido],
+        {
+          type:"application/json"
+        }
+      );
+    const url =
+      URL.createObjectURL(blob);
+    const enlace =
+      document.createElement("a");
+    enlace.href=url;
+    enlace.download =
+      "copia-inventario-" +
+      new Date()
+        .toISOString()
+        .slice(0,10) +
+      ".json";
+    document
+      .body
+      .appendChild(enlace);
+    enlace.click();
+    enlace.remove();
+    URL.revokeObjectURL(url);
+    document
+      .getElementById("mensajeCopia")
+      .innerHTML =
+        '<div class="ok">' +
+        '✅ Copia descargada correctamente.' +
+        '</div>';
+  }catch(error){
+    mostrarError(
+      "NO SE PUDO CREAR LA COPIA.\n\n" +
+      errorTexto(error),
+      "mensajeCopia"
+    );
+  }
+};
+/* =====================================================
+   ARRANCAR
+   ===================================================== */
+conectar();
+</script>
+</body>
+</html>
