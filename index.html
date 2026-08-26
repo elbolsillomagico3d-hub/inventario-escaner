@@ -271,67 +271,62 @@ button{
   color:#168344;
   font-weight:bold;
 }
-.cargando{
-  text-align:center;
-  padding:15px;
-  color:#777;
-}
 </style>
 </head>
 <body>
 <header>
-  <h1>📦 Mi Inventario</h1>
-  <div id="estadoConexion">⏳ Conectando con Firebase...</div>
+<h1>📦 Mi Inventario</h1>
+<div id="estadoConexion">⏳ Conectando con Firebase...</div>
 </header>
 <nav>
-  <button id="nInicio" class="activo" onclick="ir('inicio')">🏠 Inicio</button>
-  <button id="nEscaner" onclick="ir('escaner')">📷 Escanear</button>
-  <button id="nInventario" onclick="ir('inventario')">📦 Stock</button>
-  <button id="nVentas" onclick="ir('ventas')">🛒 Ventas</button>
-  <button id="nAgregar" onclick="ir('agregar')">➕ Añadir</button>
-  <button id="nCopia" onclick="ir('copia')">💾 Copia</button>
+<button id="nInicio" class="activo" onclick="ir('inicio')">🏠 Inicio</button>
+<button id="nEscaner" onclick="ir('escaner')">📷 Escanear</button>
+<button id="nInventario" onclick="ir('inventario')">📦 Stock</button>
+<button id="nVentas" onclick="ir('ventas')">🛒 Ventas</button>
+<button id="nAgregar" onclick="ir('agregar')">➕ Añadir</button>
+<button id="nCopia" onclick="ir('copia')">💾 Copia</button>
 </nav>
 <section id="inicio" class="seccion activa">
-  <div id="errorFirebaseInicio"></div>
-  <div class="tarjeta">
-    <h2>📊 Resumen</h2>
+<div id="errorFirebaseInicio"></div>
+<div class="tarjeta">
+<h2>📊 Resumen</h2>
 <div class="stats">
-  <div class="stat">Productos<b id="totalProductos">0</b></div>
-  <div class="stat">Unidades<b id="totalUnidades">0</b></div>
-  <div class="stat">Valor compra<b id="valorCompra">0 €</b></div>
-  <div class="stat">Valor venta<b id="valorVenta">0 €</b></div>
-  <div class="stat">Beneficio potencial<b id="beneficioTotal">0 €</b></div>
-  <div class="stat">Stock bajo<b id="totalBajo">0</b></div>
+<div class="stat">Productos<b id="totalProductos">0</b></div>
+<div class="stat">Unidades<b id="totalUnidades">0</b></div>
+<div class="stat">Valor compra<b id="valorCompra">0 €</b></div>
+<div class="stat">Valor venta<b id="valorVenta">0 €</b></div>
+<div class="stat">Beneficio potencial<b id="beneficioTotal">0 €</b></div>
+<div class="stat">Stock bajo<b id="totalBajo">0</b></div>
 </div>
-  </div>
-  <div class="tarjeta">
-    <h3>🛒 Ventas de hoy</h3>
+</div>
+<div class="tarjeta">
+<h3>🛒 Ventas de hoy</h3>
 <div class="stats">
-  <div class="stat">Ventas<b id="ventasHoy">0</b></div>
-  <div class="stat">Ingresos<b id="ingresosHoy">0 €</b></div>
-  <div class="stat">Beneficio<b id="beneficioHoy">0 €</b></div>
-  <div class="stat">Unidades<b id="unidadesVendidasHoy">0</b></div>
+<div class="stat">Ventas<b id="ventasHoy">0</b></div>
+<div class="stat">Ingresos<b id="ingresosHoy">0 €</b></div>
+<div class="stat">Beneficio<b id="beneficioHoy">0 €</b></div>
+<div class="stat">Unidades<b id="unidadesVendidasHoy">0</b></div>
 </div>
-  </div>
-  <div class="tarjeta">
-    <h3>⚠️ Stock bajo</h3>
-    <div id="listaBajo"></div>
-  </div>
+</div>
+<div class="tarjeta">
+<h3>⚠️ Stock bajo</h3>
+<div id="listaBajo"></div>
+</div>
 </section>
 <section id="escaner" class="seccion">
-  <div class="tarjeta">
+<div class="tarjeta">
 <div id="mensaje" class="mensaje">
-  Pulsa iniciar y apunta al código
+Pulsa iniciar y apunta al código
 </div>
 <div id="reader"></div>
 <button id="btnIniciar" class="btn negro" onclick="iniciarEscaner()">
-  📷 INICIAR ESCÁNER
+📷 INICIAR ESCÁNER
 </button>
 <button id="btnParar" class="btn gris" onclick="pararEscaner()" style="display:none">
-  ⏹️ PARAR CÁMARA
+⏹️ PARAR CÁMARA
 </button>
-  </div>
-  <div id="resultado" class="tarjeta" style="display:none">
+</div>
+<div id="resultado" class="tarjeta" style="display:none">
 <img id="fotoResultado" class="foto">
 <div id="nombreResultado" class="nombre"></div>
 <div id="codigoResultado" class="codigo"></div>
@@ -339,127 +334,130 @@ button{
 <div id="precioResultado" class="precio"></div>
 <div id="beneficioResultado" class="precio"></div>
 <div class="dos">
-  <button class="btn verde" onclick="entradaStock()">📦 +1</button>
-  <button class="btn rojo" onclick="salidaStock()">➖ -1</button>
+<button class="btn verde" onclick="entradaStock()">📦 +1</button>
+<button class="btn rojo" onclick="salidaStock()">➖ -1</button>
 </div>
 <button class="btn azul" onclick="venderProducto()">
-  🛒 VENDER
+🛒 VENDER
 </button>
 <div class="dos">
-  <button class="btn naranja" onclick="editarActual()">✏️ Editar</button>
-  <button class="btn rojo" onclick="eliminarActual()">🗑️ Eliminar</button>
+<button class="btn naranja" onclick="editarActual()">✏️ Editar</button>
+<button class="btn rojo" onclick="eliminarActual()">🗑️ Eliminar</button>
 </div>
-  </div>
+</div>
 </section>
 <section id="inventario" class="seccion">
-  <div class="tarjeta">
+<div class="tarjeta">
 <h2>📦 Inventario</h2>
+
 <input
-  id="buscador"
-  type="search"
-  placeholder="🔎 Buscar producto o código..."
-  oninput="mostrarInventario()"
->
+id=“buscador”
+type=“search”
+placeholder=“🔎 Buscar producto o código…”
+oninput=“mostrarInventario()”
+
 <div id="listaInventario"></div>
-  </div>
+</div>
 </section>
 <section id="ventas" class="seccion">
-  <div class="tarjeta">
+<div class="tarjeta">
 <h2>🛒 Historial de ventas</h2>
 <div class="stats">
-  <div class="stat">Ventas<b id="totalVentas">0</b></div>
-  <div class="stat">Ingresos<b id="totalIngresos">0 €</b></div>
-  <div class="stat">Beneficio<b id="totalBeneficioVentas">0 €</b></div>
-  <div class="stat">Unidades<b id="totalUnidadesVentas">0</b></div>
+<div class="stat">Ventas<b id="totalVentas">0</b></div>
+<div class="stat">Ingresos<b id="totalIngresos">0 €</b></div>
+<div class="stat">Beneficio<b id="totalBeneficioVentas">0 €</b></div>
+<div class="stat">Unidades<b id="totalUnidadesVentas">0</b></div>
 </div>
-  </div>
-  <div class="tarjeta">
+</div>
+<div class="tarjeta">
+
 <input
-  id="buscarVentas"
-  type="search"
-  placeholder="🔎 Buscar venta o producto..."
-  oninput="mostrarVentas()"
->
+id=“buscarVentas”
+type=“search”
+placeholder=“🔎 Buscar venta o producto…”
+oninput=“mostrarVentas()”
+
 <div id="listaVentas"></div>
-  </div>
+</div>
 </section>
 <section id="agregar" class="seccion">
-  <div class="tarjeta">
+<div class="tarjeta">
 <h2 id="tituloForm">➕ Añadir producto</h2>
 <div id="mensajeGuardar"></div>
-<label>📸 Foto</label>
+
+📸 Foto
+
+<!-- Importante: sin capture para que iPhone permita cámara o fototeca -->
+
 <input
-  id="fotoInput"
-  type="file"
-  accept="image/*"
-  capture="environment"
-  onchange="cargarFoto(event)"
->
+id=“fotoInput”
+type=“file”
+accept=“image/*”
+onchange=“cargarFoto(event)”
+
 <img id="fotoPreview">
-<label>Producto</label>
-<input id="productoInput" placeholder="Nombre del producto">
-<label>Código de barras</label>
-<input id="codigoInput" placeholder="Ej: 8412345678905">
-<label>Stock</label>
-<input id="stockInput" type="number" min="0" value="0">
-<label>Precio de compra (€)</label>
-<input id="compraInput" type="number" step="0.01" min="0">
-<label>Precio de venta (€)</label>
-<input id="ventaInput" type="number" step="0.01" min="0">
+
+Producto
+Código de barras
+Stock
+Precio de compra (€)
+Precio de venta (€)
 <button id="guardarBtn" class="btn negro" onclick="guardarProducto()">
-  💾 GUARDAR PRODUCTO
+💾 GUARDAR PRODUCTO
 </button>
 <button id="cancelarBtn" class="btn gris" onclick="cancelarEdicion()" style="display:none">
-  ❌ CANCELAR
+❌ CANCELAR
 </button>
-  </div>
+</div>
 </section>
 <section id="copia" class="seccion">
-  <div class="tarjeta">
+<div class="tarjeta">
 <h2>💾 Copia de seguridad</h2>
 <p>
-  Guarda una copia de todos tus productos y ventas
-  en tu móvil.
+Guarda una copia de todos tus productos y ventas en tu móvil.
 </p>
 <button class="btn morado" onclick="exportarCopia()">
-  💾 DESCARGAR COPIA DE SEGURIDAD
+💾 DESCARGAR COPIA DE SEGURIDAD
 </button>
 <div id="mensajeCopia"></div>
-  </div>
+</div>
 </section>
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script type="module">
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import {
-  getFirestore,
-  collection,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  doc,
-  getDocs,
-  query,
-  where,
-  onSnapshot
+getFirestore,
+collection,
+addDoc,
+updateDoc,
+deleteDoc,
+doc,
+getDocs,
+query,
+where,
+onSnapshot
 }
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 import {
-  getAuth,
-  signInAnonymously
+getAuth,
+signInAnonymously
 }
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 /* =====================================================
    CONFIGURACIÓN FIREBASE
-===================================================== */
+   ===================================================== */
 const firebaseConfig = {
-  apiKey: "AIzaSyArKREs5r_6zt5FpiJn9m2Tb-J9XkitzQI",
-  authDomain: "mi-inventario-f03bf.firebaseapp.com",
-  projectId: "mi-inventario-f03bf",
-  storageBucket: "mi-inventario-f03bf.firebasestorage.app",
-  messagingSenderId: "214570994765",
-  appId: "1:214570994765:web:0d31eedd1cfd69e1636004"
+apiKey: "AIzaSyArKREs5r_6zt5FpiJn9m2Tb-J9XkitzQI",
+authDomain: "mi-inventario-f03bf.firebaseapp.com",
+projectId: "mi-inventario-f03bf",
+storageBucket: "mi-inventario-f03bf.firebasestorage.app",
+messagingSenderId: "214570994765",
+appId: "1:214570994765:web:0d31eedd1cfd69e1636004"
 };
+/* =====================================================
+   VARIABLES
+   ===================================================== */
 let app;
 let db;
 let auth;
@@ -471,1003 +469,981 @@ let productoActual=null;
 let indiceEditando=null;
 let fotoBase64="";
 /* =====================================================
-   UTILIDADES
-===================================================== */
+   FUNCIONES GENERALES
+   ===================================================== */
 function escapar(texto){
-  return String(texto ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+return String(texto ?? "")
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
 }
 function euros(numero){
-  return Number(numero||0)
-    .toFixed(2)
-    .replace(".",",")+" €";
+return Number(numero||0)
+.toFixed(2)
+.replace(".",",")+" €";
 }
 function errorTexto(error){
-  let texto="";
-  if(error?.code)
-    texto+=error.code+" — ";
-  texto+=error?.message || String(error);
-  if(texto.includes("permission-denied")){
-    texto+=
-      "\n\nComprueba que las reglas de Firestore permiten "+
-      "acceso a usuarios autenticados.";
-  }
-  if(texto.includes("auth/operation-not-allowed")){
-    texto+=
-      "\n\nActiva Authentication → Anónimo.";
-  }
-  return texto;
+let texto="";
+if(error?.code)
+texto+=error.code+" — ";
+texto+=error?.message || String(error);
+return texto;
 }
 function mostrarError(texto,destino="errorFirebaseInicio"){
-  console.error(texto);
-  const elemento=
-    document.getElementById(destino);
-  if(elemento){
-    elemento.innerHTML=
-      '<div class="error">❌ <b>Error:</b><br>'+
-      escapar(texto)+
-      '</div>';
-  }
+console.error(texto);
+const elemento=document.getElementById(destino);
+if(elemento){
+elemento.innerHTML=
+'<div class="error">❌ <b>Error:</b><br>'+
+escapar(texto)+
+'</div>';
+}
 }
 /* =====================================================
-   FIREBASE
-===================================================== */
+   CONEXIÓN FIREBASE
+   ===================================================== */
 async function conectar(){
-  try{
-    app=initializeApp(firebaseConfig);
-    db=getFirestore(app);
-    auth=getAuth(app);
-    await signInAnonymously(auth);
-    document.getElementById("estadoConexion")
-      .textContent=
-      "☁️ Inventario sincronizado";
-    escucharDatos();
-  }catch(error){
-    document.getElementById("estadoConexion")
-      .textContent=
-      "❌ Error Firebase";
-    mostrarError(
-      errorTexto(error)
-    );
-  }
+try{
+app=initializeApp(firebaseConfig);
+db=getFirestore(app);
+auth=getAuth(app);
+await signInAnonymously(auth);
+document.getElementById("estadoConexion")
+.textContent="☁️ Inventario sincronizado";
+escucharDatos();
+}catch(error){
+document.getElementById("estadoConexion")
+.textContent="❌ Error Firebase";
+mostrarError(
+errorTexto(error)
+);
+}
 }
 /* =====================================================
-   ESCUCHAR PRODUCTOS Y VENTAS
-===================================================== */
+   ESCUCHAR DATOS
+   ===================================================== */
 function escucharDatos(){
-  onSnapshot(
-    collection(db,"productos"),
-    snapshot=>{
-      productos=[];
-      snapshot.forEach(d=>{
-        productos.push({
-          id:d.id,
-          ...d.data()
-        });
-      });
-      actualizarInicio();
-      mostrarInventario();
-    },
-    error=>{
-      mostrarError(
-        "Error leyendo PRODUCTOS:\n\n"+
-        errorTexto(error)
-      );
-    }
-  );
-  onSnapshot(
-    collection(db,"ventas"),
-    snapshot=>{
-      ventas=[];
-      snapshot.forEach(d=>{
-        ventas.push({
-          id:d.id,
-          ...d.data()
-        });
-      });
-      ventas.sort(
-        (a,b)=>
-        new Date(b.fecha)-
-        new Date(a.fecha)
-      );
-      actualizarInicio();
-      mostrarVentas();
-    },
-    error=>{
-      mostrarError(
-        "Error leyendo VENTAS:\n\n"+
-        errorTexto(error)
-      );
-    }
-  );
+onSnapshot(
+collection(db,"productos"),
+snapshot=>{
+productos=[];
+snapshot.forEach(d=>{
+productos.push({
+id:d.id,
+...d.data()
+});
+});
+actualizarInicio();
+mostrarInventario();
+},
+error=>{
+mostrarError(
+"Error leyendo productos:\n\n"+
+errorTexto(error)
+);
+}
+);
+onSnapshot(
+collection(db,"ventas"),
+snapshot=>{
+ventas=[];
+snapshot.forEach(d=>{
+ventas.push({
+id:d.id,
+...d.data()
+});
+});
+ventas.sort(
+(a,b)=>
+new Date(b.fecha)-
+new Date(a.fecha)
+);
+actualizarInicio();
+mostrarVentas();
+},
+error=>{
+mostrarError(
+"Error leyendo ventas:\n\n"+
+errorTexto(error)
+);
+}
+);
 }
 /* =====================================================
    NAVEGACIÓN
-===================================================== */
+   ===================================================== */
 window.ir=function(nombre){
-  document
-    .querySelectorAll(".seccion")
-    .forEach(x=>
-      x.classList.remove("activa")
-    );
-  document
-    .getElementById(nombre)
-    .classList.add("activa");
-  document
-    .querySelectorAll("nav button")
-    .forEach(x=>
-      x.classList.remove("activo")
-    );
-  const mapa={
-    inicio:"nInicio",
-    escaner:"nEscaner",
-    inventario:"nInventario",
-    ventas:"nVentas",
-    agregar:"nAgregar",
-    copia:"nCopia"
-  };
-  if(mapa[nombre])
-    document
-      .getElementById(mapa[nombre])
-      .classList.add("activo");
+document
+.querySelectorAll(".seccion")
+.forEach(x=>
+x.classList.remove("activa")
+);
+document
+.getElementById(nombre)
+.classList.add("activa");
+document
+.querySelectorAll("nav button")
+.forEach(x=>
+x.classList.remove("activo")
+);
+const mapa={
+inicio:"nInicio",
+escaner:"nEscaner",
+inventario:"nInventario",
+ventas:"nVentas",
+agregar:"nAgregar",
+copia:"nCopia"
+};
+if(mapa[nombre])
+document
+.getElementById(mapa[nombre])
+.classList.add("activo");
 };
 /* =====================================================
-   AÑADIR / EDITAR
-===================================================== */
+   GUARDAR PRODUCTO
+   ===================================================== */
 window.guardarProducto=async function(){
-  const mensaje=
-    document.getElementById("mensajeGuardar");
-  mensaje.innerHTML="";
-  if(!db){
-    mostrarError(
-      "Firebase todavía no está conectado.",
-      "mensajeGuardar"
-    );
-    return;
-  }
-  const nombre=
-    document
-      .getElementById("productoInput")
-      .value.trim();
-  const codigo=
-    document
-      .getElementById("codigoInput")
-      .value.trim();
-  const stock=
-    Number(
-      document
-        .getElementById("stockInput")
-        .value
-    )||0;
-  const compra=
-    Number(
-      document
-        .getElementById("compraInput")
-        .value
-    )||0;
-  const venta=
-    Number(
-      document
-        .getElementById("ventaInput")
-        .value
-    )||0;
-  if(!nombre){
-    mostrarError(
-      "Escribe el nombre del producto.",
-      "mensajeGuardar"
-    );
-    return;
-  }
-  if(!codigo){
-    mostrarError(
-      "Introduce el código de barras.",
-      "mensajeGuardar"
-    );
-    return;
-  }
-  const repetido=
-    productos.find(
-      p=>
-      String(p.codigo).trim()===codigo &&
-      p.id!==indiceEditando
-    );
-  if(repetido){
-    mostrarError(
-      "Ya existe un producto con ese código.",
-      "mensajeGuardar"
-    );
-    return;
-  }
-  const datos={
-    producto:nombre,
-    codigo:codigo,
-    stock:stock,
-    precioCompra:compra,
-    precioVenta:venta,
-    beneficio:venta-compra,
-    foto:fotoBase64
-  };
-  try{
-    const boton=
-      document.getElementById("guardarBtn");
-    boton.disabled=true;
-    boton.textContent="⏳ Guardando...";
-    if(indiceEditando){
-      await updateDoc(
-        doc(
-          db,
-          "productos",
-          indiceEditando
-        ),
-        datos
-      );
-      mensaje.innerHTML=
-        '<div class="ok">✅ Producto actualizado.</div>';
-    }else{
-      await addDoc(
-        collection(db,"productos"),
-        datos
-      );
-      mensaje.innerHTML=
-        '<div class="ok">✅ Producto añadido correctamente.</div>';
-    }
-    setTimeout(()=>{
-      cancelarEdicion();
-      ir("inventario");
-    },700);
-  }catch(error){
-    mostrarError(
-      "NO SE PUDO GUARDAR.\n\n"+
-      errorTexto(error),
-      "mensajeGuardar"
-    );
-  }finally{
-    document.getElementById("guardarBtn")
-      .disabled=false;
-  }
+const mensaje=
+document.getElementById("mensajeGuardar");
+mensaje.innerHTML="";
+if(!db){
+mostrarError(
+"Firebase todavía no está conectado.",
+"mensajeGuardar"
+);
+return;
+}
+const nombre=
+document
+.getElementById("productoInput")
+.value.trim();
+const codigo=
+document
+.getElementById("codigoInput")
+.value.trim();
+const stock=
+Number(
+document
+.getElementById("stockInput")
+.value
+)||0;
+const compra=
+Number(
+document
+.getElementById("compraInput")
+.value
+)||0;
+const venta=
+Number(
+document
+.getElementById("ventaInput")
+.value
+)||0;
+if(!nombre){
+mostrarError(
+"Escribe el nombre del producto.",
+"mensajeGuardar"
+);
+return;
+}
+if(!codigo){
+mostrarError(
+"Introduce el código de barras.",
+"mensajeGuardar"
+);
+return;
+}
+const repetido=
+productos.find(
+p=>
+String(p.codigo).trim()===codigo &&
+p.id!==indiceEditando
+);
+if(repetido){
+mostrarError(
+"Ya existe un producto con ese código.",
+"mensajeGuardar"
+);
+return;
+}
+const datos={
+producto:nombre,
+codigo:codigo,
+stock:stock,
+precioCompra:compra,
+precioVenta:venta,
+beneficio:venta-compra,
+foto:fotoBase64
 };
+try{
+const boton=
+document.getElementById("guardarBtn");
+boton.disabled=true;
+boton.textContent="⏳ Guardando...";
+if(indiceEditando){
+await updateDoc(
+doc(
+db,
+"productos",
+indiceEditando
+),
+datos
+);
+mensaje.innerHTML=
+'<div class="ok">✅ Producto actualizado.</div>';
+}else{
+await addDoc(
+collection(db,"productos"),
+datos
+);
+mensaje.innerHTML=
+'<div class="ok">✅ Producto añadido correctamente.</div>';
+}
+setTimeout(()=>{
+cancelarEdicion();
+ir("inventario");
+},700);
+}catch(error){
+mostrarError(
+"NO SE PUDO GUARDAR.\n\n"+
+errorTexto(error),
+"mensajeGuardar"
+);
+}finally{
+document.getElementById("guardarBtn")
+.disabled=false;
+}
+};
+/* =====================================================
+   EDITAR
+   ===================================================== */
 function iniciarEdicion(p){
-  indiceEditando=p.id;
-  document.getElementById("tituloForm")
-    .textContent="✏️ Editar producto";
-  document.getElementById("productoInput")
-    .value=p.producto||"";
-  document.getElementById("codigoInput")
-    .value=p.codigo||"";
-  document.getElementById("stockInput")
-    .value=p.stock||0;
-  document.getElementById("compraInput")
-    .value=p.precioCompra||0;
-  document.getElementById("ventaInput")
-    .value=p.precioVenta||0;
-  fotoBase64=p.foto||"";
-  if(fotoBase64){
-    document.getElementById("fotoPreview")
-      .src=fotoBase64;
-    document.getElementById("fotoPreview")
-      .style.display="block";
-  }
-  document.getElementById("cancelarBtn")
-    .style.display="block";
-  document.getElementById("guardarBtn")
-    .textContent="💾 GUARDAR CAMBIOS";
-  ir("agregar");
+indiceEditando=p.id;
+document.getElementById("tituloForm")
+.textContent="✏️ Editar producto";
+document.getElementById("productoInput")
+.value=p.producto||"";
+document.getElementById("codigoInput")
+.value=p.codigo||"";
+document.getElementById("stockInput")
+.value=p.stock||0;
+document.getElementById("compraInput")
+.value=p.precioCompra||0;
+document.getElementById("ventaInput")
+.value=p.precioVenta||0;
+fotoBase64=p.foto||"";
+if(fotoBase64){
+document.getElementById("fotoPreview")
+.src=fotoBase64;
+document.getElementById("fotoPreview")
+.style.display="block";
+}
+document.getElementById("cancelarBtn")
+.style.display="block";
+document.getElementById("guardarBtn")
+.textContent="💾 GUARDAR CAMBIOS";
+ir("agregar");
 }
 window.editarActual=function(){
-  if(productoActual)
-    iniciarEdicion(productoActual);
+if(productoActual)
+iniciarEdicion(productoActual);
 };
 window.cancelarEdicion=function(){
-  indiceEditando=null;
-  fotoBase64="";
-  document.getElementById("tituloForm")
-    .textContent="➕ Añadir producto";
-  document.getElementById("guardarBtn")
-    .textContent="💾 GUARDAR PRODUCTO";
-  document.getElementById("cancelarBtn")
-    .style.display="none";
-  document.getElementById("productoInput")
-    .value="";
-  document.getElementById("codigoInput")
-    .value="";
-  document.getElementById("stockInput")
-    .value=0;
-  document.getElementById("compraInput")
-    .value="";
-  document.getElementById("ventaInput")
-    .value="";
-  document.getElementById("fotoInput")
-    .value="";
-  document.getElementById("fotoPreview")
-    .style.display="none";
-  document.getElementById("mensajeGuardar")
-    .innerHTML="";
+indiceEditando=null;
+fotoBase64="";
+document.getElementById("tituloForm")
+.textContent="➕ Añadir producto";
+document.getElementById("guardarBtn")
+.textContent="💾 GUARDAR PRODUCTO";
+document.getElementById("cancelarBtn")
+.style.display="none";
+document.getElementById("productoInput")
+.value="";
+document.getElementById("codigoInput")
+.value="";
+document.getElementById("stockInput")
+.value=0;
+document.getElementById("compraInput")
+.value="";
+document.getElementById("ventaInput")
+.value="";
+document.getElementById("fotoInput")
+.value="";
+document.getElementById("fotoPreview")
+.style.display="none";
+document.getElementById("mensajeGuardar")
+.innerHTML="";
 };
 /* =====================================================
    ELIMINAR
-===================================================== */
+   ===================================================== */
 async function eliminarProducto(p){
-  if(!confirm(
-    "¿Eliminar "+p.producto+"?"
-  ))
-    return;
-  try{
-    await deleteDoc(
-      doc(
-        db,
-        "productos",
-        p.id
-      )
-    );
-    productoActual=null;
-    document.getElementById("resultado")
-      .style.display="none";
-  }catch(error){
-    mostrarError(
-      "NO SE PUDO ELIMINAR.\n\n"+
-      errorTexto(error)
-    );
-  }
+if(!confirm(
+"¿Eliminar "+p.producto+"?"
+))
+return;
+try{
+await deleteDoc(
+doc(
+db,
+"productos",
+p.id
+)
+);
+productoActual=null;
+document.getElementById("resultado")
+.style.display="none";
+}catch(error){
+mostrarError(
+"NO SE PUDO ELIMINAR.\n\n"+
+errorTexto(error)
+);
+}
 }
 window.eliminarActual=function(){
-  if(productoActual)
-    eliminarProducto(productoActual);
+if(productoActual)
+eliminarProducto(productoActual);
 };
 /* =====================================================
    INVENTARIO
-===================================================== */
+   ===================================================== */
 function mostrarInventario(){
-  const lista=
-    document.getElementById("listaInventario");
-  const texto=
-    (
-      document.getElementById("buscador")
-        ?.value||""
-    ).toLowerCase();
-  const listaFiltrada=
-    productos.filter(p=>
-      String(p.producto||"")
-        .toLowerCase()
-        .includes(texto)
-      ||
-      String(p.codigo||"")
-        .toLowerCase()
-        .includes(texto)
-    );
-  if(!listaFiltrada.length){
-    lista.innerHTML=
-      '<div class="vacio">📦 No hay productos.</div>';
-    return;
-  }
-  lista.innerHTML="";
-  listaFiltrada.forEach(p=>{
-    const div=
-      document.createElement("div");
-    div.className="producto";
-    const img=
-      document.createElement("img");
-    if(p.foto)
-      img.src=p.foto;
-    const info=
-      document.createElement("div");
-    info.className="producto-info";
-    info.innerHTML=
-      "<strong>"+
-      escapar(p.producto)+
-      "</strong>"+
-      "<small>Código: "+
-      escapar(p.codigo)+
-      "</small>";
-    const stock=
-      document.createElement("div");
-    stock.className="stock";
-    stock.textContent=p.stock||0;
-    if(Number(p.stock)<=2)
-      stock.classList.add("stock-bajo");
-    const editar=
-      document.createElement("button");
-    editar.className="btn naranja";
-    editar.textContent="✏️";
-    editar.onclick=e=>{
-      e.stopPropagation();
-      iniciarEdicion(p);
-    };
-    const borrar=
-      document.createElement("button");
-    borrar.className="btn rojo";
-    borrar.textContent="🗑️";
-    borrar.onclick=e=>{
-      e.stopPropagation();
-      eliminarProducto(p);
-    };
-    const botones=
-      document.createElement("div");
-    botones.className="dos";
-    botones.appendChild(editar);
-    botones.appendChild(borrar);
-    const derecha=
-      document.createElement("div");
-    derecha.appendChild(stock);
-    derecha.appendChild(botones);
-    div.appendChild(img);
-    div.appendChild(info);
-    div.appendChild(derecha);
-    div.onclick=()=>{
-      mostrarProducto(p);
-      ir("escaner");
-    };
-    lista.appendChild(div);
-  });
+const lista=
+document.getElementById("listaInventario");
+const texto=
+(
+document.getElementById("buscador")
+?.value||""
+).toLowerCase();
+const listaFiltrada=
+productos.filter(p=>
+String(p.producto||"")
+.toLowerCase()
+.includes(texto)
+||
+String(p.codigo||"")
+.toLowerCase()
+.includes(texto)
+);
+if(!listaFiltrada.length){
+lista.innerHTML=
+'<div class="vacio">📦 No hay productos.</div>';
+return;
+}
+lista.innerHTML="";
+listaFiltrada.forEach(p=>{
+const div=
+document.createElement("div");
+div.className="producto";
+const img=
+document.createElement("img");
+if(p.foto)
+img.src=p.foto;
+const info=
+document.createElement("div");
+info.className="producto-info";
+info.innerHTML=
+"<strong>"+
+escapar(p.producto)+
+"</strong>"+
+"<small>Código: "+
+escapar(p.codigo)+
+"</small>";
+const stock=
+document.createElement("div");
+stock.className="stock";
+stock.textContent=p.stock||0;
+if(Number(p.stock)<=2)
+stock.classList.add("stock-bajo");
+const editar=
+document.createElement("button");
+editar.className="btn naranja";
+editar.textContent="✏️";
+editar.onclick=e=>{
+e.stopPropagation();
+iniciarEdicion(p);
+};
+const borrar=
+document.createElement("button");
+borrar.className="btn rojo";
+borrar.textContent="🗑️";
+borrar.onclick=e=>{
+e.stopPropagation();
+eliminarProducto(p);
+};
+const botones=
+document.createElement("div");
+botones.className="dos";
+botones.appendChild(editar);
+botones.appendChild(borrar);
+const derecha=
+document.createElement("div");
+derecha.appendChild(stock);
+derecha.appendChild(botones);
+div.appendChild(img);
+div.appendChild(info);
+div.appendChild(derecha);
+div.onclick=()=>{
+mostrarProducto(p);
+ir("escaner");
+};
+lista.appendChild(div);
+});
 }
 /* =====================================================
    MOSTRAR PRODUCTO
-===================================================== */
+   ===================================================== */
 function mostrarProducto(p){
-  productoActual=p;
-  document.getElementById("resultado")
-    .style.display="block";
-  document.getElementById("nombreResultado")
-    .textContent=p.producto;
-  document.getElementById("codigoResultado")
-    .textContent="Código: "+p.codigo;
-  document.getElementById("stockResultado")
-    .textContent="Stock: "+(p.stock||0);
-  document.getElementById("precioResultado")
-    .textContent=
-      "Venta: "+euros(p.precioVenta);
-  document.getElementById("beneficioResultado")
-    .textContent=
-      "Beneficio/unidad: "+
-      euros(
-        (Number(p.precioVenta)||0)-
-        (Number(p.precioCompra)||0)
-      );
-  const foto=
-    document.getElementById("fotoResultado");
-  if(p.foto){
-    foto.src=p.foto;
-    foto.style.display="block";
-  }else{
-    foto.style.display="none";
-  }
+productoActual=p;
+document.getElementById("resultado")
+.style.display="block";
+document.getElementById("nombreResultado")
+.textContent=p.producto;
+document.getElementById("codigoResultado")
+.textContent="Código: "+p.codigo;
+document.getElementById("stockResultado")
+.textContent="Stock: "+(p.stock||0);
+document.getElementById("precioResultado")
+.textContent=
+"Venta: "+euros(p.precioVenta);
+document.getElementById("beneficioResultado")
+.textContent=
+"Beneficio/unidad: "+
+euros(
+(Number(p.precioVenta)||0)-
+(Number(p.precioCompra)||0)
+);
+const foto=
+document.getElementById("fotoResultado");
+if(p.foto){
+foto.src=p.foto;
+foto.style.display="block";
+}else{
+foto.style.display="none";
+}
 }
 /* =====================================================
-   🔎 ESCANEO — BUSCA DIRECTAMENTE EN FIREBASE
-===================================================== */
+   ESCANEAR CÓDIGO
+   ===================================================== */
 async function buscarCodigoFirebase(codigo){
-  codigo=String(codigo).trim();
-  document.getElementById("mensaje")
-    .textContent=
-    "🔎 Buscando en Firebase...";
-  try{
-    const consulta=
-      query(
-        collection(db,"productos"),
-        where("codigo","==",codigo)
-      );
-    const resultado=
-      await getDocs(consulta);
-    if(resultado.empty){
-      document.getElementById("mensaje")
-        .textContent=
-        "❌ Código no registrado: "+codigo;
-      const crear=
-        confirm(
-          "El código "+
-          codigo+
-          " no está registrado.\n\n"+
-          "¿Quieres añadirlo ahora?"
-        );
-      if(crear){
-        ir("agregar");
-        document.getElementById("codigoInput")
-          .value=codigo;
-      }
-      return;
-    }
-    const d=
-      resultado.docs[0];
-    const producto={
-      id:d.id,
-      ...d.data()
-    };
-    mostrarProducto(producto);
-  }catch(error){
-    mostrarError(
-      "NO SE PUDO BUSCAR EL CÓDIGO.\n\n"+
-      errorTexto(error),
-      "mensaje"
-    );
-  }
+codigo=String(codigo).trim();
+document.getElementById("mensaje")
+.textContent=
+"🔎 Buscando producto...";
+try{
+const consulta=
+query(
+collection(db,"productos"),
+where("codigo","==",codigo)
+);
+const resultado=
+await getDocs(consulta);
+if(resultado.empty){
+document.getElementById("mensaje")
+.textContent=
+"❌ Producto no registrado";
+const crear=
+confirm(
+"El código "+
+codigo+
+" no está registrado.\n\n"+
+"¿Quieres añadirlo ahora?"
+);
+if(crear){
+ir("agregar");
+document.getElementById("codigoInput")
+.value=codigo;
 }
-/* =====================================================
-   ESCÁNER
-===================================================== */
+return;
+}
+const d=resultado.docs[0];
+const producto={
+id:d.id,
+...d.data()
+};
+mostrarProducto(producto);
+}catch(error){
+mostrarError(
+"NO SE PUDO BUSCAR EL CÓDIGO.\n\n"+
+errorTexto(error),
+"mensaje"
+);
+}
+}
 window.iniciarEscaner=function(){
-  if(escaneando)
-    return;
-  scanner=
-    new Html5Qrcode("reader");
-  scanner.start(
-    {
-      facingMode:"environment"
-    },
-    {
-      fps:10,
-      qrbox:{
-        width:280,
-        height:150
-      }
-    },
-    codigo=>{
-      pararEscaner();
-      buscarCodigoFirebase(codigo);
-    },
-    ()=>{}
-  )
-  .then(()=>{
-    escaneando=true;
-    document.getElementById("btnIniciar")
-      .style.display="none";
-    document.getElementById("btnParar")
-      .style.display="block";
-    document.getElementById("mensaje")
-      .textContent=
-      "📷 Apunta al código";
-  })
-  .catch(error=>{
-    mostrarError(
-      "NO SE PUDO ABRIR LA CÁMARA.\n\n"+
-      errorTexto(error),
-      "mensaje"
-    );
-  });
+if(escaneando)
+return;
+scanner=
+new Html5Qrcode("reader");
+scanner.start(
+{
+facingMode:"environment"
+},
+{
+fps:10,
+qrbox:{
+width:280,
+height:150
+}
+},
+codigo=>{
+pararEscaner();
+buscarCodigoFirebase(codigo);
+},
+()=>{}
+)
+.then(()=>{
+escaneando=true;
+document.getElementById("btnIniciar")
+.style.display="none";
+document.getElementById("btnParar")
+.style.display="block";
+document.getElementById("mensaje")
+.textContent=
+"📷 Apunta al código de barras";
+})
+.catch(error=>{
+mostrarError(
+"NO SE PUDO ABRIR LA CÁMARA.\n\n"+
+errorTexto(error),
+"mensaje"
+);
+});
 };
 window.pararEscaner=function(){
-  if(!scanner)
-    return;
-  scanner.stop()
-  .then(()=>{
-    scanner.clear();
-    scanner=null;
-    escaneando=false;
-    document.getElementById("btnIniciar")
-      .style.display="block";
-    document.getElementById("btnParar")
-      .style.display="none";
-  })
-  .catch(error=>{
-    console.error(error);
-    scanner=null;
-    escaneando=false;
-  });
+if(!scanner)
+return;
+scanner.stop()
+.then(()=>{
+scanner.clear();
+scanner=null;
+escaneando=false;
+document.getElementById("btnIniciar")
+.style.display="block";
+document.getElementById("btnParar")
+.style.display="none";
+})
+.catch(error=>{
+console.error(error);
+scanner=null;
+escaneando=false;
+});
 };
 /* =====================================================
    STOCK
-===================================================== */
+   ===================================================== */
 window.entradaStock=function(){
-  if(productoActual)
-    cambiarStock(productoActual,1);
+if(productoActual)
+cambiarStock(productoActual,1);
 };
 window.salidaStock=function(){
-  if(productoActual)
-    cambiarStock(productoActual,-1);
+if(productoActual)
+cambiarStock(productoActual,-1);
 };
 async function cambiarStock(p,cantidad){
-  const actual=
-    Number(p.stock)||0;
-  const nuevo=
-    actual+cantidad;
-  if(nuevo<0){
-    alert(
-      "❌ No hay suficiente stock."
-    );
-    return;
-  }
-  try{
-    await updateDoc(
-      doc(
-        db,
-        "productos",
-        p.id
-      ),
-      {
-        stock:nuevo
-      }
-    );
-    await addDoc(
-      collection(
-        db,
-        "movimientos"
-      ),
-      {
-        fecha:new Date().toISOString(),
-        codigo:p.codigo,
-        producto:p.producto,
-        tipo:
-          cantidad>0
-          ?"Entrada"
-          :"Salida",
-        cantidad:Math.abs(cantidad)
-      }
-    );
-  }catch(error){
-    mostrarError(
-      "NO SE PUDO CAMBIAR EL STOCK.\n\n"+
-      errorTexto(error)
-    );
-  }
+const actual=
+Number(p.stock)||0;
+const nuevo=
+actual+cantidad;
+if(nuevo<0){
+alert("❌ No hay suficiente stock.");
+return;
 }
-/* =====================================================
-   VENTA
-===================================================== */
-window.venderProducto=async function(){
-  if(!productoActual)
-    return;
-  const stock=
-    Number(productoActual.stock)||0;
-  if(stock<=0){
-    alert(
-      "❌ No hay stock."
-    );
-    return;
-  }
-  let cantidad=
-    prompt(
-      "¿Cuántas unidades quieres vender?",
-      "1"
-    );
-  if(cantidad===null)
-    return;
-  cantidad=parseInt(cantidad);
-  if(!cantidad || cantidad<1){
-    alert(
-      "Cantidad no válida."
-    );
-    return;
-  }
-  if(cantidad>stock){
-    alert(
-      "❌ Stock insuficiente.\n"+
-      "Disponible: "+stock
-    );
-    return;
-  }
-  const precio=
-    Number(productoActual.precioVenta)||0;
-  const compra=
-    Number(productoActual.precioCompra)||0;
-  const total=
-    precio*cantidad;
-  const beneficio=
-    (precio-compra)*cantidad;
-  try{
-    await updateDoc(
-      doc(
-        db,
-        "productos",
-        productoActual.id
-      ),
-      {
-        stock:stock-cantidad
-      }
-    );
-    await addDoc(
-      collection(db,"ventas"),
-      {
-        fecha:new Date().toISOString(),
-        codigo:productoActual.codigo,
-        producto:productoActual.producto,
-        cantidad:cantidad,
-        precioUnitario:precio,
-        total:total,
-        beneficio:beneficio
-      }
-    );
-    await addDoc(
-      collection(db,"movimientos"),
-      {
-        fecha:new Date().toISOString(),
-        codigo:productoActual.codigo,
-        producto:productoActual.producto,
-        tipo:"Venta",
-        cantidad:cantidad
-      }
-    );
-    alert(
-      "🛒 Venta registrada correctamente."
-    );
-  }catch(error){
-    mostrarError(
-      "NO SE PUDO REGISTRAR LA VENTA.\n\n"+
-      errorTexto(error)
-    );
-  }
-};
+try{
+await updateDoc(
+doc(
+db,
+"productos",
+p.id
+),
+{
+stock:nuevo
+}
+);
+await addDoc(
+collection(db,"movimientos"),
+{
+fecha:new Date().toISOString(),
+codigo:p.codigo,
+producto:p.producto,
+tipo:
+cantidad>0
+?"Entrada"
+:"Salida",
+cantidad:Math.abs(cantidad)
+}
+);
+}catch(error){
+mostrarError(
+"NO SE PUDO CAMBIAR EL STOCK.\n\n"+
+errorTexto(error)
+);
+}
+}
 /* =====================================================
    VENTAS
-===================================================== */
+   ===================================================== */
+window.venderProducto=async function(){
+if(!productoActual)
+return;
+const stock=
+Number(productoActual.stock)||0;
+if(stock<=0){
+alert("❌ No hay stock.");
+return;
+}
+let cantidad=
+prompt(
+"¿Cuántas unidades quieres vender?",
+"1"
+);
+if(cantidad===null)
+return;
+cantidad=parseInt(cantidad);
+if(!cantidad || cantidad<1){
+alert("Cantidad no válida.");
+return;
+}
+if(cantidad>stock){
+alert(
+"❌ Stock insuficiente.\n"+
+"Disponible: "+stock
+);
+return;
+}
+const precio=
+Number(productoActual.precioVenta)||0;
+const compra=
+Number(productoActual.precioCompra)||0;
+const total=
+precio*cantidad;
+const beneficio=
+(precio-compra)*cantidad;
+try{
+await updateDoc(
+doc(
+db,
+"productos",
+productoActual.id
+),
+{
+stock:stock-cantidad
+}
+);
+await addDoc(
+collection(db,"ventas"),
+{
+fecha:new Date().toISOString(),
+codigo:productoActual.codigo,
+producto:productoActual.producto,
+cantidad:cantidad,
+precioUnitario:precio,
+total:total,
+beneficio:beneficio
+}
+);
+await addDoc(
+collection(db,"movimientos"),
+{
+fecha:new Date().toISOString(),
+codigo:productoActual.codigo,
+producto:productoActual.producto,
+tipo:"Venta",
+cantidad:cantidad
+}
+);
+alert(
+"🛒 Venta registrada correctamente."
+);
+}catch(error){
+mostrarError(
+"NO SE PUDO REGISTRAR LA VENTA.\n\n"+
+errorTexto(error)
+);
+}
+};
+/* =====================================================
+   HISTORIAL VENTAS
+   ===================================================== */
 function mostrarVentas(){
-  const lista=
-    document.getElementById("listaVentas");
-  const texto=
-    (
-      document.getElementById("buscarVentas")
-        ?.value||""
-    ).toLowerCase();
-  const filtradas=
-    ventas.filter(v=>
-      String(v.producto||"")
-        .toLowerCase()
-        .includes(texto)
-      ||
-      String(v.codigo||"")
-        .toLowerCase()
-        .includes(texto)
-    );
-  let ingresos=0;
-  let beneficio=0;
-  let unidades=0;
-  ventas.forEach(v=>{
-    ingresos+=Number(v.total)||0;
-    beneficio+=
-      Number(v.beneficio)||0;
-    unidades+=
-      Number(v.cantidad)||0;
-  });
-  document.getElementById("totalVentas")
-    .textContent=ventas.length;
-  document.getElementById("totalIngresos")
-    .textContent=euros(ingresos);
-  document.getElementById("totalBeneficioVentas")
-    .textContent=euros(beneficio);
-  document.getElementById("totalUnidadesVentas")
-    .textContent=unidades;
-  if(!filtradas.length){
-    lista.innerHTML=
-      '<div class="vacio">🛒 No hay ventas.</div>';
-    return;
-  }
-  lista.innerHTML="";
-  filtradas.forEach(v=>{
-    const div=
-      document.createElement("div");
-    div.className="venta";
-    div.innerHTML=
-      "<b>🛒 "+
-      escapar(v.producto)+
-      "</b><br>"+
-      "📅 "+
-      new Date(v.fecha)
-        .toLocaleString("es-ES")+
-      "<br>"+
-      "📦 Cantidad: "+
-      v.cantidad+
-      "<br>"+
-      "💵 Total: "+
-      euros(v.total)+
-      "<br>"+
-      "<span class='positivo'>"+
-      "📈 Beneficio: "+
-      euros(v.beneficio)+
-      "</span>";
-    lista.appendChild(div);
-  });
+const lista=
+document.getElementById("listaVentas");
+const texto=
+(
+document.getElementById("buscarVentas")
+?.value||""
+).toLowerCase();
+const filtradas=
+ventas.filter(v=>
+String(v.producto||"")
+.toLowerCase()
+.includes(texto)
+||
+String(v.codigo||"")
+.toLowerCase()
+.includes(texto)
+);
+let ingresos=0;
+let beneficio=0;
+let unidades=0;
+ventas.forEach(v=>{
+ingresos+=Number(v.total)||0;
+beneficio+=
+Number(v.beneficio)||0;
+unidades+=
+Number(v.cantidad)||0;
+});
+document.getElementById("totalVentas")
+.textContent=ventas.length;
+document.getElementById("totalIngresos")
+.textContent=euros(ingresos);
+document.getElementById("totalBeneficioVentas")
+.textContent=euros(beneficio);
+document.getElementById("totalUnidadesVentas")
+.textContent=unidades;
+if(!filtradas.length){
+lista.innerHTML=
+'<div class="vacio">🛒 No hay ventas.</div>';
+return;
+}
+lista.innerHTML="";
+filtradas.forEach(v=>{
+const div=
+document.createElement("div");
+div.className="venta";
+div.innerHTML=
+"<b>🛒 "+
+escapar(v.producto)+
+"</b><br>"+
+"📅 "+
+new Date(v.fecha)
+.toLocaleString("es-ES")+
+"<br>"+
+"📦 Cantidad: "+
+v.cantidad+
+"<br>"+
+"💵 Total: "+
+euros(v.total)+
+"<br>"+
+"<span class='positivo'>"+
+"📈 Beneficio: "+
+euros(v.beneficio)+
+"</span>";
+lista.appendChild(div);
+});
 }
 /* =====================================================
-   INICIO
-===================================================== */
+   RESUMEN
+   ===================================================== */
 function actualizarInicio(){
-  let unidades=0;
-  let compra=0;
-  let venta=0;
-  let beneficio=0;
-  let bajo=0;
-  productos.forEach(p=>{
-    const stock=
-      Number(p.stock)||0;
-    const pc=
-      Number(p.precioCompra)||0;
-    const pv=
-      Number(p.precioVenta)||0;
-    unidades+=stock;
-    compra+=stock*pc;
-    venta+=stock*pv;
-    beneficio+=
-      stock*(pv-pc);
-    if(stock<=2)
-      bajo++;
-  });
-  document.getElementById("totalProductos")
-    .textContent=productos.length;
-  document.getElementById("totalUnidades")
-    .textContent=unidades;
-  document.getElementById("valorCompra")
-    .textContent=euros(compra);
-  document.getElementById("valorVenta")
-    .textContent=euros(venta);
-  document.getElementById("beneficioTotal")
-    .textContent=euros(beneficio);
-  document.getElementById("totalBajo")
-    .textContent=bajo;
-  const hoy=
-    new Date()
-      .toLocaleDateString("es-ES");
-  const hoyVentas=
-    ventas.filter(v=>
-      new Date(v.fecha)
-        .toLocaleDateString("es-ES")
-      ===hoy
-    );
-  let ingresos=0;
-  let beneficioHoy=0;
-  let unidadesHoy=0;
-  hoyVentas.forEach(v=>{
-    ingresos+=Number(v.total)||0;
-    beneficioHoy+=
-      Number(v.beneficio)||0;
-    unidadesHoy+=
-      Number(v.cantidad)||0;
-  });
-  document.getElementById("ventasHoy")
-    .textContent=hoyVentas.length;
-  document.getElementById("ingresosHoy")
-    .textContent=euros(ingresos);
-  document.getElementById("beneficioHoy")
-    .textContent=euros(beneficioHoy);
-  document.getElementById("unidadesVendidasHoy")
-    .textContent=unidadesHoy;
-  const lista=
-    document.getElementById("listaBajo");
-  const bajos=
-    productos.filter(
-      p=>(Number(p.stock)||0)<=2
-    );
-  if(!bajos.length){
-    lista.innerHTML=
-      '<div class="vacio">✅ No hay stock bajo.</div>';
-  }else{
-    lista.innerHTML="";
-    bajos.forEach(p=>{
-      const div=
-        document.createElement("div");
-      div.className="alerta";
-      div.innerHTML=
-        "⚠️ <b>"+
-        escapar(p.producto)+
-        "</b> — Stock: "+
-        (p.stock||0);
-      lista.appendChild(div);
-    });
-  }
+let unidades=0;
+let compra=0;
+let venta=0;
+let beneficio=0;
+let bajo=0;
+productos.forEach(p=>{
+const stock=
+Number(p.stock)||0;
+const pc=
+Number(p.precioCompra)||0;
+const pv=
+Number(p.precioVenta)||0;
+unidades+=stock;
+compra+=stock*pc;
+venta+=stock*pv;
+beneficio+=
+stock*(pv-pc);
+if(stock<=2)
+bajo++;
+});
+document.getElementById("totalProductos")
+.textContent=productos.length;
+document.getElementById("totalUnidades")
+.textContent=unidades;
+document.getElementById("valorCompra")
+.textContent=euros(compra);
+document.getElementById("valorVenta")
+.textContent=euros(venta);
+document.getElementById("beneficioTotal")
+.textContent=euros(beneficio);
+document.getElementById("totalBajo")
+.textContent=bajo;
+const hoy=
+new Date()
+.toLocaleDateString("es-ES");
+const hoyVentas=
+ventas.filter(v=>
+new Date(v.fecha)
+.toLocaleDateString("es-ES")
+===hoy
+);
+let ingresos=0;
+let beneficioHoy=0;
+let unidadesHoy=0;
+hoyVentas.forEach(v=>{
+ingresos+=Number(v.total)||0;
+beneficioHoy+=
+Number(v.beneficio)||0;
+unidadesHoy+=
+Number(v.cantidad)||0;
+});
+document.getElementById("ventasHoy")
+.textContent=hoyVentas.length;
+document.getElementById("ingresosHoy")
+.textContent=euros(ingresos);
+document.getElementById("beneficioHoy")
+.textContent=euros(beneficioHoy);
+document.getElementById("unidadesVendidasHoy")
+.textContent=unidadesHoy;
+const lista=
+document.getElementById("listaBajo");
+const bajos=
+productos.filter(
+p=>(Number(p.stock)||0)<=2
+);
+if(!bajos.length){
+lista.innerHTML=
+'<div class="vacio">✅ No hay stock bajo.</div>';
+}else{
+lista.innerHTML="";
+bajos.forEach(p=>{
+const div=
+document.createElement("div");
+div.className="alerta";
+div.innerHTML=
+"⚠️ <b>"+
+escapar(p.producto)+
+"</b> — Stock: "+
+(p.stock||0);
+lista.appendChild(div);
+});
+}
 }
 /* =====================================================
    FOTO
-===================================================== */
+   ===================================================== */
 window.cargarFoto=function(event){
-  const archivo=
-    event.target.files[0];
-  if(!archivo)
-    return;
-  const lector=
-    new FileReader();
-  lector.onload=e=>{
-    const imagen=
-      new Image();
-    imagen.onload=()=>{
-      const max=500;
-      let ancho=imagen.width;
-      let alto=imagen.height;
-      if(ancho>max||alto>max){
-        if(ancho>alto){
-          alto=
-            alto*(max/ancho);
-          ancho=max;
-        }else{
-          ancho=
-            ancho*(max/alto);
-          alto=max;
-        }
-      }
-      const canvas=
-        document.createElement("canvas");
-      canvas.width=ancho;
-      canvas.height=alto;
-      canvas
-        .getContext("2d")
-        .drawImage(
-          imagen,
-          0,
-          0,
-          ancho,
-          alto
-        );
-      fotoBase64=
-        canvas.toDataURL(
-          "image/jpeg",
-          .75
-        );
-      const preview=
-        document.getElementById("fotoPreview");
-      preview.src=fotoBase64;
-      preview.style.display="block";
-    };
-    imagen.src=e.target.result;
-  };
-  lector.readAsDataURL(archivo);
+const archivo=
+event.target.files[0];
+if(!archivo)
+return;
+const lector=
+new FileReader();
+lector.onload=e=>{
+const imagen=
+new Image();
+imagen.onload=()=>{
+const max=500;
+let ancho=imagen.width;
+let alto=imagen.height;
+if(ancho>max||alto>max){
+if(ancho>alto){
+alto=
+alto*(max/ancho);
+ancho=max;
+}else{
+ancho=
+ancho*(max/alto);
+alto=max;
+}
+}
+const canvas=
+document.createElement("canvas");
+canvas.width=ancho;
+canvas.height=alto;
+canvas
+.getContext("2d")
+.drawImage(
+imagen,
+0,
+0,
+ancho,
+alto
+);
+fotoBase64=
+canvas.toDataURL(
+"image/jpeg",
+.75
+);
+const preview=
+document.getElementById("fotoPreview");
+preview.src=fotoBase64;
+preview.style.display="block";
+};
+imagen.src=e.target.result;
+};
+lector.readAsDataURL(archivo);
 };
 /* =====================================================
-   💾 EXPORTAR COPIA DE SEGURIDAD
-===================================================== */
+   COPIA DE SEGURIDAD
+   ===================================================== */
 window.exportarCopia=function(){
-  try{
-    const copia={
-      fecha:new Date().toISOString(),
-      productos:productos.map(p=>({
-        producto:p.producto||"",
-        codigo:p.codigo||"",
-        stock:Number(p.stock)||0,
-        precioCompra:Number(p.precioCompra)||0,
-        precioVenta:Number(p.precioVenta)||0,
-        beneficio:Number(p.beneficio)||0,
-        foto:p.foto||""
-      })),
-      ventas:ventas.map(v=>({
-        fecha:v.fecha||"",
-        codigo:v.codigo||"",
-        producto:v.producto||"",
-        cantidad:Number(v.cantidad)||0,
-        precioUnitario:Number(v.precioUnitario)||0,
-        total:Number(v.total)||0,
-        beneficio:Number(v.beneficio)||0
-      }))
-    };
-    const contenido=
-      JSON.stringify(
-        copia,
-        null,
-        2
-      );
-    const blob=
-      new Blob(
-        [contenido],
-        {
-          type:"application/json"
-        }
-      );
-    const url=
-      URL.createObjectURL(blob);
-    const enlace=
-      document.createElement("a");
-    enlace.href=url;
-    enlace.download=
-      "copia-inventario-"+
-      new Date()
-        .toISOString()
-        .slice(0,10)+
-      ".json";
-    document.body.appendChild(enlace);
-    enlace.click();
-    enlace.remove();
-    URL.revokeObjectURL(url);
-    document.getElementById("mensajeCopia")
-      .innerHTML=
-      '<div class="ok">✅ Copia descargada correctamente.</div>';
-  }catch(error){
-    mostrarError(
-      "NO SE PUDO CREAR LA COPIA.\n\n"+
-      errorTexto(error),
-      "mensajeCopia"
-    );
-  }
+try{
+const copia={
+fecha:new Date().toISOString(),
+productos:productos.map(p=>({
+producto:p.producto||"",
+codigo:p.codigo||"",
+stock:Number(p.stock)||0,
+precioCompra:Number(p.precioCompra)||0,
+precioVenta:Number(p.precioVenta)||0,
+beneficio:Number(p.beneficio)||0,
+foto:p.foto||""
+})),
+ventas:ventas.map(v=>({
+fecha:v.fecha||"",
+codigo:v.codigo||"",
+producto:v.producto||"",
+cantidad:Number(v.cantidad)||0,
+precioUnitario:Number(v.precioUnitario)||0,
+total:Number(v.total)||0,
+beneficio:Number(v.beneficio)||0
+}))
+};
+const contenido=
+JSON.stringify(
+copia,
+null,
+2
+);
+const blob=
+new Blob(
+[contenido],
+{
+type:"application/json"
+}
+);
+const url=
+URL.createObjectURL(blob);
+const enlace=
+document.createElement("a");
+enlace.href=url;
+enlace.download=
+"copia-inventario-"+
+new Date()
+.toISOString()
+.slice(0,10)+
+".json";
+document.body.appendChild(enlace);
+enlace.click();
+enlace.remove();
+URL.revokeObjectURL(url);
+document.getElementById("mensajeCopia")
+.innerHTML=
+'<div class="ok">✅ Copia descargada correctamente.</div>';
+}catch(error){
+mostrarError(
+"NO SE PUDO CREAR LA COPIA.\n\n"+
+errorTexto(error),
+"mensajeCopia"
+);
+}
 };
 /* =====================================================
-   ARRANQUE
-===================================================== */
+   ARRANCAR
+   ===================================================== */
 conectar();
 </script>
 </body>
