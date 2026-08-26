@@ -271,6 +271,11 @@ button{
   color:#168344;
   font-weight:bold;
 }
+.cargando{
+  text-align:center;
+  padding:15px;
+  color:#777;
+}
 </style>
 </head>
 <body>
@@ -383,11 +388,11 @@ button{
 <h2 id="tituloForm">➕ Añadir producto</h2>
 <div id="mensajeGuardar"></div>
 <label>📸 Foto</label>
-<!-- SIN capture: el iPhone permite cámara o fototeca -->
 <input
   id="fotoInput"
   type="file"
   accept="image/*"
+  capture="environment"
   onchange="cargarFoto(event)"
 >
 <img id="fotoPreview">
@@ -444,8 +449,11 @@ import {
   signInAnonymously
 }
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+/* =====================================================
+   CONFIGURACIÓN FIREBASE
+===================================================== */
 const firebaseConfig = {
-  apiKey: "AIzaSyArKRE5s9_6zt5FpiJn9m2Tb-J9XkitzQI",
+  apiKey: "AIzaSyArKREs5r_6zt5FpiJn9m2Tb-J9XkitzQI",
   authDomain: "mi-inventario-f03bf.firebaseapp.com",
   projectId: "mi-inventario-f03bf",
   storageBucket: "mi-inventario-f03bf.firebasestorage.app",
@@ -462,6 +470,9 @@ let escaneando=false;
 let productoActual=null;
 let indiceEditando=null;
 let fotoBase64="";
+/* =====================================================
+   UTILIDADES
+===================================================== */
 function escapar(texto){
   return String(texto ?? "")
     .replaceAll("&","&amp;")
@@ -482,7 +493,8 @@ function errorTexto(error){
   texto+=error?.message || String(error);
   if(texto.includes("permission-denied")){
     texto+=
-      "\n\nComprueba que las reglas de Firestore permiten acceso a usuarios autenticados.";
+      "\n\nComprueba que las reglas de Firestore permiten "+
+      "acceso a usuarios autenticados.";
   }
   if(texto.includes("auth/operation-not-allowed")){
     texto+=
@@ -501,6 +513,9 @@ function mostrarError(texto,destino="errorFirebaseInicio"){
       '</div>';
   }
 }
+/* =====================================================
+   FIREBASE
+===================================================== */
 async function conectar(){
   try{
     app=initializeApp(firebaseConfig);
@@ -515,9 +530,14 @@ async function conectar(){
     document.getElementById("estadoConexion")
       .textContent=
       "❌ Error Firebase";
-    mostrarError(errorTexto(error));
+    mostrarError(
+      errorTexto(error)
+    );
   }
 }
+/* =====================================================
+   ESCUCHAR PRODUCTOS Y VENTAS
+===================================================== */
 function escucharDatos(){
   onSnapshot(
     collection(db,"productos"),
@@ -565,6 +585,9 @@ function escucharDatos(){
     }
   );
 }
+/* =====================================================
+   NAVEGACIÓN
+===================================================== */
 window.ir=function(nombre){
   document
     .querySelectorAll(".seccion")
@@ -592,6 +615,9 @@ window.ir=function(nombre){
       .getElementById(mapa[nombre])
       .classList.add("activo");
 };
+/* =====================================================
+   AÑADIR / EDITAR
+===================================================== */
 window.guardarProducto=async function(){
   const mensaje=
     document.getElementById("mensajeGuardar");
@@ -761,6 +787,9 @@ window.cancelarEdicion=function(){
   document.getElementById("mensajeGuardar")
     .innerHTML="";
 };
+/* =====================================================
+   ELIMINAR
+===================================================== */
 async function eliminarProducto(p){
   if(!confirm(
     "¿Eliminar "+p.producto+"?"
@@ -788,6 +817,9 @@ window.eliminarActual=function(){
   if(productoActual)
     eliminarProducto(productoActual);
 };
+/* =====================================================
+   INVENTARIO
+===================================================== */
 function mostrarInventario(){
   const lista=
     document.getElementById("listaInventario");
@@ -871,6 +903,9 @@ function mostrarInventario(){
     lista.appendChild(div);
   });
 }
+/* =====================================================
+   MOSTRAR PRODUCTO
+===================================================== */
 function mostrarProducto(p){
   productoActual=p;
   document.getElementById("resultado")
@@ -900,7 +935,9 @@ function mostrarProducto(p){
     foto.style.display="none";
   }
 }
-/* BUSCAR DIRECTAMENTE EN FIREBASE */
+/* =====================================================
+   🔎 ESCANEO — BUSCA DIRECTAMENTE EN FIREBASE
+===================================================== */
 async function buscarCodigoFirebase(codigo){
   codigo=String(codigo).trim();
   document.getElementById("mensaje")
@@ -947,6 +984,9 @@ async function buscarCodigoFirebase(codigo){
     );
   }
 }
+/* =====================================================
+   ESCÁNER
+===================================================== */
 window.iniciarEscaner=function(){
   if(escaneando)
     return;
@@ -1006,6 +1046,9 @@ window.pararEscaner=function(){
     escaneando=false;
   });
 };
+/* =====================================================
+   STOCK
+===================================================== */
 window.entradaStock=function(){
   if(productoActual)
     cambiarStock(productoActual,1);
@@ -1059,6 +1102,9 @@ async function cambiarStock(p,cantidad){
     );
   }
 }
+/* =====================================================
+   VENTA
+===================================================== */
 window.venderProducto=async function(){
   if(!productoActual)
     return;
@@ -1142,6 +1188,9 @@ window.venderProducto=async function(){
     );
   }
 };
+/* =====================================================
+   VENTAS
+===================================================== */
 function mostrarVentas(){
   const lista=
     document.getElementById("listaVentas");
@@ -1209,6 +1258,9 @@ function mostrarVentas(){
     lista.appendChild(div);
   });
 }
+/* =====================================================
+   INICIO
+===================================================== */
 function actualizarInicio(){
   let unidades=0;
   let compra=0;
@@ -1293,7 +1345,9 @@ function actualizarInicio(){
     });
   }
 }
-/* FOTO */
+/* =====================================================
+   FOTO
+===================================================== */
 window.cargarFoto=function(event){
   const archivo=
     event.target.files[0];
@@ -1346,7 +1400,9 @@ window.cargarFoto=function(event){
   };
   lector.readAsDataURL(archivo);
 };
-/* COPIA DE SEGURIDAD */
+/* =====================================================
+   💾 EXPORTAR COPIA DE SEGURIDAD
+===================================================== */
 window.exportarCopia=function(){
   try{
     const copia={
@@ -1409,6 +1465,9 @@ window.exportarCopia=function(){
     );
   }
 };
+/* =====================================================
+   ARRANQUE
+===================================================== */
 conectar();
 </script>
 </body>
