@@ -119,6 +119,10 @@ button{
   background:#1976d2;
   color:white;
 }
+.morado{
+  background:#673ab7;
+  color:white;
+}
 #reader{
   width:100%;
   max-width:500px;
@@ -267,6 +271,11 @@ button{
   color:#168344;
   font-weight:bold;
 }
+.cargando{
+  text-align:center;
+  padding:15px;
+  color:#777;
+}
 </style>
 </head>
 <body>
@@ -280,6 +289,7 @@ button{
   <button id="nInventario" onclick="ir('inventario')">📦 Stock</button>
   <button id="nVentas" onclick="ir('ventas')">🛒 Ventas</button>
   <button id="nAgregar" onclick="ir('agregar')">➕ Añadir</button>
+  <button id="nCopia" onclick="ir('copia')">💾 Copia</button>
 </nav>
 <section id="inicio" class="seccion activa">
   <div id="errorFirebaseInicio"></div>
@@ -404,6 +414,19 @@ button{
 </button>
   </div>
 </section>
+<section id="copia" class="seccion">
+  <div class="tarjeta">
+<h2>💾 Copia de seguridad</h2>
+<p>
+  Guarda una copia de todos tus productos y ventas
+  en tu móvil.
+</p>
+<button class="btn morado" onclick="exportarCopia()">
+  💾 DESCARGAR COPIA DE SEGURIDAD
+</button>
+<div id="mensajeCopia"></div>
+  </div>
+</section>
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script type="module">
 import { initializeApp }
@@ -415,6 +438,9 @@ import {
   updateDoc,
   deleteDoc,
   doc,
+  getDocs,
+  query,
+  where,
   onSnapshot
 }
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
@@ -424,7 +450,7 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 /* =====================================================
-   FIREBASE
+   CONFIGURACIÓN FIREBASE
 ===================================================== */
 const firebaseConfig = {
   apiKey: "AIzaSyArKREs5r_6zt5FpiJn9m2Tb-J9XkitzQI",
@@ -437,40 +463,15 @@ const firebaseConfig = {
 let app;
 let db;
 let auth;
+let productos=[];
+let ventas=[];
+let scanner=null;
+let escaneando=false;
+let productoActual=null;
+let indiceEditando=null;
+let fotoBase64="";
 /* =====================================================
-   VARIABLES
-===================================================== */
-let productos = [];
-let ventas = [];
-let scanner = null;
-let escaneando = false;
-let productoActual = null;
-let indiceEditando = null;
-let fotoBase64 = "";
-/* =====================================================
-   MOSTRAR ERROR
-===================================================== */
-function mostrarError(texto, destino="errorFirebaseInicio"){
-  console.error(texto);
-  const elemento =
-    document.getElementById(destino);
-  if(!elemento) return;
-  elemento.innerHTML =
-    '<div class="error">❌ <b>Error:</b><br>' +
-    escapar(texto) +
-    '</div>';
-}
-function mostrarOK(texto, destino="mensajeGuardar"){
-  const elemento =
-    document.getElementById(destino);
-  if(!elemento) return;
-  elemento.innerHTML =
-    '<div class="ok">✅ ' +
-    escapar(texto) +
-    '</div>';
-}
-/* =====================================================
-   ESCAPAR TEXTO
+   UTILIDADES
 ===================================================== */
 function escapar(texto){
   return String(texto ?? "")
@@ -480,141 +481,109 @@ function escapar(texto){
     .replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
 }
-/* =====================================================
-   EUROS
-===================================================== */
 function euros(numero){
-  return Number(numero || 0)
+  return Number(numero||0)
     .toFixed(2)
-    .replace(".",",") + " €";
+    .replace(".",",")+" €";
+}
+function errorTexto(error){
+  let texto="";
+  if(error?.code)
+    texto+=error.code+" — ";
+  texto+=error?.message || String(error);
+  if(texto.includes("permission-denied")){
+    texto+=
+      "\n\nComprueba que las reglas de Firestore permiten "+
+      "acceso a usuarios autenticados.";
+  }
+  if(texto.includes("auth/operation-not-allowed")){
+    texto+=
+      "\n\nActiva Authentication → Anónimo.";
+  }
+  return texto;
+}
+function mostrarError(texto,destino="errorFirebaseInicio"){
+  console.error(texto);
+  const elemento=
+    document.getElementById(destino);
+  if(elemento){
+    elemento.innerHTML=
+      '<div class="error">❌ <b>Error:</b><br>'+
+      escapar(texto)+
+      '</div>';
+  }
 }
 /* =====================================================
-   CONECTAR FIREBASE
+   FIREBASE
 ===================================================== */
-async function conectarFirebase(){
+async function conectar(){
   try{
-    document.getElementById("estadoConexion")
-      .textContent =
-      "⏳ Conectando con Firebase...";
-    app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
-    auth = getAuth(app);
-    /*
-      INICIO DE SESIÓN ANÓNIMO
-    */
+    app=initializeApp(firebaseConfig);
+    db=getFirestore(app);
+    auth=getAuth(app);
     await signInAnonymously(auth);
     document.getElementById("estadoConexion")
-      .textContent =
+      .textContent=
       "☁️ Inventario sincronizado";
-    iniciarEscuchas();
+    escucharDatos();
   }catch(error){
-    console.error("ERROR FIREBASE:",error);
     document.getElementById("estadoConexion")
-      .textContent =
-      "❌ Error de Firebase";
+      .textContent=
+      "❌ Error Firebase";
     mostrarError(
-      obtenerMensajeError(error),
-      "errorFirebaseInicio"
+      errorTexto(error)
     );
   }
 }
 /* =====================================================
-   ERROR LEGIBLE
+   ESCUCHAR PRODUCTOS Y VENTAS
 ===================================================== */
-function obtenerMensajeError(error){
-  if(!error)
-    return "Error desconocido.";
-  let mensaje =
-    error.code
-      ? error.code + " — "
-      : "";
-  mensaje +=
-    error.message ||
-    String(error);
-  if(
-    mensaje.includes("permission-denied")
-  ){
-    mensaje +=
-      "\n\nSOLUCIÓN:\n"+
-      "Comprueba las reglas de Firestore y que "+
-      "el acceso anónimo esté activado.";
-  }
-  if(
-    mensaje.includes("auth/operation-not-allowed")
-  ){
-    mensaje +=
-      "\n\nSOLUCIÓN:\n"+
-      "Firebase Authentication → "+
-      "Métodos de acceso → Anónimo → Habilitar.";
-  }
-  return mensaje;
-}
-/* =====================================================
-   ESCUCHAS FIRESTORE
-===================================================== */
-function iniciarEscuchas(){
-  try{
-    onSnapshot(
-      collection(db,"productos"),
-      snapshot=>{
-        productos = [];
-        snapshot.forEach(item=>{
-          productos.push({
-            id:item.id,
-            ...item.data()
-          });
+function escucharDatos(){
+  onSnapshot(
+    collection(db,"productos"),
+    snapshot=>{
+      productos=[];
+      snapshot.forEach(d=>{
+        productos.push({
+          id:d.id,
+          ...d.data()
         });
-        actualizarInicio();
-        mostrarInventario();
-        if(productoActual){
-          const actualizado =
-            productos.find(
-              p=>p.id === productoActual.id
-            );
-          if(actualizado){
-            productoActual =
-              actualizado;
-            mostrarProducto(actualizado);
-          }
-        }
-      },
-      error=>{
-        mostrarError(
-          "No puedo leer la colección 'productos'.\n\n"+
-          obtenerMensajeError(error)
-        );
-      }
-    );
-    onSnapshot(
-      collection(db,"ventas"),
-      snapshot=>{
-        ventas = [];
-        snapshot.forEach(item=>{
-          ventas.push({
-            id:item.id,
-            ...item.data()
-          });
+      });
+      actualizarInicio();
+      mostrarInventario();
+    },
+    error=>{
+      mostrarError(
+        "Error leyendo PRODUCTOS:\n\n"+
+        errorTexto(error)
+      );
+    }
+  );
+  onSnapshot(
+    collection(db,"ventas"),
+    snapshot=>{
+      ventas=[];
+      snapshot.forEach(d=>{
+        ventas.push({
+          id:d.id,
+          ...d.data()
         });
-        ventas.sort(
-          (a,b)=>
-          new Date(b.fecha) -
-          new Date(a.fecha)
-        );
-        actualizarInicio();
-        mostrarVentas();
-      },
-      error=>{
-        mostrarError(
-          "No puedo leer la colección 'ventas'.\n\n"+
-          obtenerMensajeError(error)
-        );
-      }
-    );
-  }catch(error){
-    mostrarError(
-      obtenerMensajeError(error)
-    );
-  }
+      });
+      ventas.sort(
+        (a,b)=>
+        new Date(b.fecha)-
+        new Date(a.fecha)
+      );
+      actualizarInicio();
+      mostrarVentas();
+    },
+    error=>{
+      mostrarError(
+        "Error leyendo VENTAS:\n\n"+
+        errorTexto(error)
+      );
+    }
+  );
 }
 /* =====================================================
    NAVEGACIÓN
@@ -633,32 +602,26 @@ window.ir=function(nombre){
     .forEach(x=>
       x.classList.remove("activo")
     );
-  const botones={
+  const mapa={
     inicio:"nInicio",
     escaner:"nEscaner",
     inventario:"nInventario",
     ventas:"nVentas",
-    agregar:"nAgregar"
+    agregar:"nAgregar",
+    copia:"nCopia"
   };
-  if(botones[nombre]){
+  if(mapa[nombre])
     document
-      .getElementById(botones[nombre])
+      .getElementById(mapa[nombre])
       .classList.add("activo");
-  }
-  if(nombre==="inicio")
-    actualizarInicio();
-  if(nombre==="inventario")
-    mostrarInventario();
-  if(nombre==="ventas")
-    mostrarVentas();
 };
 /* =====================================================
-   GUARDAR PRODUCTO
+   AÑADIR / EDITAR
 ===================================================== */
-window.guardarProducto =
-async function(){
-  document.getElementById("mensajeGuardar")
-    .innerHTML = "";
+window.guardarProducto=async function(){
+  const mensaje=
+    document.getElementById("mensajeGuardar");
+  mensaje.innerHTML="";
   if(!db){
     mostrarError(
       "Firebase todavía no está conectado.",
@@ -666,62 +629,55 @@ async function(){
     );
     return;
   }
-  const nombre =
+  const nombre=
     document
       .getElementById("productoInput")
       .value.trim();
-  const codigo =
+  const codigo=
     document
       .getElementById("codigoInput")
       .value.trim();
-  const stock =
+  const stock=
     Number(
       document
         .getElementById("stockInput")
         .value
-    ) || 0;
-  const compra =
+    )||0;
+  const compra=
     Number(
       document
         .getElementById("compraInput")
         .value
-    ) || 0;
-  const venta =
+    )||0;
+  const venta=
     Number(
       document
         .getElementById("ventaInput")
         .value
-    ) || 0;
+    )||0;
   if(!nombre){
     mostrarError(
-      "Falta escribir el nombre del producto.",
+      "Escribe el nombre del producto.",
       "mensajeGuardar"
     );
     return;
   }
   if(!codigo){
     mostrarError(
-      "Falta introducir el código de barras.",
+      "Introduce el código de barras.",
       "mensajeGuardar"
     );
     return;
   }
-  if(stock < 0){
-    mostrarError(
-      "El stock no puede ser negativo.",
-      "mensajeGuardar"
-    );
-    return;
-  }
-  const repetido =
+  const repetido=
     productos.find(
-      p =>
-      String(p.codigo).trim() === codigo &&
-      p.id !== indiceEditando
+      p=>
+      String(p.codigo).trim()===codigo &&
+      p.id!==indiceEditando
     );
   if(repetido){
     mostrarError(
-      "Ya existe un producto con ese código de barras.",
+      "Ya existe un producto con ese código.",
       "mensajeGuardar"
     );
     return;
@@ -736,10 +692,10 @@ async function(){
     foto:fotoBase64
   };
   try{
-    document.getElementById("guardarBtn")
-      .disabled=true;
-    document.getElementById("guardarBtn")
-      .textContent="⏳ Guardando...";
+    const boton=
+      document.getElementById("guardarBtn");
+    boton.disabled=true;
+    boton.textContent="⏳ Guardando...";
     if(indiceEditando){
       await updateDoc(
         doc(
@@ -749,86 +705,62 @@ async function(){
         ),
         datos
       );
-      mostrarOK(
-        "Producto actualizado correctamente."
-      );
+      mensaje.innerHTML=
+        '<div class="ok">✅ Producto actualizado.</div>';
     }else{
-      const referencia =
-        await addDoc(
-          collection(db,"productos"),
-          datos
-        );
-      console.log(
-        "Producto creado:",
-        referencia.id
+      await addDoc(
+        collection(db,"productos"),
+        datos
       );
-      mostrarOK(
-        "Producto añadido correctamente."
-      );
+      mensaje.innerHTML=
+        '<div class="ok">✅ Producto añadido correctamente.</div>';
     }
     setTimeout(()=>{
       cancelarEdicion();
       ir("inventario");
     },700);
   }catch(error){
-    console.error(
-      "ERROR AL GUARDAR:",
-      error
-    );
     mostrarError(
-      "NO SE PUDO GUARDAR EL PRODUCTO.\n\n"+
-      obtenerMensajeError(error),
+      "NO SE PUDO GUARDAR.\n\n"+
+      errorTexto(error),
       "mensajeGuardar"
     );
   }finally{
     document.getElementById("guardarBtn")
       .disabled=false;
-    document.getElementById("guardarBtn")
-      .textContent =
-      indiceEditando
-      ? "💾 GUARDAR CAMBIOS"
-      : "💾 GUARDAR PRODUCTO";
   }
 };
-/* =====================================================
-   EDITAR
-===================================================== */
 function iniciarEdicion(p){
   indiceEditando=p.id;
   document.getElementById("tituloForm")
     .textContent="✏️ Editar producto";
   document.getElementById("productoInput")
-    .value=p.producto || "";
+    .value=p.producto||"";
   document.getElementById("codigoInput")
-    .value=p.codigo || "";
+    .value=p.codigo||"";
   document.getElementById("stockInput")
-    .value=p.stock || 0;
+    .value=p.stock||0;
   document.getElementById("compraInput")
-    .value=p.precioCompra || 0;
+    .value=p.precioCompra||0;
   document.getElementById("ventaInput")
-    .value=p.precioVenta || 0;
-  fotoBase64=p.foto || "";
-  const preview =
-    document.getElementById("fotoPreview");
+    .value=p.precioVenta||0;
+  fotoBase64=p.foto||"";
   if(fotoBase64){
-    preview.src=fotoBase64;
-    preview.style.display="block";
-  }else{
-    preview.style.display="none";
+    document.getElementById("fotoPreview")
+      .src=fotoBase64;
+    document.getElementById("fotoPreview")
+      .style.display="block";
   }
-  document.getElementById("guardarBtn")
-    .textContent="💾 GUARDAR CAMBIOS";
   document.getElementById("cancelarBtn")
     .style.display="block";
+  document.getElementById("guardarBtn")
+    .textContent="💾 GUARDAR CAMBIOS";
   ir("agregar");
 }
 window.editarActual=function(){
   if(productoActual)
     iniciarEdicion(productoActual);
 };
-/* =====================================================
-   CANCELAR EDICIÓN
-===================================================== */
 window.cancelarEdicion=function(){
   indiceEditando=null;
   fotoBase64="";
@@ -860,10 +792,7 @@ window.cancelarEdicion=function(){
 ===================================================== */
 async function eliminarProducto(p){
   if(!confirm(
-    "¿Eliminar este producto?\n\n"+
-    p.producto+
-    "\nStock: "+
-    (p.stock || 0)
+    "¿Eliminar "+p.producto+"?"
   ))
     return;
   try{
@@ -874,16 +803,13 @@ async function eliminarProducto(p){
         p.id
       )
     );
-    alert(
-      "🗑️ Producto eliminado correctamente."
-    );
     productoActual=null;
     document.getElementById("resultado")
       .style.display="none";
   }catch(error){
     mostrarError(
       "NO SE PUDO ELIMINAR.\n\n"+
-      obtenerMensajeError(error)
+      errorTexto(error)
     );
   }
 }
@@ -892,58 +818,57 @@ window.eliminarActual=function(){
     eliminarProducto(productoActual);
 };
 /* =====================================================
-   MOSTRAR INVENTARIO
+   INVENTARIO
 ===================================================== */
 function mostrarInventario(){
-  const lista =
+  const lista=
     document.getElementById("listaInventario");
-  const texto =
+  const texto=
     (
-      document
-        .getElementById("buscador")
-        ?.value || ""
+      document.getElementById("buscador")
+        ?.value||""
     ).toLowerCase();
-  const filtrados =
+  const listaFiltrada=
     productos.filter(p=>
-      String(p.producto || "")
+      String(p.producto||"")
         .toLowerCase()
         .includes(texto)
       ||
-      String(p.codigo || "")
+      String(p.codigo||"")
         .toLowerCase()
         .includes(texto)
     );
-  if(!filtrados.length){
-    lista.innerHTML =
-      '<div class="vacio">📦 No hay productos todavía.</div>';
+  if(!listaFiltrada.length){
+    lista.innerHTML=
+      '<div class="vacio">📦 No hay productos.</div>';
     return;
   }
   lista.innerHTML="";
-  filtrados.forEach(p=>{
-    const div =
+  listaFiltrada.forEach(p=>{
+    const div=
       document.createElement("div");
     div.className="producto";
-    const img =
+    const img=
       document.createElement("img");
     if(p.foto)
       img.src=p.foto;
-    const info =
+    const info=
       document.createElement("div");
     info.className="producto-info";
-    info.innerHTML =
+    info.innerHTML=
       "<strong>"+
       escapar(p.producto)+
       "</strong>"+
       "<small>Código: "+
       escapar(p.codigo)+
       "</small>";
-    const stock =
+    const stock=
       document.createElement("div");
     stock.className="stock";
+    stock.textContent=p.stock||0;
     if(Number(p.stock)<=2)
       stock.classList.add("stock-bajo");
-    stock.textContent=p.stock || 0;
-    const editar =
+    const editar=
       document.createElement("button");
     editar.className="btn naranja";
     editar.textContent="✏️";
@@ -951,7 +876,7 @@ function mostrarInventario(){
       e.stopPropagation();
       iniciarEdicion(p);
     };
-    const borrar =
+    const borrar=
       document.createElement("button");
     borrar.className="btn rojo";
     borrar.textContent="🗑️";
@@ -959,21 +884,19 @@ function mostrarInventario(){
       e.stopPropagation();
       eliminarProducto(p);
     };
-    const botones =
+    const botones=
       document.createElement("div");
     botones.className="dos";
     botones.appendChild(editar);
     botones.appendChild(borrar);
-    const derecha =
+    const derecha=
       document.createElement("div");
     derecha.appendChild(stock);
     derecha.appendChild(botones);
     div.appendChild(img);
     div.appendChild(info);
     div.appendChild(derecha);
-    div.onclick=e=>{
-      if(e.target.tagName==="BUTTON")
-        return;
+    div.onclick=()=>{
       mostrarProducto(p);
       ir("escaner");
     };
@@ -990,22 +913,20 @@ function mostrarProducto(p){
   document.getElementById("nombreResultado")
     .textContent=p.producto;
   document.getElementById("codigoResultado")
-    .textContent=
-    "Código: "+p.codigo;
+    .textContent="Código: "+p.codigo;
   document.getElementById("stockResultado")
-    .textContent=
-    "Stock: "+(p.stock || 0);
+    .textContent="Stock: "+(p.stock||0);
   document.getElementById("precioResultado")
     .textContent=
-    "Venta: "+euros(p.precioVenta);
+      "Venta: "+euros(p.precioVenta);
   document.getElementById("beneficioResultado")
     .textContent=
-    "Beneficio/unidad: "+
-    euros(
-      (Number(p.precioVenta)||0) -
-      (Number(p.precioCompra)||0)
-    );
-  const foto =
+      "Beneficio/unidad: "+
+      euros(
+        (Number(p.precioVenta)||0)-
+        (Number(p.precioCompra)||0)
+      );
+  const foto=
     document.getElementById("fotoResultado");
   if(p.foto){
     foto.src=p.foto;
@@ -1013,12 +934,120 @@ function mostrarProducto(p){
   }else{
     foto.style.display="none";
   }
-  document.getElementById("mensaje")
-    .textContent=
-    "✅ "+p.producto;
 }
 /* =====================================================
-   CAMBIAR STOCK
+   🔎 ESCANEO — BUSCA DIRECTAMENTE EN FIREBASE
+===================================================== */
+async function buscarCodigoFirebase(codigo){
+  codigo=String(codigo).trim();
+  document.getElementById("mensaje")
+    .textContent=
+    "🔎 Buscando en Firebase...";
+  try{
+    const consulta=
+      query(
+        collection(db,"productos"),
+        where("codigo","==",codigo)
+      );
+    const resultado=
+      await getDocs(consulta);
+    if(resultado.empty){
+      document.getElementById("mensaje")
+        .textContent=
+        "❌ Código no registrado: "+codigo;
+      const crear=
+        confirm(
+          "El código "+
+          codigo+
+          " no está registrado.\n\n"+
+          "¿Quieres añadirlo ahora?"
+        );
+      if(crear){
+        ir("agregar");
+        document.getElementById("codigoInput")
+          .value=codigo;
+      }
+      return;
+    }
+    const d=
+      resultado.docs[0];
+    const producto={
+      id:d.id,
+      ...d.data()
+    };
+    mostrarProducto(producto);
+  }catch(error){
+    mostrarError(
+      "NO SE PUDO BUSCAR EL CÓDIGO.\n\n"+
+      errorTexto(error),
+      "mensaje"
+    );
+  }
+}
+/* =====================================================
+   ESCÁNER
+===================================================== */
+window.iniciarEscaner=function(){
+  if(escaneando)
+    return;
+  scanner=
+    new Html5Qrcode("reader");
+  scanner.start(
+    {
+      facingMode:"environment"
+    },
+    {
+      fps:10,
+      qrbox:{
+        width:280,
+        height:150
+      }
+    },
+    codigo=>{
+      pararEscaner();
+      buscarCodigoFirebase(codigo);
+    },
+    ()=>{}
+  )
+  .then(()=>{
+    escaneando=true;
+    document.getElementById("btnIniciar")
+      .style.display="none";
+    document.getElementById("btnParar")
+      .style.display="block";
+    document.getElementById("mensaje")
+      .textContent=
+      "📷 Apunta al código";
+  })
+  .catch(error=>{
+    mostrarError(
+      "NO SE PUDO ABRIR LA CÁMARA.\n\n"+
+      errorTexto(error),
+      "mensaje"
+    );
+  });
+};
+window.pararEscaner=function(){
+  if(!scanner)
+    return;
+  scanner.stop()
+  .then(()=>{
+    scanner.clear();
+    scanner=null;
+    escaneando=false;
+    document.getElementById("btnIniciar")
+      .style.display="block";
+    document.getElementById("btnParar")
+      .style.display="none";
+  })
+  .catch(error=>{
+    console.error(error);
+    scanner=null;
+    escaneando=false;
+  });
+};
+/* =====================================================
+   STOCK
 ===================================================== */
 window.entradaStock=function(){
   if(productoActual)
@@ -1029,13 +1058,13 @@ window.salidaStock=function(){
     cambiarStock(productoActual,-1);
 };
 async function cambiarStock(p,cantidad){
-  const stock =
+  const actual=
     Number(p.stock)||0;
-  const nuevo =
-    stock+cantidad;
+  const nuevo=
+    actual+cantidad;
   if(nuevo<0){
     alert(
-      "❌ No puedes tener stock negativo."
+      "❌ No hay suficiente stock."
     );
     return;
   }
@@ -1061,33 +1090,33 @@ async function cambiarStock(p,cantidad){
         producto:p.producto,
         tipo:
           cantidad>0
-          ? "Entrada"
-          : "Salida",
+          ?"Entrada"
+          :"Salida",
         cantidad:Math.abs(cantidad)
       }
     );
   }catch(error){
     mostrarError(
       "NO SE PUDO CAMBIAR EL STOCK.\n\n"+
-      obtenerMensajeError(error)
+      errorTexto(error)
     );
   }
 }
 /* =====================================================
-   VENDER
+   VENTA
 ===================================================== */
 window.venderProducto=async function(){
   if(!productoActual)
     return;
-  const stock =
+  const stock=
     Number(productoActual.stock)||0;
   if(stock<=0){
     alert(
-      "❌ No hay stock disponible."
+      "❌ No hay stock."
     );
     return;
   }
-  let cantidad =
+  let cantidad=
     prompt(
       "¿Cuántas unidades quieres vender?",
       "1"
@@ -1097,24 +1126,24 @@ window.venderProducto=async function(){
   cantidad=parseInt(cantidad);
   if(!cantidad || cantidad<1){
     alert(
-      "Introduce una cantidad válida."
+      "Cantidad no válida."
     );
     return;
   }
   if(cantidad>stock){
     alert(
-      "❌ Stock insuficiente.\n\n"+
+      "❌ Stock insuficiente.\n"+
       "Disponible: "+stock
     );
     return;
   }
-  const precio =
+  const precio=
     Number(productoActual.precioVenta)||0;
-  const compra =
+  const compra=
     Number(productoActual.precioCompra)||0;
-  const total =
+  const total=
     precio*cantidad;
-  const beneficio =
+  const beneficio=
     (precio-compra)*cantidad;
   try{
     await updateDoc(
@@ -1128,10 +1157,7 @@ window.venderProducto=async function(){
       }
     );
     await addDoc(
-      collection(
-        db,
-        "ventas"
-      ),
+      collection(db,"ventas"),
       {
         fecha:new Date().toISOString(),
         codigo:productoActual.codigo,
@@ -1143,10 +1169,7 @@ window.venderProducto=async function(){
       }
     );
     await addDoc(
-      collection(
-        db,
-        "movimientos"
-      ),
+      collection(db,"movimientos"),
       {
         fecha:new Date().toISOString(),
         codigo:productoActual.codigo,
@@ -1156,16 +1179,12 @@ window.venderProducto=async function(){
       }
     );
     alert(
-      "🛒 Venta registrada\n\n"+
-      productoActual.producto+
-      "\nUnidades: "+cantidad+
-      "\nImporte: "+euros(total)+
-      "\nBeneficio: "+euros(beneficio)
+      "🛒 Venta registrada correctamente."
     );
   }catch(error){
     mostrarError(
       "NO SE PUDO REGISTRAR LA VENTA.\n\n"+
-      obtenerMensajeError(error)
+      errorTexto(error)
     );
   }
 };
@@ -1173,21 +1192,20 @@ window.venderProducto=async function(){
    VENTAS
 ===================================================== */
 function mostrarVentas(){
-  const lista =
+  const lista=
     document.getElementById("listaVentas");
-  const texto =
+  const texto=
     (
-      document
-        .getElementById("buscarVentas")
-        ?.value || ""
+      document.getElementById("buscarVentas")
+        ?.value||""
     ).toLowerCase();
-  const filtradas =
+  const filtradas=
     ventas.filter(v=>
-      String(v.producto || "")
+      String(v.producto||"")
         .toLowerCase()
         .includes(texto)
       ||
-      String(v.codigo || "")
+      String(v.codigo||"")
         .toLowerCase()
         .includes(texto)
     );
@@ -1195,11 +1213,10 @@ function mostrarVentas(){
   let beneficio=0;
   let unidades=0;
   ventas.forEach(v=>{
-    ingresos +=
-      Number(v.total)||0;
-    beneficio +=
+    ingresos+=Number(v.total)||0;
+    beneficio+=
       Number(v.beneficio)||0;
-    unidades +=
+    unidades+=
       Number(v.cantidad)||0;
   });
   document.getElementById("totalVentas")
@@ -1211,16 +1228,16 @@ function mostrarVentas(){
   document.getElementById("totalUnidadesVentas")
     .textContent=unidades;
   if(!filtradas.length){
-    lista.innerHTML =
-      '<div class="vacio">🛒 No hay ventas registradas.</div>';
+    lista.innerHTML=
+      '<div class="vacio">🛒 No hay ventas.</div>';
     return;
   }
   lista.innerHTML="";
   filtradas.forEach(v=>{
-    const div =
+    const div=
       document.createElement("div");
     div.className="venta";
-    div.innerHTML =
+    div.innerHTML=
       "<b>🛒 "+
       escapar(v.producto)+
       "</b><br>"+
@@ -1230,9 +1247,6 @@ function mostrarVentas(){
       "<br>"+
       "📦 Cantidad: "+
       v.cantidad+
-      "<br>"+
-      "💰 Precio: "+
-      euros(v.precioUnitario)+
       "<br>"+
       "💵 Total: "+
       euros(v.total)+
@@ -1254,11 +1268,11 @@ function actualizarInicio(){
   let beneficio=0;
   let bajo=0;
   productos.forEach(p=>{
-    const stock =
+    const stock=
       Number(p.stock)||0;
-    const pc =
+    const pc=
       Number(p.precioCompra)||0;
-    const pv =
+    const pv=
       Number(p.precioVenta)||0;
     unidades+=stock;
     compra+=stock*pc;
@@ -1280,55 +1294,53 @@ function actualizarInicio(){
     .textContent=euros(beneficio);
   document.getElementById("totalBajo")
     .textContent=bajo;
-  const hoy =
+  const hoy=
     new Date()
       .toLocaleDateString("es-ES");
-  const ventasHoy =
+  const hoyVentas=
     ventas.filter(v=>
       new Date(v.fecha)
         .toLocaleDateString("es-ES")
-      === hoy
+      ===hoy
     );
   let ingresos=0;
   let beneficioHoy=0;
   let unidadesHoy=0;
-  ventasHoy.forEach(v=>{
-    ingresos +=
-      Number(v.total)||0;
-    beneficioHoy +=
+  hoyVentas.forEach(v=>{
+    ingresos+=Number(v.total)||0;
+    beneficioHoy+=
       Number(v.beneficio)||0;
-    unidadesHoy +=
+    unidadesHoy+=
       Number(v.cantidad)||0;
   });
   document.getElementById("ventasHoy")
-    .textContent=ventasHoy.length;
+    .textContent=hoyVentas.length;
   document.getElementById("ingresosHoy")
     .textContent=euros(ingresos);
   document.getElementById("beneficioHoy")
     .textContent=euros(beneficioHoy);
   document.getElementById("unidadesVendidasHoy")
     .textContent=unidadesHoy;
-  const lista =
+  const lista=
     document.getElementById("listaBajo");
-  const bajos =
+  const bajos=
     productos.filter(
       p=>(Number(p.stock)||0)<=2
     );
   if(!bajos.length){
-    lista.innerHTML =
-      '<div class="vacio">✅ No hay productos con stock bajo</div>';
+    lista.innerHTML=
+      '<div class="vacio">✅ No hay stock bajo.</div>';
   }else{
     lista.innerHTML="";
     bajos.forEach(p=>{
-      const div =
+      const div=
         document.createElement("div");
       div.className="alerta";
       div.innerHTML=
         "⚠️ <b>"+
         escapar(p.producto)+
-        "</b> — Stock: <b>"+
-        (p.stock||0)+
-        "</b>";
+        "</b> — Stock: "+
+        (p.stock||0);
       lista.appendChild(div);
     });
   }
@@ -1337,24 +1349,20 @@ function actualizarInicio(){
    FOTO
 ===================================================== */
 window.cargarFoto=function(event){
-  const archivo =
+  const archivo=
     event.target.files[0];
   if(!archivo)
     return;
-  /*
-    Limitamos la imagen para evitar
-    documentos enormes en Firestore.
-  */
-  const lector =
+  const lector=
     new FileReader();
   lector.onload=e=>{
-    const imagen =
+    const imagen=
       new Image();
     imagen.onload=()=>{
       const max=500;
       let ancho=imagen.width;
       let alto=imagen.height;
-      if(ancho>max || alto>max){
+      if(ancho>max||alto>max){
         if(ancho>alto){
           alto=
             alto*(max/ancho);
@@ -1365,25 +1373,25 @@ window.cargarFoto=function(event){
           alto=max;
         }
       }
-      const canvas =
+      const canvas=
         document.createElement("canvas");
       canvas.width=ancho;
       canvas.height=alto;
-      const ctx =
-        canvas.getContext("2d");
-      ctx.drawImage(
-        imagen,
-        0,
-        0,
-        ancho,
-        alto
-      );
-      fotoBase64 =
+      canvas
+        .getContext("2d")
+        .drawImage(
+          imagen,
+          0,
+          0,
+          ancho,
+          alto
+        );
+      fotoBase64=
         canvas.toDataURL(
           "image/jpeg",
-          0.75
+          .75
         );
-      const preview =
+      const preview=
         document.getElementById("fotoPreview");
       preview.src=fotoBase64;
       preview.style.display="block";
@@ -1393,100 +1401,74 @@ window.cargarFoto=function(event){
   lector.readAsDataURL(archivo);
 };
 /* =====================================================
-   ESCÁNER
+   💾 EXPORTAR COPIA DE SEGURIDAD
 ===================================================== */
-window.iniciarEscaner=function(){
-  if(escaneando)
-    return;
-  scanner =
-    new Html5Qrcode("reader");
-  const config={
-    fps:10,
-    qrbox:{
-      width:280,
-      height:150
-    },
-    aspectRatio:1.7777778
-  };
-  scanner.start(
-    {
-      facingMode:"environment"
-    },
-    config,
-    codigo=>{
-      pararEscaner();
-      buscarProducto(codigo);
-    },
-    ()=>{}
-  )
-  .then(()=>{
-    escaneando=true;
-    document.getElementById("btnIniciar")
-      .style.display="none";
-    document.getElementById("btnParar")
-      .style.display="block";
-    document.getElementById("mensaje")
-      .textContent=
-      "📷 Apunta al código de barras";
-  })
-  .catch(error=>{
-    console.error(error);
-    document.getElementById("mensaje")
-      .textContent=
-      "❌ No se pudo abrir la cámara.";
-  });
-};
-window.pararEscaner=function(){
-  if(!scanner)
-    return;
-  scanner.stop()
-    .then(()=>{
-      scanner.clear();
-      scanner=null;
-      escaneando=false;
-      document.getElementById("btnIniciar")
-        .style.display="block";
-      document.getElementById("btnParar")
-        .style.display="none";
-    })
-    .catch(error=>{
-      console.error(error);
-      scanner=null;
-      escaneando=false;
-    });
-};
-/* =====================================================
-   BUSCAR PRODUCTO
-===================================================== */
-function buscarProducto(codigo){
-  codigo=
-    String(codigo).trim();
-  const producto =
-    productos.find(
-      p=>
-      String(p.codigo).trim()===codigo
+window.exportarCopia=function(){
+  try{
+    const copia={
+      fecha:new Date().toISOString(),
+      productos:productos.map(p=>({
+        producto:p.producto||"",
+        codigo:p.codigo||"",
+        stock:Number(p.stock)||0,
+        precioCompra:Number(p.precioCompra)||0,
+        precioVenta:Number(p.precioVenta)||0,
+        beneficio:Number(p.beneficio)||0,
+        foto:p.foto||""
+      })),
+      ventas:ventas.map(v=>({
+        fecha:v.fecha||"",
+        codigo:v.codigo||"",
+        producto:v.producto||"",
+        cantidad:Number(v.cantidad)||0,
+        precioUnitario:Number(v.precioUnitario)||0,
+        total:Number(v.total)||0,
+        beneficio:Number(v.beneficio)||0
+      }))
+    };
+    const contenido=
+      JSON.stringify(
+        copia,
+        null,
+        2
+      );
+    const blob=
+      new Blob(
+        [contenido],
+        {
+          type:"application/json"
+        }
+      );
+    const url=
+      URL.createObjectURL(blob);
+    const enlace=
+      document.createElement("a");
+    enlace.href=url;
+    enlace.download=
+      "copia-inventario-"+
+      new Date()
+        .toISOString()
+        .slice(0,10)+
+      ".json";
+    document.body.appendChild(enlace);
+    enlace.click();
+    enlace.remove();
+    URL.revokeObjectURL(url);
+    document.getElementById("mensajeCopia")
+      .innerHTML=
+      '<div class="ok">✅ Copia descargada correctamente.</div>';
+  }catch(error){
+    mostrarError(
+      "NO SE PUDO CREAR LA COPIA.\n\n"+
+      errorTexto(error),
+      "mensajeCopia"
     );
-  if(!producto){
-    document.getElementById("mensaje")
-      .textContent=
-      "❌ Código no registrado: "+codigo;
-    if(confirm(
-      "El código "+codigo+
-      " no está registrado.\n\n"+
-      "¿Quieres añadirlo?"
-    )){
-      ir("agregar");
-      document.getElementById("codigoInput")
-        .value=codigo;
-    }
-    return;
   }
-  mostrarProducto(producto);
-}
+};
 /* =====================================================
    ARRANQUE
 ===================================================== */
-conectarFirebase();
+conectar();
 </script>
 </body>
 </html>
