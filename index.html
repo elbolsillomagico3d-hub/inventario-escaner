@@ -4,34 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Mi Inventario</title>
-
 <style>
 *{box-sizing:border-box}
-
 body{
   margin:0;
   font-family:Arial,sans-serif;
   background:#f4f4f4;
   color:#222;
 }
-
 header{
   background:#111;
   color:white;
   padding:18px;
   text-align:center;
 }
-
 header h1{
   margin:0;
   font-size:24px;
 }
-
 #estadoConexion{
   margin-top:7px;
   font-size:13px;
 }
-
 nav{
   display:flex;
   gap:5px;
@@ -43,7 +37,6 @@ nav{
   box-shadow:0 2px 8px #0002;
   overflow-x:auto;
 }
-
 nav button{
   flex:1;
   min-width:75px;
@@ -54,23 +47,19 @@ nav button{
   font-weight:bold;
   background:#eee;
 }
-
 nav button.activo{
   background:#111;
   color:white;
 }
-
 .seccion{
   display:none;
   padding:12px;
   max-width:650px;
   margin:auto;
 }
-
 .seccion.activa{
   display:block;
 }
-
 .tarjeta{
   background:white;
   border-radius:15px;
@@ -78,11 +67,9 @@ nav button.activo{
   margin-bottom:14px;
   box-shadow:0 2px 9px #0001;
 }
-
 h2,h3{
   margin-top:0;
 }
-
 input{
   width:100%;
   padding:13px;
@@ -91,17 +78,14 @@ input{
   font-size:16px;
   margin:6px 0 12px;
 }
-
 label{
   font-weight:bold;
   display:block;
   margin-top:7px;
 }
-
 button{
   cursor:pointer;
 }
-
 .btn{
   width:100%;
   border:0;
@@ -111,7 +95,6 @@ button{
   font-weight:bold;
   margin-top:7px;
 }
-
 .negro{background:#111;color:white}
 .gris{background:#ddd;color:#222}
 .verde{background:#1c9b55;color:white}
@@ -119,7 +102,6 @@ button{
 .naranja{background:#ed8b00;color:white}
 .azul{background:#1976d2;color:white}
 .morado{background:#673ab7;color:white}
-
 #reader{
   width:100%;
   max-width:500px;
@@ -128,13 +110,11 @@ button{
   overflow:hidden;
   background:white;
 }
-
 .mensaje{
   text-align:center;
   font-weight:bold;
   margin:10px;
 }
-
 .error{
   background:#ffe5e5;
   color:#a40000;
@@ -145,7 +125,6 @@ button{
   font-size:14px;
   word-break:break-word;
 }
-
 .ok{
   background:#e5f8eb;
   color:#176b35;
@@ -154,7 +133,6 @@ button{
   border-radius:11px;
   margin:10px 0;
 }
-
 .producto{
   background:white;
   border-radius:14px;
@@ -165,7 +143,6 @@ button{
   align-items:center;
   box-shadow:0 1px 5px #0001;
 }
-
 .producto img{
   width:65px;
   height:65px;
@@ -173,31 +150,25 @@ button{
   background:#eee;
   border-radius:9px;
 }
-
 .producto-info{
   flex:1;
   min-width:0;
 }
-
 .producto-info strong{
   display:block;
   font-size:17px;
 }
-
 .producto-info small{
   color:#777;
   word-break:break-all;
 }
-
 .stock{
   font-size:20px;
   font-weight:bold;
 }
-
 .stock-bajo{
   color:#d9363e;
 }
-
 .foto{
   display:block;
   width:190px;
@@ -207,59 +178,49 @@ button{
   border-radius:12px;
   background:#eee;
 }
-
 .nombre{
   text-align:center;
   font-size:23px;
   font-weight:bold;
 }
-
 .codigo{
   text-align:center;
   color:#777;
   margin:5px;
 }
-
 .stock-grande{
   text-align:center;
   font-size:38px;
   font-weight:bold;
   margin:10px;
 }
-
 .precio{
   text-align:center;
   font-size:18px;
   margin:5px;
 }
-
 .dos{
   display:flex;
   gap:8px;
 }
-
 .dos>*{
   flex:1;
 }
-
 .stats{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:9px;
 }
-
 .stat{
   background:#f4f4f4;
   border-radius:12px;
   padding:13px;
 }
-
 .stat b{
   display:block;
   font-size:22px;
   margin-top:4px;
 }
-
 .alerta{
   background:#fff0f0;
   border:1px solid #ffbaba;
@@ -267,18 +228,15 @@ button{
   border-radius:11px;
   margin-bottom:8px;
 }
-
 .venta{
   padding:13px 0;
   border-bottom:1px solid #eee;
 }
-
 .vacio{
   text-align:center;
   color:#777;
   padding:25px;
 }
-
 #fotoPreview{
   width:160px;
   height:160px;
@@ -288,17 +246,14 @@ button{
   background:#eee;
   border-radius:10px;
 }
-
 .positivo{
   color:#168344;
   font-weight:bold;
 }
-
 .negativo{
   color:#d9363e;
   font-weight:bold;
 }
-
 #diagnostico{
   display:none;
   margin-top:10px;
@@ -307,14 +262,12 @@ button{
   white-space:pre-wrap;
   word-break:break-word;
 }
-
 .precio-real{
   background:#f4f4f4;
   border-radius:10px;
   padding:10px;
   margin-top:10px;
 }
-
 .btn-eliminar-venta{
   background:#d9363e;
   color:white;
@@ -328,15 +281,12 @@ button{
 }
 </style>
 </head>
-
 <body>
-
 <header>
   <h1>📦 Mi Inventario</h1>
   <div id="estadoConexion">⏳ Conectando con Firebase...</div>
   <div id="diagnostico" class="error"></div>
 </header>
-
 <nav>
   <button id="nInicio" class="activo" onclick="ir('inicio')">🏠 Inicio</button>
   <button id="nEscaner" onclick="ir('escaner')">📷 Escanear</button>
@@ -345,108 +295,69 @@ button{
   <button id="nAgregar" onclick="ir('agregar')">➕ Añadir</button>
   <button id="nCopia" onclick="ir('copia')">💾 Copia</button>
 </nav>
-
-<!-- =====================================================
-     INICIO
-===================================================== -->
-
 <section id="inicio" class="seccion activa">
-
   <div id="errorFirebaseInicio"></div>
-
   <div class="tarjeta">
     <h2>📊 Resumen</h2>
-
     <div class="stats">
-
       <div class="stat">
         Productos
         <b id="totalProductos">0</b>
       </div>
-
       <div class="stat">
         Unidades
         <b id="totalUnidades">0</b>
       </div>
-
       <div class="stat">
         Valor compra
         <b id="valorCompra">0 €</b>
       </div>
-
       <div class="stat">
         Valor venta
         <b id="valorVenta">0 €</b>
       </div>
-
       <div class="stat">
         Beneficio potencial
         <b id="beneficioTotal">0 €</b>
       </div>
-
       <div class="stat">
         Stock bajo
         <b id="totalBajo">0</b>
       </div>
-
     </div>
   </div>
-
   <div class="tarjeta">
-
     <h3>🛒 Ventas de hoy</h3>
-
     <div class="stats">
-
       <div class="stat">
         Ventas
         <b id="ventasHoy">0</b>
       </div>
-
       <div class="stat">
         Ingresos
         <b id="ingresosHoy">0 €</b>
       </div>
-
       <div class="stat">
         Beneficio
         <b id="beneficioHoy">0 €</b>
       </div>
-
       <div class="stat">
         Unidades
         <b id="unidadesVendidasHoy">0</b>
       </div>
-
     </div>
-
   </div>
-
   <div class="tarjeta">
-
     <h3>⚠️ Stock bajo</h3>
-
     <div id="listaBajo"></div>
-
   </div>
-
 </section>
-
-
-<!-- =====================================================
-     ESCANER
-===================================================== -->
-
 <section id="escaner" class="seccion">
-
   <div class="tarjeta">
-
     <div id="mensaje" class="mensaje">
       Pulsa iniciar y apunta al código
     </div>
-
     <div id="reader"></div>
-
     <button
       id="btnIniciar"
       class="btn negro"
@@ -454,7 +365,6 @@ button{
     >
       📷 INICIAR ESCÁNER
     </button>
-
     <button
       id="btnParar"
       class="btn gris"
@@ -463,223 +373,112 @@ button{
     >
       ⏹️ PARAR CÁMARA
     </button>
-
   </div>
-
-
-  <div
-    id="resultado"
-    class="tarjeta"
-    style="display:none"
-  >
-
+  <div id="resultado" class="tarjeta" style="display:none">
     <img id="fotoResultado" class="foto">
-
     <div id="nombreResultado" class="nombre"></div>
-
     <div id="codigoResultado" class="codigo"></div>
-
     <div id="stockResultado" class="stock-grande"></div>
-
     <div id="precioResultado" class="precio"></div>
-
     <div id="beneficioResultado" class="precio"></div>
-
-
     <div class="dos">
-
-      <button
-        class="btn verde"
-        onclick="entradaStock()"
-      >
+      <button class="btn verde" onclick="entradaStock()">
         📦 +1
       </button>
-
-      <button
-        class="btn rojo"
-        onclick="salidaStock()"
-      >
+      <button class="btn rojo" onclick="salidaStock()">
         ➖ -1
       </button>
-
     </div>
-
-
-    <button
-      class="btn azul"
-      onclick="venderProducto()"
-    >
+    <button class="btn azul" onclick="venderProducto()">
       🛒 VENDER
     </button>
-
-
     <div class="dos">
-
-      <button
-        class="btn naranja"
-        onclick="editarActual()"
-      >
+      <button class="btn naranja" onclick="editarActual()">
         ✏️ Editar
       </button>
-
-      <button
-        class="btn rojo"
-        onclick="eliminarActual()"
-      >
+      <button class="btn rojo" onclick="eliminarActual()">
         🗑️ Eliminar
       </button>
-
     </div>
-
   </div>
-
 </section>
-
-
-<!-- =====================================================
-     INVENTARIO
-===================================================== -->
-
 <section id="inventario" class="seccion">
-
   <div class="tarjeta">
-
     <h2>📦 Inventario</h2>
-
     <input
       id="buscador"
       type="search"
       placeholder="🔎 Buscar producto o código..."
       oninput="mostrarInventario()"
     >
-
     <div id="listaInventario"></div>
-
   </div>
-
 </section>
-
-
-<!-- =====================================================
-     VENTAS
-===================================================== -->
-
 <section id="ventas" class="seccion">
-
   <div class="tarjeta">
-
     <h2>🛒 Historial de ventas</h2>
-
     <div class="stats">
-
       <div class="stat">
         Ventas
         <b id="totalVentas">0</b>
       </div>
-
       <div class="stat">
         Ingresos
         <b id="totalIngresos">0 €</b>
       </div>
-
       <div class="stat">
         Beneficio
         <b id="totalBeneficioVentas">0 €</b>
       </div>
-
       <div class="stat">
         Unidades
         <b id="totalUnidadesVentas">0</b>
       </div>
-
     </div>
-
   </div>
-
-
   <div class="tarjeta">
-
     <input
       id="buscarVentas"
       type="search"
       placeholder="🔎 Buscar venta o producto..."
       oninput="mostrarVentas()"
     >
-
     <div id="listaVentas"></div>
-
   </div>
-
 </section>
-
-
-<!-- =====================================================
-     AÑADIR
-===================================================== -->
-
 <section id="agregar" class="seccion">
-
   <div class="tarjeta">
-
-    <h2 id="tituloForm">
-      ➕ Añadir producto
-    </h2>
-
+    <h2 id="tituloForm">➕ Añadir producto</h2>
     <div id="mensajeGuardar"></div>
-
-    <label for="fotoInput">
-      📸 Foto
-    </label>
-
+    <label for="fotoInput">📸 Foto</label>
     <input
       id="fotoInput"
       type="file"
       accept="image/*"
       onchange="cargarFoto(event)"
     >
-
     <img id="fotoPreview">
-
-
-    <label for="productoInput">
-      Producto
-    </label>
-
+    <label for="productoInput">Producto</label>
     <input
       id="productoInput"
       type="text"
       placeholder="Nombre del producto"
     >
-
-
-    <label for="codigoInput">
-      Código de barras
-    </label>
-
+    <label for="codigoInput">Código de barras</label>
     <input
       id="codigoInput"
       type="text"
       inputmode="numeric"
       placeholder="Código de barras"
     >
-
-
-    <label for="stockInput">
-      Stock
-    </label>
-
+    <label for="stockInput">Stock</label>
     <input
       id="stockInput"
       type="number"
       min="0"
       value="0"
     >
-
-
-    <label for="compraInput">
-      Precio de compra (€)
-    </label>
-
+    <label for="compraInput">Precio de compra (€)</label>
     <input
       id="compraInput"
       type="number"
@@ -687,12 +486,7 @@ button{
       step="0.01"
       placeholder="0.00"
     >
-
-
-    <label for="ventaInput">
-      Precio de venta (€)
-    </label>
-
+    <label for="ventaInput">Precio de venta (€)</label>
     <input
       id="ventaInput"
       type="number"
@@ -700,8 +494,6 @@ button{
       step="0.01"
       placeholder="0.00"
     >
-
-
     <button
       id="guardarBtn"
       class="btn negro"
@@ -709,8 +501,6 @@ button{
     >
       💾 GUARDAR PRODUCTO
     </button>
-
-
     <button
       id="cancelarBtn"
       class="btn gris"
@@ -719,55 +509,30 @@ button{
     >
       ❌ CANCELAR
     </button>
-
   </div>
-
 </section>
-
-
-<!-- =====================================================
-     COPIA
-===================================================== -->
-
 <section id="copia" class="seccion">
-
   <div class="tarjeta">
-
     <h2>💾 Copia de seguridad</h2>
-
     <p>
       Guarda una copia de todos tus productos y ventas en tu móvil.
     </p>
-
     <button
       class="btn morado"
       onclick="exportarCopia()"
     >
       💾 DESCARGAR COPIA DE SEGURIDAD
     </button>
-
     <div id="mensajeCopia"></div>
-
   </div>
-
 </section>
-
-
 <script
   src="https://unpkg.com/html5-qrcode"
   type="text/javascript"
 ></script>
-
-
 <script type="module">
-
-/* =====================================================
-   FIREBASE
-===================================================== */
-
 import { initializeApp } from
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-
 import {
   getFirestore,
   collection,
@@ -778,1036 +543,451 @@ import {
   getDocs,
   query,
   where,
-  onSnapshot,
-  writeBatch
+  onSnapshot
 } from
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
-
 import {
   getAuth,
   signInAnonymously,
   onAuthStateChanged
 } from
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-
-
-/* =====================================================
-   CONFIGURACIÓN
-===================================================== */
-
 const firebaseConfig = {
-
   apiKey:
     "AIzaSyArKREs5r_6zt5FpiJn9m2Tb-J9XkitzQI",
-
   authDomain:
     "mi-inventario-f03bf.firebaseapp.com",
-
   projectId:
     "mi-inventario-f03bf",
-
   storageBucket:
     "mi-inventario-f03bf.firebasestorage.app",
-
   messagingSenderId:
     "214570994765",
-
   appId:
     "1:214570994765:web:0d31eedd1cfd69e1636004"
-
 };
-
-
-/* =====================================================
-   VARIABLES
-===================================================== */
-
 let app = null;
-
 let db = null;
-
 let auth = null;
-
 let productos = [];
-
 let ventas = [];
-
 let scanner = null;
-
 let escaneando = false;
-
 let productoActual = null;
-
 let indiceEditando = null;
-
 let fotoBase64 = "";
-
-
-/* =====================================================
-   UTILIDADES
-===================================================== */
-
 function escapar(texto){
-
   return String(texto ?? "")
     .replaceAll("&","&amp;")
     .replaceAll("<","&lt;")
     .replaceAll(">","&gt;")
     .replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
-
 }
-
-
 function euros(numero){
-
   return Number(numero || 0)
     .toFixed(2)
     .replace(".",",") + " €";
-
 }
-
-
 function errorTexto(error){
-
   if(!error){
-
     return "Error desconocido";
-
   }
-
   return (
-
-    (error.code
-      ? error.code + " — "
-      : ""
-    ) +
-
-    (error.message ||
-     String(error))
-
+    (error.code ? error.code + " — " : "") +
+    (error.message || String(error))
   );
-
 }
-
-
-function mostrarError(
-  texto,
-  destino="errorFirebaseInicio"
-){
-
+function mostrarError(texto,destino="errorFirebaseInicio"){
   console.error(texto);
-
   const elemento =
     document.getElementById(destino);
-
   if(elemento){
-
     elemento.innerHTML =
       '<div class="error">' +
       '❌ <b>Error:</b><br>' +
       escapar(texto) +
       '</div>';
-
   }
-
 }
-
-
-/* =====================================================
-   CONECTAR FIREBASE
-===================================================== */
-
 async function conectar(){
-
   const estado =
-    document.getElementById(
-      "estadoConexion"
-    );
-
+    document.getElementById("estadoConexion");
   try{
-
     estado.textContent =
       "⏳ Iniciando Firebase...";
-
     app =
-      initializeApp(
-        firebaseConfig
-      );
-
-
+      initializeApp(firebaseConfig);
     estado.textContent =
       "⏳ Conectando con Firestore...";
-
-
     db =
       getFirestore(app);
-
-
     auth =
       getAuth(app);
-
-
     estado.textContent =
       "⏳ Iniciando sesión...";
-
-
     await signInAnonymously(auth);
-
-
     onAuthStateChanged(
       auth,
       function(usuario){
-
         if(usuario){
-
           estado.textContent =
             "☁️ Inventario sincronizado";
-
           escucharDatos();
-
         }
-
       }
     );
-
-
   }catch(error){
-
     estado.textContent =
       "❌ Error de conexión";
-
-
     mostrarError(
       "NO SE PUDO CONECTAR CON FIREBASE.\n\n" +
       errorTexto(error)
     );
-
-
     const diagnostico =
-      document.getElementById(
-        "diagnostico"
-      );
-
-
+      document.getElementById("diagnostico");
     diagnostico.style.display =
       "block";
-
-
     diagnostico.textContent =
       errorTexto(error);
-
   }
-
 }
-
-
-/* =====================================================
-   ESCUCHAR PRODUCTOS Y VENTAS
-===================================================== */
-
 function escucharDatos(){
-
   onSnapshot(
-
     collection(db,"productos"),
-
     function(snapshot){
-
       productos = [];
-
       snapshot.forEach(
         function(d){
-
           productos.push({
-
             id:d.id,
-
             ...d.data()
-
           });
-
         }
       );
-
-
       actualizarInicio();
-
       mostrarInventario();
-
     },
-
-
     function(error){
-
       mostrarError(
-
         "ERROR LEYENDO PRODUCTOS.\n\n" +
         errorTexto(error)
-
       );
-
     }
-
   );
-
-
   onSnapshot(
-
     collection(db,"ventas"),
-
     function(snapshot){
-
       ventas = [];
-
       snapshot.forEach(
         function(d){
-
           ventas.push({
-
             id:d.id,
-
             ...d.data()
-
           });
-
         }
       );
-
-
       ventas.sort(
         function(a,b){
-
           return (
             new Date(b.fecha) -
             new Date(a.fecha)
           );
-
         }
       );
-
-
       actualizarInicio();
-
       mostrarVentas();
-
     },
-
-
     function(error){
-
       mostrarError(
-
         "ERROR LEYENDO VENTAS.\n\n" +
         errorTexto(error)
-
       );
-
     }
-
   );
-
 }
-
-
-/* =====================================================
-   NAVEGACIÓN
-===================================================== */
-
 window.ir =
 function(nombre){
-
   document
     .querySelectorAll(".seccion")
     .forEach(
       function(x){
-
-        x.classList.remove(
-          "activa"
-        );
-
+        x.classList.remove("activa");
       }
     );
-
-
   const seccion =
-    document.getElementById(
-      nombre
-    );
-
-
+    document.getElementById(nombre);
   if(seccion){
-
-    seccion.classList.add(
-      "activa"
-    );
-
+    seccion.classList.add("activa");
   }
-
-
   document
     .querySelectorAll("nav button")
     .forEach(
       function(x){
-
-        x.classList.remove(
-          "activo"
-        );
-
+        x.classList.remove("activo");
       }
     );
-
-
   const mapa = {
-
     inicio:"nInicio",
-
     escaner:"nEscaner",
-
     inventario:"nInventario",
-
     ventas:"nVentas",
-
     agregar:"nAgregar",
-
     copia:"nCopia"
-
   };
-
-
   if(mapa[nombre]){
-
     document
-      .getElementById(
-        mapa[nombre]
-      )
-      .classList.add(
-        "activo"
-      );
-
+      .getElementById(mapa[nombre])
+      .classList.add("activo");
   }
-
 };
-
-
-/* =====================================================
-   GUARDAR PRODUCTO
-===================================================== */
-
 window.guardarProducto =
 async function(){
-
   const mensaje =
-    document.getElementById(
-      "mensajeGuardar"
-    );
-
+    document.getElementById("mensajeGuardar");
   mensaje.innerHTML = "";
-
-
   if(!db){
-
     mostrarError(
       "Firebase todavía no está conectado.",
       "mensajeGuardar"
     );
-
     return;
-
   }
-
-
   const nombre =
-    document
-      .getElementById(
-        "productoInput"
-      )
-      .value
-      .trim();
-
-
+    document.getElementById("productoInput")
+      .value.trim();
   const codigo =
-    document
-      .getElementById(
-        "codigoInput"
-      )
-      .value
-      .trim();
-
-
+    document.getElementById("codigoInput")
+      .value.trim();
   const stock =
     Number(
-      document
-        .getElementById(
-          "stockInput"
-        )
-        .value
+      document.getElementById("stockInput").value
     ) || 0;
-
-
   const compra =
     Number(
-      document
-        .getElementById(
-          "compraInput"
-        )
-        .value
+      document.getElementById("compraInput").value
     ) || 0;
-
-
   const venta =
     Number(
-      document
-        .getElementById(
-          "ventaInput"
-        )
-        .value
+      document.getElementById("ventaInput").value
     ) || 0;
-
-
   if(!nombre){
-
     mostrarError(
       "Escribe el nombre del producto.",
       "mensajeGuardar"
     );
-
     return;
-
   }
-
-
   if(!codigo){
-
     mostrarError(
       "Introduce el código de barras.",
       "mensajeGuardar"
     );
-
     return;
-
   }
-
-
   const repetido =
     productos.find(
       function(p){
-
         return (
-
-          String(p.codigo).trim()
-          === codigo &&
-
+          String(p.codigo).trim() === codigo &&
           p.id !== indiceEditando
-
         );
-
       }
     );
-
-
   if(repetido){
-
     mostrarError(
       "Ya existe un producto con ese código.",
       "mensajeGuardar"
     );
-
     return;
-
   }
-
-
   const datos = {
-
     producto:nombre,
-
     codigo:codigo,
-
     stock:stock,
-
     precioCompra:compra,
-
     precioVenta:venta,
-
-    beneficio:
-      venta-compra,
-
+    beneficio:venta-compra,
     foto:fotoBase64
-
   };
-
-
   const boton =
-    document.getElementById(
-      "guardarBtn"
-    );
-
-
+    document.getElementById("guardarBtn");
   try{
-
     boton.disabled = true;
-
-    boton.textContent =
-      "⏳ Guardando...";
-
-
+    boton.textContent = "⏳ Guardando...";
     if(indiceEditando){
-
       await updateDoc(
-
-        doc(
-          db,
-          "productos",
-          indiceEditando
-        ),
-
+        doc(db,"productos",indiceEditando),
         datos
-
       );
-
-
       mensaje.innerHTML =
-        '<div class="ok">' +
-        '✅ Producto actualizado.' +
-        '</div>';
-
+        '<div class="ok">✅ Producto actualizado.</div>';
     }else{
-
       await addDoc(
-
-        collection(
-          db,
-          "productos"
-        ),
-
+        collection(db,"productos"),
         datos
-
       );
-
-
       mensaje.innerHTML =
-        '<div class="ok">' +
-        '✅ Producto añadido correctamente.' +
-        '</div>';
-
+        '<div class="ok">✅ Producto añadido correctamente.</div>';
     }
-
-
     setTimeout(
       function(){
-
         cancelarEdicion();
-
         ir("inventario");
-
       },
       700
     );
-
-
   }catch(error){
-
     mostrarError(
-
       "NO SE PUDO GUARDAR EL PRODUCTO.\n\n" +
       errorTexto(error),
-
       "mensajeGuardar"
-
     );
-
   }finally{
-
     boton.disabled=false;
-
     if(!indiceEditando){
-
       boton.textContent =
         "💾 GUARDAR PRODUCTO";
-
     }
-
   }
-
 };
-
-
-/* =====================================================
-   EDITAR PRODUCTO
-===================================================== */
-
 function iniciarEdicion(p){
-
   indiceEditando=p.id;
-
-
-  document
-    .getElementById(
-      "tituloForm"
-    )
-    .textContent =
-      "✏️ Editar producto";
-
-
-  document
-    .getElementById(
-      "productoInput"
-    )
-    .value =
-      p.producto || "";
-
-
-  document
-    .getElementById(
-      "codigoInput"
-    )
-    .value =
-      p.codigo || "";
-
-
-  document
-    .getElementById(
-      "stockInput"
-    )
-    .value =
-      p.stock || 0;
-
-
-  document
-    .getElementById(
-      "compraInput"
-    )
-    .value =
-      p.precioCompra || 0;
-
-
-  document
-    .getElementById(
-      "ventaInput"
-    )
-    .value =
-      p.precioVenta || 0;
-
-
+  document.getElementById("tituloForm").textContent =
+    "✏️ Editar producto";
+  document.getElementById("productoInput").value =
+    p.producto || "";
+  document.getElementById("codigoInput").value =
+    p.codigo || "";
+  document.getElementById("stockInput").value =
+    p.stock || 0;
+  document.getElementById("compraInput").value =
+    p.precioCompra || 0;
+  document.getElementById("ventaInput").value =
+    p.precioVenta || 0;
   fotoBase64 =
     p.foto || "";
-
-
   const preview =
-    document.getElementById(
-      "fotoPreview"
-    );
-
-
+    document.getElementById("fotoPreview");
   if(fotoBase64){
-
-    preview.src =
-      fotoBase64;
-
-    preview.style.display =
-      "block";
-
+    preview.src=fotoBase64;
+    preview.style.display="block";
   }else{
-
-    preview.style.display =
-      "none";
-
+    preview.style.display="none";
   }
-
-
-  document
-    .getElementById(
-      "cancelarBtn"
-    )
-    .style.display =
-      "block";
-
-
-  document
-    .getElementById(
-      "guardarBtn"
-    )
-    .textContent =
-      "💾 GUARDAR CAMBIOS";
-
-
+  document.getElementById("cancelarBtn")
+    .style.display="block";
+  document.getElementById("guardarBtn")
+    .textContent="💾 GUARDAR CAMBIOS";
   ir("agregar");
-
 }
-
-
 window.editarActual =
 function(){
-
   if(productoActual){
-
-    iniciarEdicion(
-      productoActual
-    );
-
+    iniciarEdicion(productoActual);
   }
-
 };
-
-
 window.cancelarEdicion =
 function(){
-
   indiceEditando=null;
-
   fotoBase64="";
-
-
-  document
-    .getElementById(
-      "tituloForm"
-    )
-    .textContent =
-      "➕ Añadir producto";
-
-
-  document
-    .getElementById(
-      "guardarBtn"
-    )
-    .textContent =
-      "💾 GUARDAR PRODUCTO";
-
-
-  document
-    .getElementById(
-      "cancelarBtn"
-    )
-    .style.display =
-      "none";
-
-
-  document
-    .getElementById(
-      "productoInput"
-    )
-    .value="";
-
-
-  document
-    .getElementById(
-      "codigoInput"
-    )
-    .value="";
-
-
-  document
-    .getElementById(
-      "stockInput"
-    )
-    .value="0";
-
-
-  document
-    .getElementById(
-      "compraInput"
-    )
-    .value="";
-
-
-  document
-    .getElementById(
-      "ventaInput"
-    )
-    .value="";
-
-
-  document
-    .getElementById(
-      "fotoInput"
-    )
-    .value="";
-
-
-  document
-    .getElementById(
-      "fotoPreview"
-    )
-    .style.display =
-      "none";
-
-
-  document
-    .getElementById(
-      "mensajeGuardar"
-    )
-    .innerHTML="";
-
+  document.getElementById("tituloForm").textContent =
+    "➕ Añadir producto";
+  document.getElementById("guardarBtn").textContent =
+    "💾 GUARDAR PRODUCTO";
+  document.getElementById("cancelarBtn").style.display =
+    "none";
+  document.getElementById("productoInput").value="";
+  document.getElementById("codigoInput").value="";
+  document.getElementById("stockInput").value="0";
+  document.getElementById("compraInput").value="";
+  document.getElementById("ventaInput").value="";
+  document.getElementById("fotoInput").value="";
+  document.getElementById("fotoPreview").style.display="none";
+  document.getElementById("mensajeGuardar").innerHTML="";
 };
-
-
-/* =====================================================
-   ELIMINAR PRODUCTO
-===================================================== */
-
 async function eliminarProducto(p){
-
   if(!confirm(
-    "¿Eliminar " +
-    p.producto +
-    "?"
+    "¿Eliminar " + p.producto + "?"
   )){
-
     return;
-
   }
-
-
   try{
-
     await deleteDoc(
-
-      doc(
-        db,
-        "productos",
-        p.id
-      )
-
+      doc(db,"productos",p.id)
     );
-
-
     productoActual=null;
-
-
-    document
-      .getElementById(
-        "resultado"
-      )
-      .style.display =
-        "none";
-
-
+    document.getElementById("resultado")
+      .style.display="none";
   }catch(error){
-
     mostrarError(
-
       "NO SE PUDO ELIMINAR.\n\n" +
       errorTexto(error)
-
     );
-
   }
-
 }
-
-
 window.eliminarActual =
 function(){
-
   if(productoActual){
-
-    eliminarProducto(
-      productoActual
-    );
-
+    eliminarProducto(productoActual);
   }
-
 };
-
-
 /* =====================================================
-   INVENTARIO
+   INVENTARIO - CORREGIDO
 ===================================================== */
-
-function mostrarInventario(){
-
+window.mostrarInventario =
+function(){
   const lista =
-    document.getElementById(
-      "listaInventario"
-    );
-
-
+    document.getElementById("listaInventario");
+  const input =
+    document.getElementById("buscador");
+  const textoOriginal =
+    input ? input.value : "";
+  /*
+     Normalizamos la búsqueda:
+     - minúsculas
+     - quitamos espacios al principio/final
+  */
   const texto =
-    (
-      document
-        .getElementById(
-          "buscador"
-        )
-        ?.value || ""
-    ).toLowerCase();
-
-
+    textoOriginal
+      .toLowerCase()
+      .trim();
   const filtrados =
     productos.filter(
       function(p){
-
+        const nombre =
+          String(p.producto || "")
+            .toLowerCase();
+        const codigo =
+          String(p.codigo || "")
+            .toLowerCase();
         return (
-
-          String(
-            p.producto || ""
-          )
-          .toLowerCase()
-          .includes(texto)
-
-          ||
-
-          String(
-            p.codigo || ""
-          )
-          .toLowerCase()
-          .includes(texto)
-
+          nombre.includes(texto) ||
+          codigo.includes(texto)
         );
-
       }
     );
-
-
   if(!filtrados.length){
-
     lista.innerHTML =
-      '<div class="vacio">' +
-      '📦 No hay productos.' +
-      '</div>';
-
+      texto
+        ? '<div class="vacio">🔎 No se encontró ningún producto.</div>'
+        : '<div class="vacio">📦 No hay productos.</div>';
     return;
-
   }
-
-
   lista.innerHTML="";
-
-
   filtrados.forEach(
     function(p){
-
       const div =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
       div.className="producto";
-
-
       const img =
-        document.createElement(
-          "img"
-        );
-
-
+        document.createElement("img");
       if(p.foto){
-
         img.src=p.foto;
-
       }
-
-
       const info =
-        document.createElement(
-          "div"
-        );
-
-
-      info.className =
-        "producto-info";
-
-
+        document.createElement("div");
+      info.className="producto-info";
       info.innerHTML =
         "<strong>" +
         escapar(p.producto) +
@@ -1815,1839 +995,789 @@ function mostrarInventario(){
         "<small>Código: " +
         escapar(p.codigo) +
         "</small>";
-
-
       const stock =
-        document.createElement(
-          "div"
-        );
-
-
+        document.createElement("div");
       stock.className="stock";
-
-
       stock.textContent =
         p.stock || 0;
-
-
       if(Number(p.stock)<=2){
-
-        stock.classList.add(
-          "stock-bajo"
-        );
-
+        stock.classList.add("stock-bajo");
       }
-
-
       const editar =
-        document.createElement(
-          "button"
-        );
-
-
-      editar.className =
-        "btn naranja";
-
-
+        document.createElement("button");
+      editar.className="btn naranja";
       editar.textContent="✏️";
-
-
       editar.onclick =
         function(e){
-
           e.stopPropagation();
-
           iniciarEdicion(p);
-
         };
-
-
       const borrar =
-        document.createElement(
-          "button"
-        );
-
-
-      borrar.className =
-        "btn rojo";
-
-
+        document.createElement("button");
+      borrar.className="btn rojo";
       borrar.textContent="🗑️";
-
-
       borrar.onclick =
         function(e){
-
           e.stopPropagation();
-
           eliminarProducto(p);
-
         };
-
-
       const botones =
-        document.createElement(
-          "div"
-        );
-
-
+        document.createElement("div");
       botones.className="dos";
-
-
-      botones.appendChild(
-        editar
-      );
-
-
-      botones.appendChild(
-        borrar
-      );
-
-
+      botones.appendChild(editar);
+      botones.appendChild(borrar);
       const derecha =
-        document.createElement(
-          "div"
-        );
-
-
-      derecha.appendChild(
-        stock
-      );
-
-
-      derecha.appendChild(
-        botones
-      );
-
-
+        document.createElement("div");
+      derecha.appendChild(stock);
+      derecha.appendChild(botones);
       div.appendChild(img);
-
       div.appendChild(info);
-
       div.appendChild(derecha);
-
-
       div.onclick =
         function(){
-
           mostrarProducto(p);
-
           ir("escaner");
-
         };
-
-
       lista.appendChild(div);
-
     }
   );
-
-}
-
-
+};
 /* =====================================================
    MOSTRAR PRODUCTO
 ===================================================== */
-
 function mostrarProducto(p){
-
   productoActual=p;
-
-
-  document
-    .getElementById(
-      "resultado"
-    )
-    .style.display =
-      "block";
-
-
-  document
-    .getElementById(
-      "nombreResultado"
-    )
-    .textContent =
-      p.producto || "";
-
-
-  document
-    .getElementById(
-      "codigoResultado"
-    )
-    .textContent =
-      "Código: " +
-      (p.codigo || "");
-
-
-  document
-    .getElementById(
-      "stockResultado"
-    )
-    .textContent =
-      "Stock: " +
-      (p.stock || 0);
-
-
-  document
-    .getElementById(
-      "precioResultado"
-    )
-    .textContent =
-      "Venta: " +
-      euros(
-        p.precioVenta
-      );
-
-
-  document
-    .getElementById(
-      "beneficioResultado"
-    )
-    .textContent =
+  document.getElementById("resultado")
+    .style.display="block";
+  document.getElementById("nombreResultado")
+    .textContent=p.producto || "";
+  document.getElementById("codigoResultado")
+    .textContent="Código: " + (p.codigo || "");
+  document.getElementById("stockResultado")
+    .textContent="Stock: " + (p.stock || 0);
+  document.getElementById("precioResultado")
+    .textContent="Venta: " + euros(p.precioVenta);
+  document.getElementById("beneficioResultado")
+    .textContent=
       "Beneficio/unidad: " +
       euros(
-
-        (Number(p.precioVenta)||0)
-        -
+        (Number(p.precioVenta)||0) -
         (Number(p.precioCompra)||0)
-
       );
-
-
   const foto =
-    document.getElementById(
-      "fotoResultado"
-    );
-
-
+    document.getElementById("fotoResultado");
   if(p.foto){
-
     foto.src=p.foto;
-
-    foto.style.display =
-      "block";
-
+    foto.style.display="block";
   }else{
-
-    foto.style.display =
-      "none";
-
+    foto.style.display="none";
   }
-
 }
-
-
 /* =====================================================
    ESCÁNER
 ===================================================== */
-
-async function buscarCodigoFirebase(
-  codigo
-){
-
+async function buscarCodigoFirebase(codigo){
   codigo =
     String(codigo).trim();
-
-
-  document
-    .getElementById(
-      "mensaje"
-    )
-    .textContent =
-      "🔎 Buscando producto...";
-
-
+  document.getElementById("mensaje")
+    .textContent="🔎 Buscando producto...";
   try{
-
     const consulta =
       query(
-
-        collection(
-          db,
-          "productos"
-        ),
-
-        where(
-          "codigo",
-          "==",
-          codigo
-        )
-
+        collection(db,"productos"),
+        where("codigo","==",codigo)
       );
-
-
     const resultado =
-      await getDocs(
-        consulta
-      );
-
-
+      await getDocs(consulta);
     if(resultado.empty){
-
-      document
-        .getElementById(
-          "mensaje"
-        )
-        .textContent =
-          "❌ Producto no registrado";
-
-
+      document.getElementById("mensaje")
+        .textContent="❌ Producto no registrado";
       const crear =
         confirm(
-
           "El código " +
           codigo +
           " no está registrado.\n\n" +
           "¿Quieres añadirlo ahora?"
-
         );
-
-
       if(crear){
-
         ir("agregar");
-
-
-        document
-          .getElementById(
-            "codigoInput"
-          )
-          .value =
-            codigo;
-
+        document.getElementById("codigoInput")
+          .value=codigo;
       }
-
-
       return;
-
     }
-
-
     const d =
       resultado.docs[0];
-
-
     const producto = {
-
       id:d.id,
-
       ...d.data()
-
     };
-
-
-    mostrarProducto(
-      producto
-    );
-
-
+    mostrarProducto(producto);
   }catch(error){
-
     mostrarError(
-
       "NO SE PUDO BUSCAR EL CÓDIGO.\n\n" +
       errorTexto(error),
-
       "mensaje"
-
     );
-
   }
-
 }
-
-
 window.iniciarEscaner =
 function(){
-
   if(escaneando){
-
     return;
-
   }
-
-
   if(!db){
-
     mostrarError(
-
       "Firebase todavía no está conectado.",
-
       "mensaje"
-
     );
-
     return;
-
   }
-
-
   scanner =
-    new Html5Qrcode(
-      "reader"
-    );
-
-
+    new Html5Qrcode("reader");
   scanner.start(
-
     {
       facingMode:"environment"
     },
-
     {
       fps:10,
-
       qrbox:{
         width:280,
         height:150
       }
-
     },
-
     function(codigo){
-
       pararEscaner();
-
-      buscarCodigoFirebase(
-        codigo
-      );
-
+      buscarCodigoFirebase(codigo);
     },
-
     function(){}
-
   )
-
   .then(
     function(){
-
       escaneando=true;
-
-
-      document
-        .getElementById(
-          "btnIniciar"
-        )
-        .style.display =
-          "none";
-
-
-      document
-        .getElementById(
-          "btnParar"
-        )
-        .style.display =
-          "block";
-
-
-      document
-        .getElementById(
-          "mensaje"
-        )
-        .textContent =
+      document.getElementById("btnIniciar")
+        .style.display="none";
+      document.getElementById("btnParar")
+        .style.display="block";
+      document.getElementById("mensaje")
+        .textContent=
           "📷 Apunta al código de barras";
-
     }
   )
-
   .catch(
     function(error){
-
       mostrarError(
-
         "NO SE PUDO ABRIR LA CÁMARA.\n\n" +
         errorTexto(error),
-
         "mensaje"
-
       );
-
     }
   );
-
 };
-
-
 window.pararEscaner =
 function(){
-
   if(!scanner){
-
     return;
-
   }
-
-
   scanner.stop()
-
     .then(
       function(){
-
         scanner.clear();
-
         scanner=null;
-
         escaneando=false;
-
-
-        document
-          .getElementById(
-            "btnIniciar"
-          )
-          .style.display =
-            "block";
-
-
-        document
-          .getElementById(
-            "btnParar"
-          )
-          .style.display =
-            "none";
-
+        document.getElementById("btnIniciar")
+          .style.display="block";
+        document.getElementById("btnParar")
+          .style.display="none";
       }
     )
-
     .catch(
       function(error){
-
         console.error(error);
-
         scanner=null;
-
         escaneando=false;
-
       }
     );
-
 };
-
-
 /* =====================================================
-   STOCK +1 / -1
+   STOCK
 ===================================================== */
-
 window.entradaStock =
 function(){
-
   if(productoActual){
-
-    cambiarStock(
-      productoActual,
-      1
-    );
-
+    cambiarStock(productoActual,1);
   }
-
 };
-
-
 window.salidaStock =
 function(){
-
   if(productoActual){
-
-    cambiarStock(
-      productoActual,
-      -1
-    );
-
+    cambiarStock(productoActual,-1);
   }
-
 };
-
-
-async function cambiarStock(
-  p,
-  cantidad
-){
-
+async function cambiarStock(p,cantidad){
   const actual =
     Number(p.stock)||0;
-
-
   const nuevo =
     actual + cantidad;
-
-
   if(nuevo<0){
-
-    alert(
-      "❌ No hay suficiente stock."
-    );
-
+    alert("❌ No hay suficiente stock.");
     return;
-
   }
-
-
-  /* Actualización inmediata en pantalla */
-
   p.stock=nuevo;
-
-
-  if(productoActual &&
-     productoActual.id===p.id){
-
+  if(
+    productoActual &&
+    productoActual.id===p.id
+  ){
     productoActual.stock=nuevo;
-
-
-    document
-      .getElementById(
-        "stockResultado"
-      )
-      .textContent =
-        "Stock: " + nuevo;
-
+    document.getElementById("stockResultado")
+      .textContent="Stock: " + nuevo;
   }
-
-
   mostrarInventario();
-
-
   try{
-
     await updateDoc(
-
-      doc(
-        db,
-        "productos",
-        p.id
-      ),
-
+      doc(db,"productos",p.id),
       {
         stock:nuevo
       }
-
     );
-
-
     await addDoc(
-
-      collection(
-        db,
-        "movimientos"
-      ),
-
+      collection(db,"movimientos"),
       {
-
-        fecha:
-          new Date()
-          .toISOString(),
-
+        fecha:new Date().toISOString(),
         codigo:p.codigo,
-
         producto:p.producto,
-
-        tipo:
-          cantidad>0
-            ? "Entrada"
-            : "Salida",
-
-        cantidad:
-          Math.abs(cantidad)
-
+        tipo:cantidad>0 ? "Entrada" : "Salida",
+        cantidad:Math.abs(cantidad)
       }
-
     );
-
-
   }catch(error){
-
-    /* Si Firebase falla,
-       volvemos al valor anterior */
-
     p.stock=actual;
-
-    if(productoActual &&
-       productoActual.id===p.id){
-
-      productoActual.stock=
-        actual;
-
-      document
-        .getElementById(
-          "stockResultado"
-        )
-        .textContent =
-          "Stock: " +
-          actual;
-
+    if(
+      productoActual &&
+      productoActual.id===p.id
+    ){
+      productoActual.stock=actual;
+      document.getElementById("stockResultado")
+        .textContent="Stock: " + actual;
     }
-
-
     mostrarInventario();
-
-
     mostrarError(
-
       "NO SE PUDO CAMBIAR EL STOCK.\n\n" +
       errorTexto(error)
-
     );
-
   }
-
 }
-
-
 /* =====================================================
-   VENDER PRODUCTO
+   VENDER
 ===================================================== */
-
 window.venderProducto =
 async function(){
-
   if(!productoActual){
-
     return;
-
   }
-
-
   const stock =
-    Number(
-      productoActual.stock
-    ) || 0;
-
-
+    Number(productoActual.stock)||0;
   if(stock<=0){
-
-    alert(
-      "❌ No hay stock."
-    );
-
+    alert("❌ No hay stock.");
     return;
-
   }
-
-
   let cantidad =
     prompt(
-
       "¿Cuántas unidades quieres vender?",
-
       "1"
-
     );
-
-
   if(cantidad===null){
-
     return;
-
   }
-
-
-  cantidad =
-    parseInt(cantidad);
-
-
-  if(!cantidad ||
-     cantidad<1){
-
-    alert(
-      "Cantidad no válida."
-    );
-
+  cantidad=parseInt(cantidad);
+  if(!cantidad || cantidad<1){
+    alert("Cantidad no válida.");
     return;
-
   }
-
-
   if(cantidad>stock){
-
     alert(
-
       "❌ Stock insuficiente.\n" +
       "Disponible: " +
       stock
-
     );
-
     return;
-
   }
-
-
   const precioNormal =
-    Number(
-      productoActual.precioVenta
-    ) || 0;
-
-
+    Number(productoActual.precioVenta)||0;
   const compra =
-    Number(
-      productoActual.precioCompra
-    ) || 0;
-
-
-  /* =================================================
-     PRECIO REAL DE VENTA
-  ================================================= */
-
+    Number(productoActual.precioCompra)||0;
   let precioTexto =
     prompt(
-
       "💶 ¿A cuánto has vendido finalmente CADA unidad?\n\n" +
       "Precio habitual: " +
       euros(precioNormal),
-
       precioNormal.toFixed(2)
-
     );
-
-
   if(precioTexto===null){
-
     return;
-
   }
-
-
   precioTexto =
     precioTexto
       .replace(",",".")
       .trim();
-
-
   const precio =
     Number(precioTexto);
-
-
-  if(!Number.isFinite(precio) ||
-     precio<0){
-
-    alert(
-      "❌ Precio no válido."
-    );
-
+  if(
+    !Number.isFinite(precio) ||
+    precio<0
+  ){
+    alert("❌ Precio no válido.");
     return;
-
   }
-
-
   const total =
     precio*cantidad;
-
-
   const beneficio =
-    (precio-compra) *
-    cantidad;
-
-
+    (precio-compra)*cantidad;
   const confirmar =
     confirm(
-
       "🛒 CONFIRMAR VENTA\n\n" +
-
       "Producto: " +
       productoActual.producto +
       "\n" +
-
       "Cantidad: " +
       cantidad +
       "\n" +
-
       "Precio/unidad: " +
       euros(precio) +
       "\n" +
-
       "Total: " +
       euros(total) +
       "\n" +
-
       "Beneficio: " +
       euros(beneficio)
-
     );
-
-
   if(!confirmar){
-
     return;
-
   }
-
-
   try{
-
-    /* =================================================
-       PRIMERO CREAMOS LA VENTA
-    ================================================= */
-
     const ventaRef =
       await addDoc(
-
-        collection(
-          db,
-          "ventas"
-        ),
-
+        collection(db,"ventas"),
         {
-
-          fecha:
-            new Date()
-            .toISOString(),
-
-          codigo:
-            productoActual.codigo,
-
-          producto:
-            productoActual.producto,
-
-          cantidad:
-            cantidad,
-
-          precioUnitario:
-            precio,
-
-          precioHabitual:
-            precioNormal,
-
-          total:
-            total,
-
-          beneficio:
-            beneficio
-
+          fecha:new Date().toISOString(),
+          codigo:productoActual.codigo,
+          producto:productoActual.producto,
+          cantidad:cantidad,
+          precioUnitario:precio,
+          precioHabitual:precioNormal,
+          total:total,
+          beneficio:beneficio
         }
-
       );
-
-
-    /* =================================================
-       ACTUALIZAMOS STOCK
-    ================================================= */
-
     await updateDoc(
-
-      doc(
-        db,
-        "productos",
-        productoActual.id
-      ),
-
+      doc(db,"productos",productoActual.id),
       {
-
-        stock:
-          stock-cantidad
-
+        stock:stock-cantidad
       }
-
     );
-
-
-    /* =================================================
-       REGISTRAMOS MOVIMIENTO
-    ================================================= */
-
     await addDoc(
-
-      collection(
-        db,
-        "movimientos"
-      ),
-
+      collection(db,"movimientos"),
       {
-
-        fecha:
-          new Date()
-          .toISOString(),
-
-        codigo:
-          productoActual.codigo,
-
-        producto:
-          productoActual.producto,
-
-        tipo:
-          "Venta",
-
-        cantidad:
-          cantidad,
-
-        ventaId:
-          ventaRef.id
-
+        fecha:new Date().toISOString(),
+        codigo:productoActual.codigo,
+        producto:productoActual.producto,
+        tipo:"Venta",
+        cantidad:cantidad,
+        ventaId:ventaRef.id
       }
-
     );
-
-
-    /* =================================================
-       ACTUALIZACIÓN INMEDIATA
-    ================================================= */
-
     productoActual.stock =
       stock-cantidad;
-
-
     const productoLocal =
       productos.find(
         function(p){
-
-          return p.id ===
-            productoActual.id;
-
+          return p.id===productoActual.id;
         }
       );
-
-
     if(productoLocal){
-
-      productoLocal.stock =
-        stock-cantidad;
-
+      productoLocal.stock=stock-cantidad;
     }
-
-
-    document
-      .getElementById(
-        "stockResultado"
-      )
-      .textContent =
+    document.getElementById("stockResultado")
+      .textContent=
         "Stock: " +
         (stock-cantidad);
-
-
     mostrarInventario();
-
-
     alert(
-
       "🛒 Venta registrada correctamente.\n\n" +
-
       "💶 Precio: " +
       euros(precio) +
       "/unidad\n" +
-
       "💰 Total: " +
       euros(total)
-
     );
-
-
   }catch(error){
-
     mostrarError(
-
       "NO SE PUDO REGISTRAR LA VENTA.\n\n" +
       errorTexto(error)
-
     );
-
   }
-
 };
-
-
 /* =====================================================
-   MOSTRAR VENTAS
+   VENTAS - CORREGIDO
 ===================================================== */
-
-function mostrarVentas(){
-
+window.mostrarVentas =
+function(){
   const lista =
-    document.getElementById(
-      "listaVentas"
-    );
-
-
+    document.getElementById("listaVentas");
+  const input =
+    document.getElementById("buscarVentas");
   const texto =
     (
-      document
-        .getElementById(
-          "buscarVentas"
-        )
-        ?.value || ""
-    ).toLowerCase();
-
-
+      input ? input.value : ""
+    )
+    .toLowerCase()
+    .trim();
   const filtradas =
     ventas.filter(
       function(v){
-
+        const producto =
+          String(v.producto || "")
+            .toLowerCase();
+        const codigo =
+          String(v.codigo || "")
+            .toLowerCase();
         return (
-
-          String(
-            v.producto || ""
-          )
-          .toLowerCase()
-          .includes(texto)
-
-          ||
-
-          String(
-            v.codigo || ""
-          )
-          .toLowerCase()
-          .includes(texto)
-
+          producto.includes(texto) ||
+          codigo.includes(texto)
         );
-
       }
     );
-
-
   let ingresos=0;
-
   let beneficio=0;
-
   let unidades=0;
-
-
   ventas.forEach(
     function(v){
-
       ingresos +=
         Number(v.total)||0;
-
       beneficio +=
         Number(v.beneficio)||0;
-
       unidades +=
         Number(v.cantidad)||0;
-
     }
   );
-
-
-  document
-    .getElementById(
-      "totalVentas"
-    )
-    .textContent =
-      ventas.length;
-
-
-  document
-    .getElementById(
-      "totalIngresos"
-    )
-    .textContent =
-      euros(ingresos);
-
-
-  document
-    .getElementById(
-      "totalBeneficioVentas"
-    )
-    .textContent =
-      euros(beneficio);
-
-
-  document
-    .getElementById(
-      "totalUnidadesVentas"
-    )
-    .textContent =
-      unidades;
-
-
+  document.getElementById("totalVentas")
+    .textContent=ventas.length;
+  document.getElementById("totalIngresos")
+    .textContent=euros(ingresos);
+  document.getElementById("totalBeneficioVentas")
+    .textContent=euros(beneficio);
+  document.getElementById("totalUnidadesVentas")
+    .textContent=unidades;
   if(!filtradas.length){
-
     lista.innerHTML =
-      '<div class="vacio">' +
-      '🛒 No hay ventas.' +
-      '</div>';
-
+      texto
+        ? '<div class="vacio">🔎 No se encontró ninguna venta.</div>'
+        : '<div class="vacio">🛒 No hay ventas.</div>';
     return;
-
   }
-
-
   lista.innerHTML="";
-
-
   filtradas.forEach(
     function(v){
-
       const div =
-        document.createElement(
-          "div"
-        );
-
-
+        document.createElement("div");
       div.className="venta";
-
-
       const precioMostrar =
-        Number(
-          v.precioUnitario
-        ) || 0;
-
-
+        Number(v.precioUnitario)||0;
       const precioHabitual =
-        Number(
-          v.precioHabitual
-        );
-
-
+        Number(v.precioHabitual);
       let diferenciaPrecio="";
-
-
-      if(Number.isFinite(
-        precioHabitual
-      )){
-
-        if(precioMostrar <
-           precioHabitual){
-
+      if(Number.isFinite(precioHabitual)){
+        if(precioMostrar<precioHabitual){
           diferenciaPrecio =
             "<br>" +
             "<span class='negativo'>" +
             "📉 Vendido más barato que el precio habitual" +
             "</span>";
-
-        }else if(
-          precioMostrar >
-          precioHabitual
-        ){
-
+        }else if(precioMostrar>precioHabitual){
           diferenciaPrecio =
             "<br>" +
             "<span class='positivo'>" +
             "📈 Vendido más caro que el precio habitual" +
             "</span>";
-
         }
-
       }
-
-
       div.innerHTML =
-
         "<b>🛒 " +
         escapar(v.producto) +
         "</b><br>" +
-
         "📅 " +
         new Date(v.fecha)
-          .toLocaleString(
-            "es-ES"
-          ) +
-
+          .toLocaleString("es-ES") +
         "<br>" +
-
         "📦 Cantidad: " +
         escapar(v.cantidad) +
-
         "<br>" +
-
         "💶 Precio/unidad: " +
-        euros(
-          precioMostrar
-        ) +
-
+        euros(precioMostrar) +
         diferenciaPrecio +
-
         "<br>" +
-
         "💵 Total: " +
         euros(v.total) +
-
         "<br>" +
-
         "<span class='positivo'>" +
         "📈 Beneficio: " +
         euros(v.beneficio) +
         "</span>";
-
-
       const borrar =
-        document.createElement(
-          "button"
-        );
-
-
+        document.createElement("button");
       borrar.className =
         "btn-eliminar-venta";
-
-
       borrar.textContent =
         "🗑️ ELIMINAR VENTA Y DEVOLVER STOCK";
-
-
       borrar.onclick =
         function(){
-
           eliminarVenta(v);
-
         };
-
-
-      div.appendChild(
-        borrar
-      );
-
-
-      lista.appendChild(
-        div
-      );
-
+      div.appendChild(borrar);
+      lista.appendChild(div);
     }
   );
-
-}
-
-
+};
 /* =====================================================
    ELIMINAR VENTA
-   ===================================================== */
-
+===================================================== */
 async function eliminarVenta(v){
-
   const cantidad =
-    Number(v.cantidad) || 0;
-
-
+    Number(v.cantidad)||0;
   const producto =
     productos.find(
       function(p){
-
         return (
-
-          String(p.codigo || "")
-          ===
-          String(v.codigo || "")
-
+          String(p.codigo||"") ===
+          String(v.codigo||"")
         );
-
       }
     );
-
-
   let mensaje =
-
     "⚠️ ¿Eliminar esta venta?\n\n" +
-
     "Producto: " +
     v.producto +
     "\n" +
-
     "Cantidad: " +
     cantidad +
     "\n" +
-
     "Total: " +
     euros(v.total) +
     "\n\n";
-
-
   if(producto){
-
     mensaje +=
-
       "📦 Se devolverán " +
       cantidad +
       " unidades al stock.\n\n";
-
   }else{
-
     mensaje +=
-
       "⚠️ El producto ya no existe en el inventario.\n" +
       "La venta se eliminará, pero NO se podrá devolver el stock.\n\n";
-
   }
-
-
   mensaje +=
     "¿Continuar?";
-
-
   if(!confirm(mensaje)){
-
     return;
-
   }
-
-
   try{
-
-    /* =================================================
-       SI EL PRODUCTO EXISTE,
-       DEVOLVEMOS EL STOCK
-    ================================================= */
-
     if(producto){
-
       const stockActual =
-        Number(
-          producto.stock
-        ) || 0;
-
-
+        Number(producto.stock)||0;
       const nuevoStock =
-        stockActual +
-        cantidad;
-
-
+        stockActual+cantidad;
       await updateDoc(
-
-        doc(
-          db,
-          "productos",
-          producto.id
-        ),
-
+        doc(db,"productos",producto.id),
         {
-
           stock:nuevoStock
-
         }
-
       );
-
-
-      producto.stock =
-        nuevoStock;
-
-
-      if(productoActual &&
-         productoActual.id ===
-         producto.id){
-
-        productoActual.stock =
-          nuevoStock;
-
-
-        document
-          .getElementById(
-            "stockResultado"
-          )
-          .textContent =
-            "Stock: " +
-            nuevoStock;
-
+      producto.stock=nuevoStock;
+      if(
+        productoActual &&
+        productoActual.id===producto.id
+      ){
+        productoActual.stock=nuevoStock;
+        document.getElementById("stockResultado")
+          .textContent=
+            "Stock: " + nuevoStock;
       }
-
     }
-
-
-    /* =================================================
-       BORRAMOS EL MOVIMIENTO
-    ================================================= */
-
     if(v.id){
-
       const consulta =
         query(
-
-          collection(
-            db,
-            "movimientos"
-          ),
-
-          where(
-            "ventaId",
-            "==",
-            v.id
-          )
-
+          collection(db,"movimientos"),
+          where("ventaId","==",v.id)
         );
-
-
       const movimientos =
-        await getDocs(
-          consulta
-        );
-
-
+        await getDocs(consulta);
       for(
         const movimiento
         of movimientos.docs
       ){
-
         await deleteDoc(
-
           doc(
             db,
             "movimientos",
             movimiento.id
           )
-
         );
-
       }
-
     }
-
-
-    /* =================================================
-       BORRAMOS LA VENTA
-    ================================================= */
-
     await deleteDoc(
-
-      doc(
-        db,
-        "ventas",
-        v.id
-      )
-
+      doc(db,"ventas",v.id)
     );
-
-
     mostrarInventario();
-
-
     alert(
-
       producto
-
         ? "✅ Venta eliminada y " +
           cantidad +
           " unidades devueltas al stock."
-
         : "✅ Venta eliminada.\n\n" +
           "⚠️ No se pudo devolver stock porque el producto ya no existe."
-
     );
-
-
   }catch(error){
-
     mostrarError(
-
       "NO SE PUDO ELIMINAR LA VENTA.\n\n" +
       errorTexto(error)
-
     );
-
   }
-
 }
-
-
 /* =====================================================
    RESUMEN
 ===================================================== */
-
 function actualizarInicio(){
-
   let unidades=0;
-
   let compra=0;
-
   let venta=0;
-
   let beneficio=0;
-
   let bajo=0;
-
-
   productos.forEach(
     function(p){
-
       const stock =
         Number(p.stock)||0;
-
       const pc =
-        Number(
-          p.precioCompra
-        )||0;
-
+        Number(p.precioCompra)||0;
       const pv =
-        Number(
-          p.precioVenta
-        )||0;
-
-
-      unidades +=
-        stock;
-
-
-      compra +=
-        stock*pc;
-
-
-      venta +=
-        stock*pv;
-
-
-      beneficio +=
-        stock*(pv-pc);
-
-
+        Number(p.precioVenta)||0;
+      unidades += stock;
+      compra += stock*pc;
+      venta += stock*pv;
+      beneficio += stock*(pv-pc);
       if(stock<=2){
-
         bajo++;
-
       }
-
     }
   );
-
-
-  document
-    .getElementById(
-      "totalProductos"
-    )
-    .textContent =
-      productos.length;
-
-
-  document
-    .getElementById(
-      "totalUnidades"
-    )
-    .textContent =
-      unidades;
-
-
-  document
-    .getElementById(
-      "valorCompra"
-    )
-    .textContent =
-      euros(compra);
-
-
-  document
-    .getElementById(
-      "valorVenta"
-    )
-    .textContent =
-      euros(venta);
-
-
-  document
-    .getElementById(
-      "beneficioTotal"
-    )
-    .textContent =
-      euros(beneficio);
-
-
-  document
-    .getElementById(
-      "totalBajo"
-    )
-    .textContent =
-      bajo;
-
-
+  document.getElementById("totalProductos")
+    .textContent=productos.length;
+  document.getElementById("totalUnidades")
+    .textContent=unidades;
+  document.getElementById("valorCompra")
+    .textContent=euros(compra);
+  document.getElementById("valorVenta")
+    .textContent=euros(venta);
+  document.getElementById("beneficioTotal")
+    .textContent=euros(beneficio);
+  document.getElementById("totalBajo")
+    .textContent=bajo;
   const hoy =
     new Date()
-      .toLocaleDateString(
-        "es-ES"
-      );
-
-
+      .toLocaleDateString("es-ES");
   const hoyVentas =
     ventas.filter(
       function(v){
-
         return (
-
           new Date(v.fecha)
-            .toLocaleDateString(
-              "es-ES"
-            )
-          ===
-          hoy
-
+            .toLocaleDateString("es-ES")
+          === hoy
         );
-
       }
     );
-
-
   let ingresos=0;
-
   let beneficioHoy=0;
-
   let unidadesHoy=0;
-
-
   hoyVentas.forEach(
     function(v){
-
       ingresos +=
         Number(v.total)||0;
-
       beneficioHoy +=
         Number(v.beneficio)||0;
-
       unidadesHoy +=
         Number(v.cantidad)||0;
-
     }
   );
-
-
-  document
-    .getElementById(
-      "ventasHoy"
-    )
-    .textContent =
-      hoyVentas.length;
-
-
-  document
-    .getElementById(
-      "ingresosHoy"
-    )
-    .textContent =
-      euros(ingresos);
-
-
-  document
-    .getElementById(
-      "beneficioHoy"
-    )
-    .textContent =
-      euros(beneficioHoy);
-
-
-  document
-    .getElementById(
-      "unidadesVendidasHoy"
-    )
-    .textContent =
-      unidadesHoy;
-
-
+  document.getElementById("ventasHoy")
+    .textContent=hoyVentas.length;
+  document.getElementById("ingresosHoy")
+    .textContent=euros(ingresos);
+  document.getElementById("beneficioHoy")
+    .textContent=euros(beneficioHoy);
+  document.getElementById("unidadesVendidasHoy")
+    .textContent=unidadesHoy;
   const lista =
-    document.getElementById(
-      "listaBajo"
-    );
-
-
+    document.getElementById("listaBajo");
   const bajos =
     productos.filter(
       function(p){
-
         return (
           Number(p.stock)||0
-        ) <= 2;
-
+        )<=2;
       }
     );
-
-
   if(!bajos.length){
-
     lista.innerHTML =
-      '<div class="vacio">' +
-      '✅ No hay stock bajo.' +
-      '</div>';
-
+      '<div class="vacio">✅ No hay stock bajo.</div>';
   }else{
-
     lista.innerHTML="";
-
-
     bajos.forEach(
       function(p){
-
         const div =
-          document.createElement(
-            "div"
-          );
-
-
-        div.className =
-          "alerta";
-
-
+          document.createElement("div");
+        div.className="alerta";
         div.innerHTML =
           "⚠️ <b>" +
           escapar(p.producto) +
           "</b> — Stock: " +
           (p.stock||0);
-
-
-        lista.appendChild(
-          div
-        );
-
+        lista.appendChild(div);
       }
     );
-
   }
-
 }
-
-
 /* =====================================================
    FOTO
 ===================================================== */
-
 window.cargarFoto =
 function(event){
-
   const archivo =
     event.target.files[0];
-
-
   if(!archivo){
-
     return;
-
   }
-
-
   const lector =
     new FileReader();
-
-
   lector.onload =
     function(e){
-
       const imagen =
         new Image();
-
-
       imagen.onload =
         function(){
-
           const max=500;
-
-          let ancho =
-            imagen.width;
-
-          let alto =
-            imagen.height;
-
-
-          if(
-            ancho>max ||
-            alto>max
-          ){
-
+          let ancho=imagen.width;
+          let alto=imagen.height;
+          if(ancho>max || alto>max){
             if(ancho>alto){
-
-              alto =
-                alto*(max/ancho);
-
+              alto=alto*(max/ancho);
               ancho=max;
-
             }else{
-
-              ancho =
-                ancho*(max/alto);
-
+              ancho=ancho*(max/alto);
               alto=max;
-
             }
-
           }
-
-
           const canvas =
-            document.createElement(
-              "canvas"
-            );
-
-
+            document.createElement("canvas");
           canvas.width=ancho;
-
           canvas.height=alto;
-
-
           canvas
             .getContext("2d")
             .drawImage(
@@ -3657,239 +1787,101 @@ function(event){
               ancho,
               alto
             );
-
-
           fotoBase64 =
             canvas.toDataURL(
               "image/jpeg",
               0.75
             );
-
-
           const preview =
-            document.getElementById(
-              "fotoPreview"
-            );
-
-
-          preview.src =
-            fotoBase64;
-
-
-          preview.style.display =
-            "block";
-
+            document.getElementById("fotoPreview");
+          preview.src=fotoBase64;
+          preview.style.display="block";
         };
-
-
-      imagen.src =
-        e.target.result;
-
+      imagen.src=e.target.result;
     };
-
-
-  lector.readAsDataURL(
-    archivo
-  );
-
+  lector.readAsDataURL(archivo);
 };
-
-
 /* =====================================================
    COPIA DE SEGURIDAD
 ===================================================== */
-
 window.exportarCopia =
 function(){
-
   try{
-
     const copia={
-
-      fecha:
-        new Date()
-          .toISOString(),
-
+      fecha:new Date().toISOString(),
       productos:
-
         productos.map(
           function(p){
-
             return {
-
-              producto:
-                p.producto||"",
-
-              codigo:
-                p.codigo||"",
-
-              stock:
-                Number(p.stock)||0,
-
-              precioCompra:
-                Number(
-                  p.precioCompra
-                )||0,
-
-              precioVenta:
-                Number(
-                  p.precioVenta
-                )||0,
-
-              beneficio:
-                Number(
-                  p.beneficio
-                )||0,
-
-              foto:
-                p.foto||""
-
+              producto:p.producto||"",
+              codigo:p.codigo||"",
+              stock:Number(p.stock)||0,
+              precioCompra:Number(p.precioCompra)||0,
+              precioVenta:Number(p.precioVenta)||0,
+              beneficio:Number(p.beneficio)||0,
+              foto:p.foto||""
             };
-
           }
         ),
-
-
       ventas:
-
         ventas.map(
           function(v){
-
             return {
-
-              fecha:
-                v.fecha||"",
-
-              codigo:
-                v.codigo||"",
-
-              producto:
-                v.producto||"",
-
-              cantidad:
-                Number(
-                  v.cantidad
-                )||0,
-
-              precioUnitario:
-                Number(
-                  v.precioUnitario
-                )||0,
-
-              precioHabitual:
-                Number(
-                  v.precioHabitual
-                )||0,
-
-              total:
-                Number(
-                  v.total
-                )||0,
-
-              beneficio:
-                Number(
-                  v.beneficio
-                )||0
-
+              fecha:v.fecha||"",
+              codigo:v.codigo||"",
+              producto:v.producto||"",
+              cantidad:Number(v.cantidad)||0,
+              precioUnitario:Number(v.precioUnitario)||0,
+              precioHabitual:Number(v.precioHabitual)||0,
+              total:Number(v.total)||0,
+              beneficio:Number(v.beneficio)||0
             };
-
           }
         )
-
     };
-
-
     const contenido =
       JSON.stringify(
         copia,
         null,
         2
       );
-
-
     const blob =
       new Blob(
         [contenido],
         {
-          type:
-            "application/json"
+          type:"application/json"
         }
       );
-
-
     const url =
-      URL.createObjectURL(
-        blob
-      );
-
-
+      URL.createObjectURL(blob);
     const enlace =
-      document.createElement(
-        "a"
-      );
-
-
+      document.createElement("a");
     enlace.href=url;
-
-
     enlace.download =
       "copia-inventario-" +
       new Date()
         .toISOString()
         .slice(0,10) +
       ".json";
-
-
-    document
-      .body
-      .appendChild(
-        enlace
-      );
-
-
+    document.body.appendChild(enlace);
     enlace.click();
-
     enlace.remove();
-
-
-    URL.revokeObjectURL(
-      url
-    );
-
-
-    document
-      .getElementById(
-        "mensajeCopia"
-      )
+    URL.revokeObjectURL(url);
+    document.getElementById("mensajeCopia")
       .innerHTML =
-        '<div class="ok">' +
-        '✅ Copia descargada correctamente.' +
-        '</div>';
-
-
+        '<div class="ok">✅ Copia descargada correctamente.</div>';
   }catch(error){
-
     mostrarError(
-
       "NO SE PUDO CREAR LA COPIA.\n\n" +
       errorTexto(error),
-
       "mensajeCopia"
-
     );
-
   }
-
 };
-
-
 /* =====================================================
    ARRANCAR
 ===================================================== */
-
 conectar();
-
 </script>
-
 </body>
 </html>
