@@ -332,53 +332,53 @@ button{
   <div id="errorFirebaseInicio"></div>
   <div class="tarjeta">
     <h2>📊 Resumen</h2>
-<div class="stats">
-  <div class="stat">
-    Productos
-    <b id="totalProductos">0</b>
-  </div>
-  <div class="stat">
-    Unidades
-    <b id="totalUnidades">0</b>
-  </div>
-  <div class="stat">
-    Valor compra
-    <b id="valorCompra">0 €</b>
-  </div>
-  <div class="stat">
-    Valor venta
-    <b id="valorVenta">0 €</b>
-  </div>
-  <div class="stat">
-    Beneficio potencial
-    <b id="beneficioTotal">0 €</b>
-  </div>
-  <div class="stat">
-    Stock bajo
-    <b id="totalBajo">0</b>
-  </div>
-</div>
+    <div class="stats">
+      <div class="stat">
+        Productos
+        <b id="totalProductos">0</b>
+      </div>
+      <div class="stat">
+        Unidades
+        <b id="totalUnidades">0</b>
+      </div>
+      <div class="stat">
+        Valor compra
+        <b id="valorCompra">0 €</b>
+      </div>
+      <div class="stat">
+        Valor venta
+        <b id="valorVenta">0 €</b>
+      </div>
+      <div class="stat">
+        Beneficio potencial
+        <b id="beneficioTotal">0 €</b>
+      </div>
+      <div class="stat">
+        Stock bajo
+        <b id="totalBajo">0</b>
+      </div>
+    </div>
   </div>
   <div class="tarjeta">
     <h3>🛒 Ventas de hoy</h3>
-<div class="stats">
-  <div class="stat">
-    Ventas
-    <b id="ventasHoy">0</b>
-  </div>
-  <div class="stat">
-    Ingresos
-    <b id="ingresosHoy">0 €</b>
-  </div>
-  <div class="stat">
-    Beneficio
-    <b id="beneficioHoy">0 €</b>
-  </div>
-  <div class="stat">
-    Unidades
-    <b id="unidadesVendidasHoy">0</b>
-  </div>
-</div>
+    <div class="stats">
+      <div class="stat">
+        Ventas
+        <b id="ventasHoy">0</b>
+      </div>
+      <div class="stat">
+        Ingresos
+        <b id="ingresosHoy">0 €</b>
+      </div>
+      <div class="stat">
+        Beneficio
+        <b id="beneficioHoy">0 €</b>
+      </div>
+      <div class="stat">
+        Unidades
+        <b id="unidadesVendidasHoy">0</b>
+      </div>
+    </div>
   </div>
   <div class="tarjeta">
     <h3>⚠️ Stock bajo</h3>
@@ -387,170 +387,170 @@ button{
 </section>
 <section id="escaner" class="seccion">
   <div class="tarjeta">
-<div id="mensaje" class="mensaje">
-  Pulsa iniciar y apunta al código
-</div>
-<div id="reader"></div>
-<button
-  id="btnIniciar"
-  class="btn negro"
-  onclick="iniciarEscaner()">
-  📷 INICIAR ESCÁNER
-</button>
-<button
-  id="btnParar"
-  class="btn gris"
-  onclick="pararEscaner()"
-  style="display:none">
-  ⏹️ PARAR CÁMARA
-</button>
+    <div id="mensaje" class="mensaje">
+      Pulsa iniciar y apunta al código
+    </div>
+    <div id="reader"></div>
+    <button
+      id="btnIniciar"
+      class="btn negro"
+      onclick="iniciarEscaner()">
+      📷 INICIAR ESCÁNER
+    </button>
+    <button
+      id="btnParar"
+      class="btn gris"
+      onclick="pararEscaner()"
+      style="display:none">
+      ⏹️ PARAR CÁMARA
+    </button>
   </div>
   <div id="resultado" class="tarjeta" style="display:none">
-<img id="fotoResultado" class="foto">
-<div id="nombreResultado" class="nombre"></div>
-<div id="codigoResultado" class="codigo"></div>
-<div id="stockResultado" class="stock-grande"></div>
-<div id="precioResultado" class="precio"></div>
-<div id="beneficioResultado" class="precio"></div>
-<div id="comentarioResultado"></div>
-<div class="dos">
-  <button class="btn verde" onclick="entradaStock()">
-    📦 +1
-  </button>
-  <button class="btn rojo" onclick="salidaStock()">
-    ➖ -1
-  </button>
-</div>
-<button class="btn azul" onclick="venderProducto()">
-  🛒 VENDER
-</button>
-<div class="dos">
-  <button class="btn naranja" onclick="editarActual()">
-    ✏️ Editar
-  </button>
-  <button class="btn rojo" onclick="eliminarActual()">
-    🗑️ Eliminar
-  </button>
-</div>
+    <img id="fotoResultado" class="foto">
+    <div id="nombreResultado" class="nombre"></div>
+    <div id="codigoResultado" class="codigo"></div>
+    <div id="stockResultado" class="stock-grande"></div>
+    <div id="precioResultado" class="precio"></div>
+    <div id="beneficioResultado" class="precio"></div>
+    <div id="comentarioResultado"></div>
+    <div class="dos">
+      <button class="btn verde" onclick="entradaStock()">
+        📦 +1
+      </button>
+      <button class="btn rojo" onclick="salidaStock()">
+        ➖ -1
+      </button>
+    </div>
+    <button class="btn azul" onclick="venderProducto()">
+      🛒 VENDER
+    </button>
+    <div class="dos">
+      <button class="btn naranja" onclick="editarActual()">
+        ✏️ Editar
+      </button>
+      <button class="btn rojo" onclick="eliminarActual()">
+        🗑️ Eliminar
+      </button>
+    </div>
   </div>
 </section>
 <section id="inventario" class="seccion">
   <div class="tarjeta">
-<h2>📦 Inventario</h2>
-<input
-  id="buscador"
-  type="search"
-  placeholder="🔎 Buscar producto o código..."
-  oninput="mostrarInventario()">
-<div id="listaInventario"></div>
+    <h2>📦 Inventario</h2>
+    <input
+      id="buscador"
+      type="search"
+      placeholder="🔎 Buscar producto o código..."
+      oninput="mostrarInventario()">
+    <div id="listaInventario"></div>
   </div>
 </section>
 <section id="ventas" class="seccion">
   <div class="tarjeta">
-<h2>🛒 Historial de ventas</h2>
-<div class="stats">
-  <div class="stat">
-    Ventas
-    <b id="totalVentas">0</b>
-  </div>
-  <div class="stat">
-    Ingresos
-    <b id="totalIngresos">0 €</b>
-  </div>
-  <div class="stat">
-    Beneficio
-    <b id="totalBeneficioVentas">0 €</b>
-  </div>
-  <div class="stat">
-    Unidades
-    <b id="totalUnidadesVentas">0</b>
-  </div>
-</div>
+    <h2>🛒 Historial de ventas</h2>
+    <div class="stats">
+      <div class="stat">
+        Ventas
+        <b id="totalVentas">0</b>
+      </div>
+      <div class="stat">
+        Ingresos
+        <b id="totalIngresos">0 €</b>
+      </div>
+      <div class="stat">
+        Beneficio
+        <b id="totalBeneficioVentas">0 €</b>
+      </div>
+      <div class="stat">
+        Unidades
+        <b id="totalUnidadesVentas">0</b>
+      </div>
+    </div>
   </div>
   <div class="tarjeta">
-<input
-  id="buscarVentas"
-  type="search"
-  placeholder="🔎 Buscar venta o producto..."
-  oninput="mostrarVentas()">
-<div id="listaVentas"></div>
+    <input
+      id="buscarVentas"
+      type="search"
+      placeholder="🔎 Buscar venta o producto..."
+      oninput="mostrarVentas()">
+    <div id="listaVentas"></div>
   </div>
 </section>
 <section id="agregar" class="seccion">
   <div class="tarjeta">
-<h2 id="tituloForm">➕ Añadir producto</h2>
-<div id="mensajeGuardar"></div>
-<label for="fotoInput">📸 Foto</label>
-<input
-  id="fotoInput"
-  type="file"
-  accept="image/*"
-  onchange="cargarFoto(event)">
-<img id="fotoPreview">
-<label for="productoInput">Producto</label>
-<input
-  id="productoInput"
-  type="text"
-  placeholder="Nombre del producto">
-<label for="codigoInput">Código de barras</label>
-<input
-  id="codigoInput"
-  type="text"
-  inputmode="numeric"
-  placeholder="Código de barras">
-<label for="stockInput">Stock</label>
-<input
-  id="stockInput"
-  type="number"
-  min="0"
-  value="0">
-<label for="compraInput">Precio de compra (€)</label>
-<input
-  id="compraInput"
-  type="number"
-  min="0"
-  step="0.01"
-  placeholder="0.00">
-<label for="ventaInput">Precio de venta (€)</label>
-<input
-  id="ventaInput"
-  type="number"
-  min="0"
-  step="0.01"
-  placeholder="0.00">
-<label for="comentarioInput">
-  📝 Comentario adicional
-</label>
-<textarea
-  id="comentarioInput"
-  placeholder="Escribe aquí cualquier información adicional sobre este producto..."></textarea>
-<button
-  id="guardarBtn"
-  class="btn negro"
-  onclick="guardarProducto()">
-  💾 GUARDAR PRODUCTO
-</button>
-<button
-  id="cancelarBtn"
-  class="btn gris"
-  onclick="cancelarEdicion()"
-  style="display:none">
-  ❌ CANCELAR
-</button>
+    <h2 id="tituloForm">➕ Añadir producto</h2>
+    <div id="mensajeGuardar"></div>
+    <label for="fotoInput">📸 Foto</label>
+    <input
+      id="fotoInput"
+      type="file"
+      accept="image/*"
+      onchange="cargarFoto(event)">
+    <img id="fotoPreview">
+    <label for="productoInput">Producto</label>
+    <input
+      id="productoInput"
+      type="text"
+      placeholder="Nombre del producto">
+    <label for="codigoInput">Código de barras</label>
+    <input
+      id="codigoInput"
+      type="text"
+      inputmode="numeric"
+      placeholder="Código de barras">
+    <label for="stockInput">Stock</label>
+    <input
+      id="stockInput"
+      type="number"
+      min="0"
+      value="0">
+    <label for="compraInput">Precio de compra (€)</label>
+    <input
+      id="compraInput"
+      type="number"
+      min="0"
+      step="0.01"
+      placeholder="0.00">
+    <label for="ventaInput">Precio de venta (€)</label>
+    <input
+      id="ventaInput"
+      type="number"
+      min="0"
+      step="0.01"
+      placeholder="0.00">
+    <label for="comentarioInput">
+      📝 Comentario adicional
+    </label>
+    <textarea
+      id="comentarioInput"
+      placeholder="Escribe aquí cualquier información adicional sobre este producto..."></textarea>
+    <button
+      id="guardarBtn"
+      class="btn negro"
+      onclick="guardarProducto()">
+      💾 GUARDAR PRODUCTO
+    </button>
+    <button
+      id="cancelarBtn"
+      class="btn gris"
+      onclick="cancelarEdicion()"
+      style="display:none">
+      ❌ CANCELAR
+    </button>
   </div>
 </section>
 <section id="copia" class="seccion">
   <div class="tarjeta">
-<h2>💾 Copia de seguridad</h2>
-<p>
-  Guarda una copia de todos tus productos y ventas en tu móvil.
-</p>
-<button
-  class="btn morado"
-  onclick="exportarCopia()">
-  💾 DESCARGAR COPIA DE SEGURIDAD
-</button>
-<div id="mensajeCopia"></div>
+    <h2>💾 Copia de seguridad</h2>
+    <p>
+      Guarda una copia de todos tus productos y ventas en tu móvil.
+    </p>
+    <button
+      class="btn morado"
+      onclick="exportarCopia()">
+      💾 DESCARGAR COPIA DE SEGURIDAD
+    </button>
+    <div id="mensajeCopia"></div>
   </div>
 </section>
 <script
@@ -579,6 +579,22 @@ import {
   onAuthStateChanged
 } from
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+/* =====================================================
+   COMENTARIO PREDETERMINADO
+===================================================== */
+const COMENTARIO_PREDETERMINADO =
+`-Vinted Móvil Ursu:
+-Vinted Móvil Almu:
+-Vinted Móvil Negro:
+-Wallapop Móvil Negro:
+-Vinted Móvil Rosa:
+-Wallapop Móvil Rosa:
+-Vinted Móvil Rojo:
+-Vinted Móvil Amarillo:
+-Wallapop Móvil Amarillo:`;
+/* =====================================================
+   FIREBASE
+===================================================== */
 const firebaseConfig = {
   apiKey:
     "AIzaSyArKREs5r_6zt5FpiJn9m2Tb-J9XkitzQI",
@@ -820,11 +836,16 @@ async function(){
         .getElementById("ventaInput")
         .value
     ) || 0;
-  const comentario =
+  let comentario =
     document
       .getElementById("comentarioInput")
       .value
       .trim();
+  /* Si está vacío, utiliza el comentario predeterminado */
+  if(!comentario){
+    comentario =
+      COMENTARIO_PREDETERMINADO;
+  }
   if(!nombre){
     mostrarError(
       "Escribe el nombre del producto.",
@@ -940,10 +961,16 @@ function iniciarEdicion(p){
     .getElementById("ventaInput")
     .value =
       p.precioVenta || 0;
+  /*
+     Si el producto antiguo no tiene comentario,
+     se carga automáticamente el comentario
+     predeterminado.
+  */
   document
     .getElementById("comentarioInput")
     .value =
-      p.comentario || "";
+      p.comentario ||
+      COMENTARIO_PREDETERMINADO;
   fotoBase64 =
     p.foto || "";
   const preview =
@@ -1000,9 +1027,16 @@ function(){
   document
     .getElementById("ventaInput")
     .value="";
+  /*
+     IMPORTANTE:
+     Cuando terminamos de añadir/editar,
+     el formulario vuelve a mostrar
+     automáticamente el comentario predeterminado.
+  */
   document
     .getElementById("comentarioInput")
-    .value="";
+    .value =
+      COMENTARIO_PREDETERMINADO;
   document
     .getElementById("fotoInput")
     .value="";
@@ -1187,11 +1221,18 @@ function mostrarProducto(p){
       );
   const comentario =
     document.getElementById("comentarioResultado");
-  if(p.comentario){
+  /*
+     Si un producto antiguo no tiene comentario,
+     también se muestra el texto predeterminado.
+  */
+  const textoComentario =
+    p.comentario ||
+    COMENTARIO_PREDETERMINADO;
+  if(textoComentario){
     comentario.innerHTML =
       '<div class="comentario">' +
       '📝 <b>Comentario:</b><br>' +
-      escapar(p.comentario) +
+      escapar(textoComentario) +
       '</div>';
   }else{
     comentario.innerHTML =
@@ -1724,7 +1765,6 @@ function(){
         "📈 Beneficio: " +
         euros(v.beneficio) +
         "</span>";
-      /* BOTÓN EDITAR */
       const editar =
         document.createElement("button");
       editar.className =
@@ -1736,7 +1776,6 @@ function(){
           editarVenta(v);
         };
       div.appendChild(editar);
-      /* BOTÓN ELIMINAR */
       const borrar =
         document.createElement("button");
       borrar.className =
@@ -1879,7 +1918,6 @@ async function editarVenta(v){
     return;
   }
   try{
-    /* ACTUALIZAR VENTA */
     await updateDoc(
       doc(
         db,
@@ -1897,7 +1935,6 @@ async function editarVenta(v){
           nuevoBeneficio
       }
     );
-    /* AJUSTAR STOCK */
     if(producto){
       await updateDoc(
         doc(
@@ -1926,7 +1963,6 @@ async function editarVenta(v){
             nuevoStock;
       }
     }
-    /* ACTUALIZAR MOVIMIENTO */
     if(v.id){
       const consulta =
         query(
@@ -2315,7 +2351,8 @@ function(){
               foto:
                 p.foto||"",
               comentario:
-                p.comentario||""
+                p.comentario ||
+                COMENTARIO_PREDETERMINADO
             };
           }
         ),
