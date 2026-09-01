@@ -609,16 +609,16 @@ const firebaseConfig = {
   appId:
     "1:214570994765:web:0d31eedd1cfd69e1636004"
 };
-let app = null;
-let db = null;
-let auth = null;
-let productos = [];
-let ventas = [];
-let scanner = null;
-let escaneando = false;
-let productoActual = null;
-let indiceEditando = null;
-let fotoBase64 = "";
+let app=null;
+let db=null;
+let auth=null;
+let productos=[];
+let ventas=[];
+let scanner=null;
+let escaneando=false;
+let productoActual=null;
+let indiceEditando=null;
+let fotoBase64="";
 /* =====================================================
    FUNCIONES GENERALES
 ===================================================== */
@@ -633,7 +633,8 @@ function escapar(texto){
 function euros(numero){
   return Number(numero || 0)
     .toFixed(2)
-    .replace(".",",") + " €";
+    .replace(".",",") +
+    " €";
 }
 function errorTexto(error){
   if(!error){
@@ -644,7 +645,10 @@ function errorTexto(error){
     (error.message || String(error))
   );
 }
-function mostrarError(texto,destino="errorFirebaseInicio"){
+function mostrarError(
+  texto,
+  destino="errorFirebaseInicio"
+){
   console.error(texto);
   const elemento =
     document.getElementById(destino);
@@ -705,7 +709,7 @@ function escucharDatos(){
   onSnapshot(
     collection(db,"productos"),
     function(snapshot){
-      productos = [];
+      productos=[];
       snapshot.forEach(
         function(d){
           productos.push({
@@ -727,7 +731,7 @@ function escucharDatos(){
   onSnapshot(
     collection(db,"ventas"),
     function(snapshot){
-      ventas = [];
+      ventas=[];
       snapshot.forEach(
         function(d){
           ventas.push({
@@ -779,7 +783,7 @@ function(nombre){
         x.classList.remove("activo");
       }
     );
-  const mapa = {
+  const mapa={
     inicio:"nInicio",
     escaner:"nEscaner",
     inventario:"nInventario",
@@ -800,7 +804,7 @@ window.guardarProducto =
 async function(){
   const mensaje =
     document.getElementById("mensajeGuardar");
-  mensaje.innerHTML = "";
+  mensaje.innerHTML="";
   if(!db){
     mostrarError(
       "Firebase todavía no está conectado.",
@@ -841,7 +845,6 @@ async function(){
       .getElementById("comentarioInput")
       .value
       .trim();
-  /* Si está vacío, utiliza el comentario predeterminado */
   if(!comentario){
     comentario =
       COMENTARIO_PREDETERMINADO;
@@ -876,20 +879,21 @@ async function(){
     );
     return;
   }
-  const datos = {
+  const datos={
     producto:nombre,
     codigo:codigo,
     stock:stock,
     precioCompra:compra,
     precioVenta:venta,
-    beneficio:venta-compra,
+    beneficio:
+      venta-compra,
     foto:fotoBase64,
     comentario:comentario
   };
   const boton =
     document.getElementById("guardarBtn");
   try{
-    boton.disabled = true;
+    boton.disabled=true;
     boton.textContent =
       "⏳ Guardando...";
     if(indiceEditando){
@@ -961,11 +965,6 @@ function iniciarEdicion(p){
     .getElementById("ventaInput")
     .value =
       p.precioVenta || 0;
-  /*
-     Si el producto antiguo no tiene comentario,
-     se carga automáticamente el comentario
-     predeterminado.
-  */
   document
     .getElementById("comentarioInput")
     .value =
@@ -1010,8 +1009,7 @@ function(){
       "💾 GUARDAR PRODUCTO";
   document
     .getElementById("cancelarBtn")
-    .style.display =
-      "none";
+    .style.display="none";
   document
     .getElementById("productoInput")
     .value="";
@@ -1027,12 +1025,6 @@ function(){
   document
     .getElementById("ventaInput")
     .value="";
-  /*
-     IMPORTANTE:
-     Cuando terminamos de añadir/editar,
-     el formulario vuelve a mostrar
-     automáticamente el comentario predeterminado.
-  */
   document
     .getElementById("comentarioInput")
     .value =
@@ -1201,11 +1193,13 @@ function mostrarProducto(p){
   document
     .getElementById("codigoResultado")
     .textContent =
-      "Código: " + (p.codigo || "");
+      "Código: " +
+      (p.codigo || "");
   document
     .getElementById("stockResultado")
     .textContent =
-      "Stock: " + (p.stock || 0);
+      "Stock: " +
+      (p.stock || 0);
   document
     .getElementById("precioResultado")
     .textContent =
@@ -1221,10 +1215,6 @@ function mostrarProducto(p){
       );
   const comentario =
     document.getElementById("comentarioResultado");
-  /*
-     Si un producto antiguo no tiene comentario,
-     también se muestra el texto predeterminado.
-  */
   const textoComentario =
     p.comentario ||
     COMENTARIO_PREDETERMINADO;
@@ -1289,7 +1279,7 @@ async function buscarCodigoFirebase(codigo){
     }
     const d =
       resultado.docs[0];
-    const producto = {
+    const producto={
       id:d.id,
       ...d.data()
     };
@@ -1443,7 +1433,8 @@ async function cambiarStock(p,cantidad){
     await addDoc(
       collection(db,"movimientos"),
       {
-        fecha:new Date().toISOString(),
+        fecha:
+          new Date().toISOString(),
         codigo:p.codigo,
         producto:p.producto,
         tipo:
@@ -1474,7 +1465,7 @@ async function cambiarStock(p,cantidad){
   }
 }
 /* =====================================================
-   VENDER
+   VENDER PRODUCTO
 ===================================================== */
 window.venderProducto =
 async function(){
@@ -1495,7 +1486,8 @@ async function(){
   if(cantidad===null){
     return;
   }
-  cantidad=parseInt(cantidad);
+  cantidad =
+    parseInt(cantidad);
   if(!cantidad || cantidad<1){
     alert("Cantidad no válida.");
     return;
@@ -1552,7 +1544,10 @@ async function(){
       "Cantidad: " +
       cantidad +
       "\n" +
-      "Precio/unidad: " +
+      "Precio compra/unidad: " +
+      euros(compra) +
+      "\n" +
+      "Precio venta/unidad: " +
       euros(precio) +
       "\n" +
       "Total: " +
@@ -1577,6 +1572,11 @@ async function(){
             productoActual.producto,
           cantidad:
             cantidad,
+          /* NUEVO:
+             cada venta guarda su propio
+             precio de compra */
+          precioCompra:
+            compra,
           precioUnitario:
             precio,
           precioHabitual:
@@ -1638,11 +1638,17 @@ async function(){
     mostrarInventario();
     alert(
       "🛒 Venta registrada correctamente.\n\n" +
-      "💶 Precio: " +
+      "💰 Compra: " +
+      euros(compra) +
+      "/unidad\n" +
+      "💶 Venta: " +
       euros(precio) +
       "/unidad\n" +
-      "💰 Total: " +
-      euros(total)
+      "💵 Total: " +
+      euros(total) +
+      "\n\n" +
+      "📈 Beneficio: " +
+      euros(beneficio)
     );
   }catch(error){
     mostrarError(
@@ -1725,6 +1731,33 @@ function(){
       div.className="venta";
       const precioMostrar =
         Number(v.precioUnitario)||0;
+      /*
+         Para ventas antiguas que no tengan
+         precioCompra, usamos temporalmente
+         el precio actual del producto.
+      */
+      let precioCompra;
+      if(
+        v.precioCompra !== undefined &&
+        v.precioCompra !== null
+      ){
+        precioCompra =
+          Number(v.precioCompra)||0;
+      }else{
+        const producto =
+          productos.find(
+            function(p){
+              return (
+                String(p.codigo||"") ===
+                String(v.codigo||"")
+              );
+            }
+          );
+        precioCompra =
+          producto
+            ? Number(producto.precioCompra)||0
+            : 0;
+      }
       const precioHabitual =
         Number(v.precioHabitual);
       let diferenciaPrecio="";
@@ -1754,7 +1787,10 @@ function(){
         "📦 Cantidad: " +
         escapar(v.cantidad) +
         "<br>" +
-        "💶 Precio/unidad: " +
+        "💰 Precio compra/unidad: " +
+        euros(precioCompra) +
+        "<br>" +
+        "💶 Precio venta/unidad: " +
         euros(precioMostrar) +
         diferenciaPrecio +
         "<br>" +
@@ -1797,8 +1833,43 @@ function(){
 async function editarVenta(v){
   const cantidadAnterior =
     Number(v.cantidad)||0;
-  const precioAnterior =
+  const precioVentaAnterior =
     Number(v.precioUnitario)||0;
+  /*
+     Buscar producto relacionado
+  */
+  const producto =
+    productos.find(
+      function(p){
+        return (
+          String(p.codigo||"") ===
+          String(v.codigo||"")
+        );
+      }
+    );
+  /*
+     Las ventas nuevas ya tienen
+     precioCompra.
+     Las ventas antiguas no lo tienen,
+     por lo que usamos temporalmente
+     el precio actual del producto.
+  */
+  let precioCompraAnterior;
+  if(
+    v.precioCompra !== undefined &&
+    v.precioCompra !== null
+  ){
+    precioCompraAnterior =
+      Number(v.precioCompra)||0;
+  }else{
+    precioCompraAnterior =
+      producto
+        ? Number(producto.precioCompra)||0
+        : 0;
+  }
+  /* =====================================================
+     EDITAR CANTIDAD
+  ===================================================== */
   let nuevaCantidad =
     prompt(
       "📦 ¿Cuántas unidades se vendieron finalmente?\n\n" +
@@ -1820,40 +1891,65 @@ async function editarVenta(v){
     );
     return;
   }
-  let nuevoPrecioTexto =
+  /* =====================================================
+     EDITAR PRECIO DE COMPRA
+  ===================================================== */
+  let nuevoPrecioCompraTexto =
     prompt(
-      "💶 ¿A cuánto se vendió finalmente CADA unidad?\n\n" +
-      "Precio actual: " +
-      euros(precioAnterior),
-      precioAnterior.toFixed(2)
+      "💰 ¿A cuánto compraste CADA unidad?\n\n" +
+      "Precio de compra actual: " +
+      euros(precioCompraAnterior),
+      precioCompraAnterior.toFixed(2)
     );
-  if(nuevoPrecioTexto===null){
+  if(nuevoPrecioCompraTexto===null){
     return;
   }
-  nuevoPrecioTexto =
-    nuevoPrecioTexto
+  nuevoPrecioCompraTexto =
+    nuevoPrecioCompraTexto
       .replace(",",".")
       .trim();
-  const nuevoPrecio =
-    Number(nuevoPrecioTexto);
+  const nuevoPrecioCompra =
+    Number(nuevoPrecioCompraTexto);
   if(
-    !Number.isFinite(nuevoPrecio) ||
-    nuevoPrecio<0
+    !Number.isFinite(nuevoPrecioCompra) ||
+    nuevoPrecioCompra<0
   ){
     alert(
-      "❌ Precio no válido."
+      "❌ Precio de compra no válido."
     );
     return;
   }
-  const producto =
-    productos.find(
-      function(p){
-        return (
-          String(p.codigo||"") ===
-          String(v.codigo||"")
-        );
-      }
+  /* =====================================================
+     EDITAR PRECIO DE VENTA
+  ===================================================== */
+  let nuevoPrecioVentaTexto =
+    prompt(
+      "💶 ¿A cuánto se vendió finalmente CADA unidad?\n\n" +
+      "Precio de venta actual: " +
+      euros(precioVentaAnterior),
+      precioVentaAnterior.toFixed(2)
     );
+  if(nuevoPrecioVentaTexto===null){
+    return;
+  }
+  nuevoPrecioVentaTexto =
+    nuevoPrecioVentaTexto
+      .replace(",",".")
+      .trim();
+  const nuevoPrecioVenta =
+    Number(nuevoPrecioVentaTexto);
+  if(
+    !Number.isFinite(nuevoPrecioVenta) ||
+    nuevoPrecioVenta<0
+  ){
+    alert(
+      "❌ Precio de venta no válido."
+    );
+    return;
+  }
+  /* =====================================================
+     CALCULAR STOCK
+  ===================================================== */
   const diferencia =
     nuevaCantidad -
     cantidadAnterior;
@@ -1867,38 +1963,49 @@ async function editarVenta(v){
     if(nuevoStock<0){
       alert(
         "❌ No se puede modificar la venta.\n\n" +
-        "No hay suficiente stock para aumentar la cantidad vendida.\n\n" +
+        "No hay suficiente stock para aumentar " +
+        "la cantidad vendida.\n\n" +
         "Stock disponible actualmente: " +
         stockActual
       );
       return;
     }
   }
-  const precioCompra =
-    producto
-      ? Number(producto.precioCompra)||0
-      : 0;
+  /* =====================================================
+     CALCULAR TOTAL Y BENEFICIO
+  ===================================================== */
   const nuevoTotal =
-    nuevoPrecio *
+    nuevoPrecioVenta *
     nuevaCantidad;
   const nuevoBeneficio =
-    (nuevoPrecio-precioCompra) *
+    (
+      nuevoPrecioVenta -
+      nuevoPrecioCompra
+    ) *
     nuevaCantidad;
+  /* =====================================================
+     CONFIRMAR
+  ===================================================== */
   const confirmar =
     confirm(
       "✏️ MODIFICAR VENTA\n\n" +
       "Producto: " +
       v.producto +
       "\n\n" +
-      "Cantidad: " +
+      "📦 Cantidad: " +
       cantidadAnterior +
       " → " +
       nuevaCantidad +
-      "\n" +
-      "Precio/unidad: " +
-      euros(precioAnterior) +
+      "\n\n" +
+      "💰 Compra/unidad: " +
+      euros(precioCompraAnterior) +
       " → " +
-      euros(nuevoPrecio) +
+      euros(nuevoPrecioCompra) +
+      "\n\n" +
+      "💶 Venta/unidad: " +
+      euros(precioVentaAnterior) +
+      " → " +
+      euros(nuevoPrecioVenta) +
       "\n\n" +
       "💵 Nuevo total: " +
       euros(nuevoTotal) +
@@ -1910,13 +2017,17 @@ async function editarVenta(v){
         producto
           ? "📦 El stock quedará en: " +
             nuevoStock
-          : "⚠️ El producto ya no existe en el inventario. No se modificará stock."
+          : "⚠️ El producto ya no existe en el inventario. " +
+            "No se modificará stock."
       ) +
       "\n\n¿Guardar cambios?"
     );
   if(!confirmar){
     return;
   }
+  /* =====================================================
+     GUARDAR VENTA
+  ===================================================== */
   try{
     await updateDoc(
       doc(
@@ -1927,14 +2038,19 @@ async function editarVenta(v){
       {
         cantidad:
           nuevaCantidad,
+        precioCompra:
+          nuevoPrecioCompra,
         precioUnitario:
-          nuevoPrecio,
+          nuevoPrecioVenta,
         total:
           nuevoTotal,
         beneficio:
           nuevoBeneficio
       }
     );
+    /* =====================================================
+       ACTUALIZAR STOCK
+    ===================================================== */
     if(producto){
       await updateDoc(
         doc(
@@ -1963,6 +2079,9 @@ async function editarVenta(v){
             nuevoStock;
       }
     }
+    /* =====================================================
+       ACTUALIZAR MOVIMIENTO
+    ===================================================== */
     if(v.id){
       const consulta =
         query(
@@ -1998,11 +2117,17 @@ async function editarVenta(v){
       "📦 Cantidad: " +
       nuevaCantidad +
       "\n" +
-      "💶 Precio/unidad: " +
-      euros(nuevoPrecio) +
+      "💰 Compra/unidad: " +
+      euros(nuevoPrecioCompra) +
+      "\n" +
+      "💶 Venta/unidad: " +
+      euros(nuevoPrecioVenta) +
       "\n" +
       "💵 Total: " +
-      euros(nuevoTotal)
+      euros(nuevoTotal) +
+      "\n" +
+      "📈 Beneficio: " +
+      euros(nuevoBeneficio)
     );
   }catch(error){
     mostrarError(
@@ -2368,6 +2493,9 @@ function(){
                 v.producto||"",
               cantidad:
                 Number(v.cantidad)||0,
+              /* NUEVO */
+              precioCompra:
+                Number(v.precioCompra)||0,
               precioUnitario:
                 Number(v.precioUnitario)||0,
               precioHabitual:
