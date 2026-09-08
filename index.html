@@ -312,6 +312,49 @@ button{
   padding:10px;
   margin:12px 0;
 }
+/* =====================================================
+   NUEVO: VENTAS POR DÍA
+===================================================== */
+.selector-fecha{
+  background:#f4f4f4;
+  border-radius:12px;
+  padding:12px;
+  margin-bottom:12px;
+}
+.selector-fecha label{
+  margin-top:0;
+  margin-bottom:5px;
+}
+.selector-fecha input{
+  margin:5px 0 0;
+  background:white;
+}
+.resumen-dia{
+  margin-top:12px;
+}
+.venta-dia{
+  background:#f8f8f8;
+  border-radius:11px;
+  padding:12px;
+  margin-top:9px;
+  border:1px solid #eee;
+}
+.venta-dia b{
+  font-size:16px;
+}
+.venta-dia small{
+  color:#777;
+}
+.btn-hoy{
+  margin-top:8px;
+  width:100%;
+  border:0;
+  border-radius:10px;
+  padding:11px;
+  background:#ddd;
+  font-weight:bold;
+  font-size:14px;
+}
 </style>
 </head>
 <body>
@@ -328,6 +371,9 @@ button{
   <button id="nAgregar" onclick="ir('agregar')">➕ Añadir</button>
   <button id="nCopia" onclick="ir('copia')">💾 Copia</button>
 </nav>
+<!-- =====================================================
+     INICIO
+===================================================== -->
 <section id="inicio" class="seccion activa">
   <div id="errorFirebaseInicio"></div>
   <div class="tarjeta">
@@ -359,6 +405,7 @@ button{
       </div>
     </div>
   </div>
+  <!-- VENTAS DE HOY -->
   <div class="tarjeta">
     <h3>🛒 Ventas de hoy</h3>
     <div class="stats">
@@ -380,11 +427,59 @@ button{
       </div>
     </div>
   </div>
+  <!-- =====================================================
+       NUEVO: VENTAS POR DÍA
+  ===================================================== -->
+  <div class="tarjeta">
+    <h3>📅 Ventas por día</h3>
+    <div class="selector-fecha">
+      <label for="fechaVentas">
+        Selecciona un día:
+      </label>
+      <input
+        id="fechaVentas"
+        type="date"
+        onchange="mostrarVentasDia()">
+      <button
+        class="btn-hoy"
+        onclick="seleccionarHoy()">
+        📅 Ver hoy
+      </button>
+    </div>
+    <div id="tituloVentasDia"
+         style="font-weight:bold;margin:10px 0;">
+    </div>
+    <div class="stats">
+      <div class="stat">
+        Ventas
+        <b id="ventasDia">0</b>
+      </div>
+      <div class="stat">
+        Ingresos
+        <b id="ingresosDia">0 €</b>
+      </div>
+      <div class="stat">
+        Beneficio
+        <b id="beneficioDia">0 €</b>
+      </div>
+      <div class="stat">
+        Unidades
+        <b id="unidadesDia">0</b>
+      </div>
+    </div>
+    <div id="listaVentasDia"
+         class="resumen-dia">
+    </div>
+  </div>
+  <!-- STOCK BAJO -->
   <div class="tarjeta">
     <h3>⚠️ Stock bajo</h3>
     <div id="listaBajo"></div>
   </div>
 </section>
+<!-- =====================================================
+     ESCÁNER
+===================================================== -->
 <section id="escaner" class="seccion">
   <div class="tarjeta">
     <div id="mensaje" class="mensaje">
@@ -405,35 +500,53 @@ button{
       ⏹️ PARAR CÁMARA
     </button>
   </div>
-  <div id="resultado" class="tarjeta" style="display:none">
+  <div id="resultado"
+       class="tarjeta"
+       style="display:none">
     <img id="fotoResultado" class="foto">
     <div id="nombreResultado" class="nombre"></div>
     <div id="codigoResultado" class="codigo"></div>
-    <div id="stockResultado" class="stock-grande"></div>
-    <div id="precioResultado" class="precio"></div>
-    <div id="beneficioResultado" class="precio"></div>
+    <div id="stockResultado"
+         class="stock-grande"></div>
+    <div id="precioResultado"
+         class="precio"></div>
+    <div id="beneficioResultado"
+         class="precio"></div>
     <div id="comentarioResultado"></div>
     <div class="dos">
-      <button class="btn verde" onclick="entradaStock()">
+      <button
+        class="btn verde"
+        onclick="entradaStock()">
         📦 +1
       </button>
-      <button class="btn rojo" onclick="salidaStock()">
+      <button
+        class="btn rojo"
+        onclick="salidaStock()">
         ➖ -1
       </button>
     </div>
-    <button class="btn azul" onclick="venderProducto()">
+    <button
+      class="btn azul"
+      onclick="venderProducto()">
       🛒 VENDER
     </button>
     <div class="dos">
-      <button class="btn naranja" onclick="editarActual()">
+      <button
+        class="btn naranja"
+        onclick="editarActual()">
         ✏️ Editar
       </button>
-      <button class="btn rojo" onclick="eliminarActual()">
+      <button
+        class="btn rojo"
+        onclick="eliminarActual()">
         🗑️ Eliminar
       </button>
     </div>
   </div>
 </section>
+<!-- =====================================================
+     INVENTARIO
+===================================================== -->
 <section id="inventario" class="seccion">
   <div class="tarjeta">
     <h2>📦 Inventario</h2>
@@ -445,6 +558,9 @@ button{
     <div id="listaInventario"></div>
   </div>
 </section>
+<!-- =====================================================
+     VENTAS
+===================================================== -->
 <section id="ventas" class="seccion">
   <div class="tarjeta">
     <h2>🛒 Historial de ventas</h2>
@@ -476,9 +592,14 @@ button{
     <div id="listaVentas"></div>
   </div>
 </section>
+<!-- =====================================================
+     AGREGAR
+===================================================== -->
 <section id="agregar" class="seccion">
   <div class="tarjeta">
-    <h2 id="tituloForm">➕ Añadir producto</h2>
+    <h2 id="tituloForm">
+      ➕ Añadir producto
+    </h2>
     <div id="mensajeGuardar"></div>
     <label for="fotoInput">📸 Foto</label>
     <input
@@ -487,31 +608,41 @@ button{
       accept="image/*"
       onchange="cargarFoto(event)">
     <img id="fotoPreview">
-    <label for="productoInput">Producto</label>
+    <label for="productoInput">
+      Producto
+    </label>
     <input
       id="productoInput"
       type="text"
       placeholder="Nombre del producto">
-    <label for="codigoInput">Código de barras</label>
+    <label for="codigoInput">
+      Código de barras
+    </label>
     <input
       id="codigoInput"
       type="text"
       inputmode="numeric"
       placeholder="Código de barras">
-    <label for="stockInput">Stock</label>
+    <label for="stockInput">
+      Stock
+    </label>
     <input
       id="stockInput"
       type="number"
       min="0"
       value="0">
-    <label for="compraInput">Precio de compra (€)</label>
+    <label for="compraInput">
+      Precio de compra (€)
+    </label>
     <input
       id="compraInput"
       type="number"
       min="0"
       step="0.01"
       placeholder="0.00">
-    <label for="ventaInput">Precio de venta (€)</label>
+    <label for="ventaInput">
+      Precio de venta (€)
+    </label>
     <input
       id="ventaInput"
       type="number"
@@ -539,6 +670,9 @@ button{
     </button>
   </div>
 </section>
+<!-- =====================================================
+     COPIA
+===================================================== -->
 <section id="copia" class="seccion">
   <div class="tarjeta">
     <h2>💾 Copia de seguridad</h2>
@@ -1572,9 +1706,6 @@ async function(){
             productoActual.producto,
           cantidad:
             cantidad,
-          /* NUEVO:
-             cada venta guarda su propio
-             precio de compra */
           precioCompra:
             compra,
           precioUnitario:
@@ -1731,11 +1862,6 @@ function(){
       div.className="venta";
       const precioMostrar =
         Number(v.precioUnitario)||0;
-      /*
-         Para ventas antiguas que no tengan
-         precioCompra, usamos temporalmente
-         el precio actual del producto.
-      */
       let precioCompra;
       if(
         v.precioCompra !== undefined &&
@@ -1835,9 +1961,6 @@ async function editarVenta(v){
     Number(v.cantidad)||0;
   const precioVentaAnterior =
     Number(v.precioUnitario)||0;
-  /*
-     Buscar producto relacionado
-  */
   const producto =
     productos.find(
       function(p){
@@ -1847,13 +1970,6 @@ async function editarVenta(v){
         );
       }
     );
-  /*
-     Las ventas nuevas ya tienen
-     precioCompra.
-     Las ventas antiguas no lo tienen,
-     por lo que usamos temporalmente
-     el precio actual del producto.
-  */
   let precioCompraAnterior;
   if(
     v.precioCompra !== undefined &&
@@ -1867,9 +1983,6 @@ async function editarVenta(v){
         ? Number(producto.precioCompra)||0
         : 0;
   }
-  /* =====================================================
-     EDITAR CANTIDAD
-  ===================================================== */
   let nuevaCantidad =
     prompt(
       "📦 ¿Cuántas unidades se vendieron finalmente?\n\n" +
@@ -1891,9 +2004,6 @@ async function editarVenta(v){
     );
     return;
   }
-  /* =====================================================
-     EDITAR PRECIO DE COMPRA
-  ===================================================== */
   let nuevoPrecioCompraTexto =
     prompt(
       "💰 ¿A cuánto compraste CADA unidad?\n\n" +
@@ -1919,9 +2029,6 @@ async function editarVenta(v){
     );
     return;
   }
-  /* =====================================================
-     EDITAR PRECIO DE VENTA
-  ===================================================== */
   let nuevoPrecioVentaTexto =
     prompt(
       "💶 ¿A cuánto se vendió finalmente CADA unidad?\n\n" +
@@ -1947,9 +2054,6 @@ async function editarVenta(v){
     );
     return;
   }
-  /* =====================================================
-     CALCULAR STOCK
-  ===================================================== */
   const diferencia =
     nuevaCantidad -
     cantidadAnterior;
@@ -1971,9 +2075,6 @@ async function editarVenta(v){
       return;
     }
   }
-  /* =====================================================
-     CALCULAR TOTAL Y BENEFICIO
-  ===================================================== */
   const nuevoTotal =
     nuevoPrecioVenta *
     nuevaCantidad;
@@ -1983,9 +2084,6 @@ async function editarVenta(v){
       nuevoPrecioCompra
     ) *
     nuevaCantidad;
-  /* =====================================================
-     CONFIRMAR
-  ===================================================== */
   const confirmar =
     confirm(
       "✏️ MODIFICAR VENTA\n\n" +
@@ -2025,9 +2123,6 @@ async function editarVenta(v){
   if(!confirmar){
     return;
   }
-  /* =====================================================
-     GUARDAR VENTA
-  ===================================================== */
   try{
     await updateDoc(
       doc(
@@ -2048,9 +2143,6 @@ async function editarVenta(v){
           nuevoBeneficio
       }
     );
-    /* =====================================================
-       ACTUALIZAR STOCK
-    ===================================================== */
     if(producto){
       await updateDoc(
         doc(
@@ -2079,9 +2171,6 @@ async function editarVenta(v){
             nuevoStock;
       }
     }
-    /* =====================================================
-       ACTUALIZAR MOVIMIENTO
-    ===================================================== */
     if(v.id){
       const consulta =
         query(
@@ -2311,6 +2400,9 @@ function actualizarInicio(){
     .getElementById("totalBajo")
     .textContent=
       bajo;
+  /* =====================================================
+     VENTAS DE HOY
+  ===================================================== */
   const hoy =
     new Date()
       .toLocaleDateString("es-ES");
@@ -2353,6 +2445,19 @@ function actualizarInicio(){
     .getElementById("unidadesVendidasHoy")
     .textContent=
       unidadesHoy;
+  /* =====================================================
+     NUEVO: CARGAR FECHA SELECCIONADA
+  ===================================================== */
+  const selector =
+    document.getElementById("fechaVentas");
+  if(selector && !selector.value){
+    selector.value =
+      fechaLocalInput(new Date());
+  }
+  mostrarVentasDia();
+  /* =====================================================
+     STOCK BAJO
+  ===================================================== */
   const lista =
     document.getElementById("listaBajo");
   const bajos =
@@ -2383,6 +2488,180 @@ function actualizarInicio(){
     );
   }
 }
+/* =====================================================
+   NUEVO: FECHA LOCAL PARA INPUT DATE
+===================================================== */
+function fechaLocalInput(fecha){
+  const año =
+    fecha.getFullYear();
+  const mes =
+    String(
+      fecha.getMonth()+1
+    ).padStart(2,"0");
+  const dia =
+    String(
+      fecha.getDate()
+    ).padStart(2,"0");
+  return (
+    año +
+    "-" +
+    mes +
+    "-" +
+    dia
+  );
+}
+/* =====================================================
+   NUEVO: VENTAS POR DÍA
+===================================================== */
+window.seleccionarHoy =
+function(){
+  const selector =
+    document.getElementById("fechaVentas");
+  if(!selector){
+    return;
+  }
+  selector.value =
+    fechaLocalInput(new Date());
+  mostrarVentasDia();
+};
+window.mostrarVentasDia =
+function(){
+  const selector =
+    document.getElementById("fechaVentas");
+  const titulo =
+    document.getElementById("tituloVentasDia");
+  const lista =
+    document.getElementById("listaVentasDia");
+  if(!selector){
+    return;
+  }
+  const fechaSeleccionada =
+    selector.value;
+  if(!fechaSeleccionada){
+    return;
+  }
+  /* -----------------------------------------------------
+     Convertimos la fecha seleccionada en YYYY-MM-DD
+     usando la fecha LOCAL.
+  ----------------------------------------------------- */
+  const ventasDia =
+    ventas.filter(
+      function(v){
+        if(!v.fecha){
+          return false;
+        }
+        const fechaVenta =
+          new Date(v.fecha);
+        return (
+          fechaLocalInput(fechaVenta)
+          ===
+          fechaSeleccionada
+        );
+      }
+    );
+  let ingresos=0;
+  let beneficio=0;
+  let unidades=0;
+  ventasDia.forEach(
+    function(v){
+      ingresos +=
+        Number(v.total)||0;
+      beneficio +=
+        Number(v.beneficio)||0;
+      unidades +=
+        Number(v.cantidad)||0;
+    }
+  );
+  /* -----------------------------------------------------
+     TÍTULO
+  ----------------------------------------------------- */
+  const partes =
+    fechaSeleccionada.split("-");
+  const fechaBonita =
+    partes[2] +
+    "/" +
+    partes[1] +
+    "/" +
+    partes[0];
+  titulo.textContent =
+    "📅 " +
+    fechaBonita;
+  /* -----------------------------------------------------
+     RESUMEN
+  ----------------------------------------------------- */
+  document
+    .getElementById("ventasDia")
+    .textContent =
+      ventasDia.length;
+  document
+    .getElementById("ingresosDia")
+    .textContent =
+      euros(ingresos);
+  document
+    .getElementById("beneficioDia")
+    .textContent =
+      euros(beneficio);
+  document
+    .getElementById("unidadesDia")
+    .textContent =
+      unidades;
+  /* -----------------------------------------------------
+     DETALLE
+  ----------------------------------------------------- */
+  if(!ventasDia.length){
+    lista.innerHTML =
+      '<div class="vacio">' +
+      '📭 No hay ventas en este día.' +
+      '</div>';
+    return;
+  }
+  lista.innerHTML="";
+  ventasDia.forEach(
+    function(v){
+      const div =
+        document.createElement("div");
+      div.className="venta-dia";
+      const precioUnitario =
+        Number(v.precioUnitario)||0;
+      const total =
+        Number(v.total)||0;
+      const beneficioVenta =
+        Number(v.beneficio)||0;
+      const hora =
+        v.fecha
+          ? new Date(v.fecha)
+              .toLocaleTimeString(
+                "es-ES",
+                {
+                  hour:"2-digit",
+                  minute:"2-digit"
+                }
+              )
+          : "";
+      div.innerHTML =
+        "<b>🛒 " +
+        escapar(v.producto) +
+        "</b><br>" +
+        "<small>🕐 " +
+        hora +
+        "</small><br>" +
+        "📦 " +
+        Number(v.cantidad || 0) +
+        " unidad(es)<br>" +
+        "💶 " +
+        euros(precioUnitario) +
+        " / unidad<br>" +
+        "💵 Total: " +
+        euros(total) +
+        "<br>" +
+        "<span class='positivo'>" +
+        "📈 Beneficio: " +
+        euros(beneficioVenta) +
+        "</span>";
+      lista.appendChild(div);
+    }
+  );
+};
 /* =====================================================
    FOTO
 ===================================================== */
@@ -2493,7 +2772,6 @@ function(){
                 v.producto||"",
               cantidad:
                 Number(v.cantidad)||0,
-              /* NUEVO */
               precioCompra:
                 Number(v.precioCompra)||0,
               precioUnitario:
