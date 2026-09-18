@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Catálogo de productos de El Bolsillo Mágico 3D">
+<title>Catálogo | El Bolsillo Mágico 3D</title>
+<style>
+:root{
+  --verde:#173b00;
+  --verde-dark:#0d2500;
+  --verde-light:#2f650d;
+  --crema:#f7f6f0;
+  --texto:#171b15;
+  --muted:#70776c;
+  --blanco:#ffffff;
+  --linea:#e2e5de;
+  --rojo:#d9363e;
+  --radio:20px;
+}
+*{
+  box-sizing:border-box;
+}
+html{
+  scroll-behavior:smooth;
+}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--crema);
+  color:var(--texto);
+}
+/* =========================
+   CABECERA
+========================= */
+header{
+  background:
+    linear-gradient(
+      135deg,
+      var(--verde-dark),
+      var(--verde),
+      var(--verde-light)
+    );
+  color:white;
+  padding:20px 16px;
+  position:sticky;
+  top:0;
+  z-index:50;
+  box-shadow:0 3px 15px #0003;
+}
+.header-contenido{
+  max-width:1100px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+.logo{
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  object-fit:cover;
+  background:white;
+  flex-shrink:0;
+}
+.header-texto{
+  flex:1;
+}
+.header-texto h1{
+  margin:0;
+  font-size:22px;
+}
+.header-texto p{
+  margin:4px 0 0;
+  opacity:.85;
+  font-size:13px;
+}
+.estado{
+  font-size:12px;
+  opacity:.8;
+}
+/* =========================
+   HERO
+========================= */
+.hero{
+  max-width:1100px;
+  margin:auto;
+  padding:35px 16px 20px;
+  text-align:center;
+}
+.badge{
+  display:inline-block;
+  background:#e6efdF;
+  color:var(--verde);
+  padding:7px 13px;
+  border-radius:50px;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:12px;
+}
+.hero h2{
+  margin:0;
+  font-size:32px;
+  color:var(--verde-dark);
+}
+.hero p{
+  max-width:650px;
+  margin:10px auto 0;
+  color:var(--muted);
+  line-height:1.5;
+}
+/* =========================
+   BUSCADOR
+========================= */
+.controles{
+  max-width:900px;
+  margin:10px auto 25px;
+  padding:0 16px;
+}
+.buscador{
+  width:100%;
+  border:1px solid var(--linea);
+  background:white;
+  border-radius:15px;
+  padding:15px 17px;
+  font-size:16px;
+  outline:none;
+  box-shadow:0 2px 10px #00000008;
+}
+.buscador:focus{
+  border-color:var(--verde-light);
+}
+/* =========================
+   CONTADOR
+========================= */
+.resumen{
+  max-width:1100px;
+  margin:0 auto 18px;
+  padding:0 16px;
+  color:var(--muted);
+  font-size:14px;
+}
+/* =========================
+   PRODUCTOS
+========================= */
+.catalogo{
+  max-width:1100px;
+  margin:auto;
+  padding:0 16px 50px;
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fill,minmax(230px,1fr));
+  gap:18px;
+}
+.producto{
+  background:white;
+  border:1px solid var(--linea);
+  border-radius:var(--radio);
+  overflow:hidden;
+  box-shadow:0 4px 18px #0000000d;
+  transition:
+    transform .2s,
+    box-shadow .2s;
+}
+.producto:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 25px #00000016;
+}
+.foto-contenedor{
+  width:100%;
+  height:245px;
+  background:#f1f2ed;
+  position:relative;
+  overflow:hidden;
+}
+.producto img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  padding:14px;
+  transition:transform .25s;
+}
+.producto:hover img{
+  transform:scale(1.04);
+}
+.estado-stock{
+  position:absolute;
+  top:12px;
+  right:12px;
+  padding:7px 10px;
+  border-radius:30px;
+  font-size:11px;
+  font-weight:bold;
+  background:#e4f6ea;
+  color:#17713a;
+}
+.estado-stock.agotado{
+  background:#ffe5e5;
+  color:#b3222b;
+}
+.contenido-producto{
+  padding:17px;
+}
+.nombre-producto{
+  font-size:19px;
+  font-weight:bold;
+  color:var(--verde-dark);
+  margin-bottom:7px;
+}
+.descripcion{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+  min-height:38px;
+  white-space:pre-line;
+}
+.precio{
+  font-size:23px;
+  font-weight:bold;
+  margin-top:13px;
+  color:var(--texto);
+}
+.disponibilidad{
+  font-size:12px;
+  margin-top:5px;
+  color:var(--muted);
+}
+.boton{
+  display:block;
+  width:100%;
+  margin-top:14px;
+  border:0;
+  border-radius:12px;
+  padding:13px;
+  background:var(--verde);
+  color:white;
+  font-size:14px;
+  font-weight:bold;
+  text-align:center;
+  text-decoration:none;
+  cursor:pointer;
+}
+.boton:hover{
+  background:var(--verde-light);
+}
+.boton.agotado{
+  background:#ddd;
+  color:#777;
+  cursor:not-allowed;
+}
+/* =========================
+   CARGANDO / VACÍO / ERROR
+========================= */
+.mensaje{
+  max-width:700px;
+  margin:25px auto;
+  padding:25px 16px;
+  text-align:center;
+  color:var(--muted);
+}
+.spinner{
+  width:38px;
+  height:38px;
+  border:4px solid #ddd;
+  border-top-color:var(--verde);
+  border-radius:50%;
+  margin:0 auto 14px;
+  animation:girar .8s linear infinite;
+}
+@keyframes girar{
+  to{
+    transform:rotate(360deg);
+  }
+}
+.error{
+  max-width:700px;
+  margin:25px auto;
+  background:#ffe5e5;
+  border:1px solid #ffb0b0;
+  color:#a40000;
+  padding:16px;
+  border-radius:15px;
+  line-height:1.5;
+}
+.oculto{
+  display:none;
+}
+/* =========================
+   MODAL
+========================= */
+.modal{
+  position:fixed;
+  inset:0;
+  background:#0009;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+  z-index:100;
+}
+.modal.abierto{
+  display:flex;
+}
+.modal-caja{
+  width:100%;
+  max-width:500px;
+  max-height:90vh;
+  overflow:auto;
+  background:white;
+  border-radius:24px;
+  padding:20px;
+  position:relative;
+}
+.cerrar{
+  position:absolute;
+  right:12px;
+  top:12px;
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  background:#eee;
+  font-size:20px;
+  cursor:pointer;
+}
+.modal-foto{
+  width:100%;
+  height:300px;
+  object-fit:contain;
+  background:#f1f2ed;
+  border-radius:18px;
+  margin-bottom:18px;
+}
+.modal h3{
+  font-size:26px;
+  margin:0 45px 8px 0;
+  color:var(--verde-dark);
+}
+.modal-descripcion{
+  color:var(--muted);
+  white-space:pre-line;
+  line-height:1.5;
+}
+.modal-precio{
+  font-size:28px;
+  font-weight:bold;
+  margin:15px 0;
+}
+.modal-stock{
+  color:#17713a;
+  font-weight:bold;
+}
+/* =========================
+   FOOTER
+========================= */
+footer{
+  background:var(--verde-dark);
+  color:white;
+  text-align:center;
+  padding:25px 16px;
+  font-size:13px;
+}
+footer strong{
+  display:block;
+  font-size:16px;
+  margin-bottom:5px;
+}
+/* =========================
+   MÓVIL
+========================= */
+@media(max-width:600px){
+  header{
+    padding:14px;
+  }
+  .logo{
+    width:52px;
+    height:52px;
+  }
+  .header-texto h1{
+    font-size:18px;
+  }
+  .header-texto p{
+    font-size:11px;
+  }
+  .hero{
+    padding-top:28px;
+  }
+  .hero h2{
+    font-size:27px;
+  }
+  .catalogo{
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+    gap:11px;
+    padding-left:10px;
+    padding-right:10px;
+  }
+  .foto-contenedor{
+    height:170px;
+  }
+  .contenido-producto{
+    padding:12px;
+  }
+  .nombre-producto{
+    font-size:16px;
+  }
+  .descripcion{
+    font-size:11px;
+  }
+  .precio{
+    font-size:19px;
+  }
+  .boton{
+    font-size:12px;
+    padding:11px 5px;
+  }
+}
+@media(max-width:380px){
+  .catalogo{
+    grid-template-columns:1fr;
+  }
+  .foto-contenedor{
+    height:240px;
+  }
+}
+</style>
+</head>
+<body>
+<!-- =========================
+     CABECERA
+========================= -->
+<header>
+  <div class="header-contenido">
+    <!--
+      CAMBIA ESTA RUTA SI TU LOGO
+      ESTÁ EN OTRA CARPETA
+    -->
+    <img
+      src="./assets/logo.PNG"
+      class="logo"
+      alt="El Bolsillo Mágico 3D"
+    >
+    <div class="header-texto">
+      <h1>El Bolsillo Mágico 3D</h1>
+      <p>Catálogo de productos</p>
+    </div>
+    <div
+      id="estadoConexion"
+      class="estado">
+      ⏳ Conectando...
+    </div>
+  </div>
+</header>
+<!-- =========================
+     HERO
+========================= -->
+<section class="hero">
+  <div class="badge">
+    CATÁLOGO
+  </div>
+  <h2>
+    Nuestros productos
+  </h2>
+  <p>
+    Descubre todos los productos disponibles.
+    Pulsa sobre cualquiera para consultar
+    sus detalles.
+  </p>
+</section>
+<!-- =========================
+     BUSCADOR
+========================= -->
+<div class="controles">
+  <input
+    id="buscador"
+    class="buscador"
+    type="search"
+    placeholder="🔎 Buscar producto..."
+    autocomplete="off"
+  >
+</div>
+<div
+  id="resumen"
+  class="resumen">
+  Cargando productos...
+</div>
+<!-- =========================
+     CARGANDO
+========================= -->
+<div
+  id="cargando"
+  class="mensaje">
+  <div class="spinner"></div>
+  <b>Cargando catálogo...</b>
+  <div>
+    Estamos buscando los productos disponibles.
+  </div>
+</div>
+<!-- =========================
+     ERROR
+========================= -->
+<div
+  id="error"
+  class="error oculto">
+</div>
+<!-- =========================
+     CATÁLOGO
+========================= -->
+<main
+  id="catalogo"
+  class="catalogo">
+</main>
+<!-- =========================
+     VACÍO
+========================= -->
+<div
+  id="vacio"
+  class="mensaje oculto">
+  📦 No hay productos disponibles.
+</div>
+<!-- =========================
+     MODAL PRODUCTO
+========================= -->
+<div
+  id="modal"
+  class="modal"
+  onclick="cerrarModalFondo(event)">
+  <div class="modal-caja">
+    <button
+      class="cerrar"
+      onclick="cerrarModal()">
+      ×
+    </button>
+    <img
+      id="modalFoto"
+      class="modal-foto"
+      alt=""
+    >
+    <h3 id="modalNombre"></h3>
+    <div
+      id="modalDescripcion"
+      class="modal-descripcion">
+    </div>
+    <div
+      id="modalPrecio"
+      class="modal-precio">
+    </div>
+    <div
+      id="modalStock"
+      class="modal-stock">
+    </div>
+    <button
+      id="modalBoton"
+      class="boton">
+      Quiero este producto
+    </button>
+  </div>
+</div>
+<!-- =========================
+     FOOTER
+========================= -->
+<footer>
+  <strong>
+    El Bolsillo Mágico 3D
+  </strong>
+  Catálogo de productos
+</footer>
+<script type="module">
+/* =====================================================
+   FIREBASE
+===================================================== */
+import {
+  initializeApp
+} from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  onSnapshot
+} from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+import {
+  getAuth,
+  signInAnonymously
+} from
+"https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+/* =====================================================
+   CONFIGURACIÓN FIREBASE
+===================================================== */
+const firebaseConfig = {
+  apiKey:
+    "AIzaSyArKRE5sR_6zt5FpiJn9m2Tb-J9XkitzQI",
+  authDomain:
+    "mi-inventario-f03bf.firebaseapp.com",
+  projectId:
+    "mi-inventario-f03bf",
+  storageBucket:
+    "mi-inventario-f03bf.firebasestorage.app",
+  messagingSenderId:
+    "214570994765",
+  appId:
+    "1:214570994765:web:0d31eedd1cfd69e1636004"
+};
+/* =====================================================
+   VARIABLES
+===================================================== */
+let app;
+let db;
+let auth;
+let productos = [];
+/* =====================================================
+   ELEMENTOS
+===================================================== */
+const catalogo =
+  document.getElementById("catalogo");
+const buscador =
+  document.getElementById("buscador");
+const resumen =
+  document.getElementById("resumen");
+const cargando =
+  document.getElementById("cargando");
+const error =
+  document.getElementById("error");
+const vacio =
+  document.getElementById("vacio");
+const estadoConexion =
+  document.getElementById("estadoConexion");
+/* =====================================================
+   ESCAPAR HTML
+===================================================== */
+function escapar(texto){
+  return String(texto ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+/* =====================================================
+   EUROS
+===================================================== */
+function euros(numero){
+  return Number(numero || 0)
+    .toFixed(2)
+    .replace(".",",") +
+    " €";
+}
+/* =====================================================
+   CONECTAR
+===================================================== */
+async function conectar(){
+  try{
+    estadoConexion.textContent =
+      "⏳ Conectando...";
+    app =
+      initializeApp(firebaseConfig);
+    db =
+      getFirestore(app);
+    auth =
+      getAuth(app);
+    /*
+      Iniciamos sesión anónima para
+      acceder a Firestore.
+    */
+    await signInAnonymously(auth);
+    estadoConexion.textContent =
+      "☁️ Catálogo actualizado";
+    escucharProductos();
+  }catch(e){
+    console.error(e);
+    estadoConexion.textContent =
+      "❌ Error";
+    cargando.classList.add("oculto");
+    error.classList.remove("oculto");
+    error.innerHTML =
+      `
+      <b>❌ No se pudo cargar el catálogo.</b>
+      <br><br>
+      ${escapar(
+        e.message || String(e)
+      )}
+      `;
+  }
+}
+/* =====================================================
+   ESCUCHAR PRODUCTOS
+===================================================== */
+function escucharProductos(){
+  onSnapshot(
+    collection(db,"productos"),
+    function(snapshot){
+      productos = [];
+      snapshot.forEach(function(d){
+        const datos = d.data();
+        /*
+          IMPORTANTE:
+          Solo guardamos aquí los datos
+          que vamos a utilizar en el catálogo.
+          NO utilizamos:
+          - precioCompra
+          - beneficio
+          - codigo
+        */
+        productos.push({
+          id:d.id,
+          producto:
+            datos.producto || "",
+          precioVenta:
+            Number(datos.precioVenta) || 0,
+          stock:
+            Number(datos.stock) || 0,
+          foto:
+            datos.foto || "",
+          comentario:
+            datos.comentario || ""
+        });
+      });
+      cargando.classList.add("oculto");
+      mostrarProductos();
+    },
+    function(e){
+      console.error(e);
+      cargando.classList.add("oculto");
+      error.classList.remove("oculto");
+      error.innerHTML =
+        `
+        <b>❌ Error leyendo los productos.</b>
+        <br><br>
+        ${escapar(
+          e.message || String(e)
+        )}
+        `;
+    }
+  );
+}
+/* =====================================================
+   MOSTRAR PRODUCTOS
+===================================================== */
+function mostrarProductos(){
+  const texto =
+    buscador.value
+      .toLowerCase()
+      .trim();
+  const filtrados =
+    productos.filter(function(p){
+      return String(p.producto)
+        .toLowerCase()
+        .includes(texto);
+    });
+  catalogo.innerHTML = "";
+  resumen.textContent =
+    filtrados.length +
+    (
+      filtrados.length === 1
+        ? " producto"
+        : " productos"
+    );
+  if(!filtrados.length){
+    vacio.classList.remove("oculto");
+    return;
+  }
+  vacio.classList.add("oculto");
+  filtrados.forEach(function(p){
+    const tarjeta =
+      document.createElement("article");
+    tarjeta.className =
+      "producto";
+    const disponible =
+      p.stock > 0;
+    const estado =
+      disponible
+        ? `
+          <span class="estado-stock">
+            ✓ Disponible
+          </span>
+        `
+        : `
+          <span class="estado-stock agotado">
+            Agotado
+          </span>
+        `;
+    const foto =
+      p.foto
+        ? escapar(p.foto)
+        : "";
+    const descripcion =
+      limpiarComentario(
+        p.comentario
+      );
+    tarjeta.innerHTML = `
+      <div class="foto-contenedor">
+        ${
+          foto
+            ? `
+              <img
+                src="${foto}"
+                alt="${escapar(p.producto)}"
+                loading="lazy"
+              >
+            `
+            : `
+              <div
+                style="
+                  height:100%;
+                  display:flex;
+                  align-items:center;
+                  justify-content:center;
+                  color:#888;
+                  font-size:50px;
+                ">
+                📦
+              </div>
+            `
+        }
+        ${estado}
+      </div>
+      <div class="contenido-producto">
+        <div class="nombre-producto">
+          ${escapar(p.producto)}
+        </div>
+        <div class="descripcion">
+          ${escapar(
+            cortarTexto(descripcion,90)
+          )}
+        </div>
+        <div class="precio">
+          ${euros(p.precioVenta)}
+        </div>
+        <div class="disponibilidad">
+          ${
+            disponible
+              ? "📦 " +
+                p.stock +
+                (
+                  p.stock === 1
+                    ? " unidad disponible"
+                    : " unidades disponibles"
+                )
+              : "❌ Actualmente agotado"
+          }
+        </div>
+        <button
+          class="boton ${
+            disponible ? "" : "agotado"
+          }"
+          ${
+            disponible
+              ? ""
+              : "disabled"
+          }
+          onclick="
+            abrirProducto('${p.id}')
+          "
+        >
+          ${
+            disponible
+              ? "👁️ Ver producto"
+              : "❌ Agotado"
+          }
+        </button>
+      </div>
+    `;
+    catalogo.appendChild(tarjeta);
+  });
+}
+/* =====================================================
+   LIMPIAR COMENTARIO
+===================================================== */
+function limpiarComentario(texto){
+  if(!texto){
+    return "";
+  }
+  /*
+    Si quieres mostrar el comentario
+    completo puedes quitar esta parte.
+  */
+  return String(texto)
+    .replace(
+      /-Vinted[^:\n]*:/gi,
+      ""
+    )
+    .replace(
+      /-Wallapop[^:\n]*:/gi,
+      ""
+    )
+    .trim();
+}
+/* =====================================================
+   CORTAR TEXTO
+===================================================== */
+function cortarTexto(texto,maximo){
+  texto =
+    String(texto || "");
+  if(texto.length <= maximo){
+    return texto;
+  }
+  return texto.substring(
+    0,
+    maximo
+  ) + "...";
+}
+/* =====================================================
+   BUSCADOR
+===================================================== */
+buscador.addEventListener(
+  "input",
+  mostrarProductos
+);
+/* =====================================================
+   ABRIR PRODUCTO
+===================================================== */
+window.abrirProducto =
+function(id){
+  const producto =
+    productos.find(
+      function(p){
+        return p.id === id;
+      }
+    );
+  if(!producto){
+    return;
+  }
+  const modal =
+    document.getElementById("modal");
+  const foto =
+    document.getElementById("modalFoto");
+  const nombre =
+    document.getElementById("modalNombre");
+  const descripcion =
+    document.getElementById(
+      "modalDescripcion"
+    );
+  const precio =
+    document.getElementById("modalPrecio");
+  const stock =
+    document.getElementById("modalStock");
+  const boton =
+    document.getElementById("modalBoton");
+  if(producto.foto){
+    foto.src =
+      producto.foto;
+    foto.style.display =
+      "block";
+  }else{
+    foto.style.display =
+      "none";
+  }
+  nombre.textContent =
+    producto.producto;
+  descripcion.textContent =
+    limpiarComentario(
+      producto.comentario
+    );
+  precio.textContent =
+    euros(producto.precioVenta);
+  if(producto.stock > 0){
+    stock.textContent =
+      "✓ " +
+      producto.stock +
+      (
+        producto.stock === 1
+          ? " unidad disponible"
+          : " unidades disponibles"
+      );
+    stock.style.color =
+      "#17713a";
+    boton.disabled =
+      false;
+    boton.classList.remove(
+      "agotado"
+    );
+    boton.textContent =
+      "🟢 Quiero este producto";
+    boton.onclick =
+      function(){
+        solicitarProducto(
+          producto
+        );
+      };
+  }else{
+    stock.textContent =
+      "❌ Producto agotado";
+    stock.style.color =
+      "#b3222b";
+    boton.disabled =
+      true;
+    boton.classList.add(
+      "agotado"
+    );
+    boton.textContent =
+      "❌ Agotado";
+  }
+  modal.classList.add(
+    "abierto"
+  );
+};
+/* =====================================================
+   SOLICITAR PRODUCTO
+===================================================== */
+function solicitarProducto(p){
+  /*
+    De momento mostramos un mensaje.
+    Más adelante podemos hacer que este botón:
+    
+    - abra WhatsApp
+    - añada el producto a un carrito
+    - mande un formulario
+    - o lo conectemos con pedido.html
+  */
+  const mensaje =
+    "Hola, estoy interesado en el producto: " +
+    p.producto +
+    " (" +
+    euros(p.precioVenta) +
+    ").";
+  const whatsapp =
+    "https://wa.me/?text=" +
+    encodeURIComponent(
+      mensaje
+    );
+  window.open(
+    whatsapp,
+    "_blank"
+  );
+}
+/* =====================================================
+   CERRAR MODAL
+===================================================== */
+window.cerrarModal =
+function(){
+  document
+    .getElementById("modal")
+    .classList.remove(
+      "abierto"
+    );
+};
+window.cerrarModalFondo =
+function(event){
+  if(
+    event.target.id === "modal"
+  ){
+    cerrarModal();
+  }
+};
+/* =====================================================
+   ESC
+===================================================== */
+document.addEventListener(
+  "keydown",
+  function(event){
+    if(
+      event.key === "Escape"
+    ){
+      cerrarModal();
+    }
+  }
+);
+/* =====================================================
+   ARRANCAR
+===================================================== */
+conectar();
+</script>
+</body>
+</html>
