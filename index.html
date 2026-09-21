@@ -2,21 +2,26 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Mi Inventario</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>📦 Mi Inventario</title>
+
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
-  font-family:Arial,sans-serif;
+  font-family:Arial,Helvetica,sans-serif;
   background:#f4f4f4;
   color:#222;
 }
 
 header{
-  background:#111;
+  background:#173b00;
   color:white;
   padding:18px;
   text-align:center;
@@ -27,43 +32,35 @@ header h1{
   font-size:24px;
 }
 
-#estadoConexion{
-  margin-top:7px;
-  font-size:13px;
+#mensajeConexion{
+  margin-top:10px;
 }
 
 nav{
   display:flex;
-  gap:5px;
-  padding:8px;
-  background:white;
-  position:sticky;
-  top:0;
-  z-index:20;
-  box-shadow:0 2px 8px #0002;
   overflow-x:auto;
+  background:#0d2500;
 }
 
 nav button{
   flex:1;
-  min-width:75px;
+  min-width:100px;
   border:0;
-  border-radius:10px;
-  padding:11px 4px;
-  font-size:12px;
+  background:none;
+  color:white;
+  padding:14px 10px;
+  cursor:pointer;
   font-weight:bold;
-  background:#eee;
 }
 
-nav button.activo{
-  background:#111;
-  color:white;
+nav button:hover{
+  background:#2f650d;
 }
 
 .seccion{
   display:none;
-  padding:12px;
-  max-width:650px;
+  padding:15px;
+  max-width:1200px;
   margin:auto;
 }
 
@@ -74,348 +71,181 @@ nav button.activo{
 .tarjeta{
   background:white;
   border-radius:15px;
-  padding:16px;
-  margin-bottom:14px;
-  box-shadow:0 2px 9px #0001;
+  padding:18px;
+  margin-bottom:18px;
+  box-shadow:0 3px 10px rgba(0,0,0,.08);
 }
 
-h2,h3{
+h2{
   margin-top:0;
+  color:#173b00;
 }
 
 input,
-textarea{
+textarea,
+select{
   width:100%;
-  padding:13px;
+  padding:11px;
+  margin:5px 0 12px;
   border:1px solid #ccc;
-  border-radius:10px;
-  font-size:16px;
-  margin:6px 0 12px;
-  font-family:Arial,sans-serif;
+  border-radius:8px;
+  font-size:15px;
 }
 
 textarea{
-  min-height:110px;
+  min-height:100px;
   resize:vertical;
 }
 
-label{
-  font-weight:bold;
-  display:block;
-  margin-top:7px;
-}
-
 button{
+  border:0;
+  border-radius:8px;
+  padding:11px 15px;
   cursor:pointer;
+  font-weight:bold;
 }
 
 .btn{
-  width:100%;
-  border:0;
-  border-radius:11px;
-  padding:14px;
-  font-size:16px;
-  font-weight:bold;
-  margin-top:7px;
+  margin:4px;
 }
 
-.negro{background:#111;color:white}
-.gris{background:#ddd;color:#222}
-.verde{background:#1c9b55;color:white}
-.rojo{background:#d9363e;color:white}
-.naranja{background:#ed8b00;color:white}
-.azul{background:#1976d2;color:white}
-.morado{background:#673ab7;color:white}
-
-#reader{
-  width:100%;
-  max-width:500px;
-  margin:10px auto;
-  border-radius:15px;
-  overflow:hidden;
-  background:white;
+.verde{
+  background:#173b00;
+  color:white;
 }
 
-.mensaje{
-  text-align:center;
-  font-weight:bold;
-  margin:10px;
+.verde:hover{
+  background:#2f650d;
 }
 
-.error{
-  background:#ffe5e5;
-  color:#a40000;
-  border:1px solid #ff9a9a;
-  padding:13px;
-  border-radius:11px;
-  margin:10px 0;
-  font-size:14px;
-  word-break:break-word;
+.rojo{
+  background:#b00020;
+  color:white;
+}
+
+.azul{
+  background:#1769aa;
+  color:white;
+}
+
+.gris{
+  background:#ddd;
+  color:#222;
 }
 
 .ok{
-  background:#e5f8eb;
-  color:#176b35;
-  border:1px solid #9cdbad;
-  padding:13px;
-  border-radius:11px;
-  margin:10px 0;
-}
-
-.producto{
-  background:white;
-  border-radius:14px;
+  background:#d9f5d0;
+  color:#17600b;
   padding:12px;
-  margin:9px 0;
-  display:flex;
-  gap:10px;
-  align-items:center;
-  box-shadow:0 1px 5px #0001;
+  border-radius:8px;
+  margin-top:10px;
 }
 
-.producto img{
-  width:65px;
-  height:65px;
-  object-fit:contain;
-  background:#eee;
-  border-radius:9px;
+.error{
+  background:#ffd9d9;
+  color:#900;
+  padding:12px;
+  border-radius:8px;
+  margin-top:10px;
+  word-break:break-word;
 }
 
-.producto-info{
-  flex:1;
-  min-width:0;
-}
-
-.producto-info strong{
-  display:block;
-  font-size:17px;
-}
-
-.producto-info small{
-  color:#777;
-  word-break:break-all;
-}
-
-.stock{
-  font-size:20px;
-  font-weight:bold;
-}
-
-.stock-bajo{
-  color:#d9363e;
-}
-
-.foto{
-  display:block;
-  width:190px;
-  height:190px;
-  object-fit:contain;
-  margin:10px auto;
-  border-radius:12px;
-  background:#eee;
-}
-
-.nombre{
-  text-align:center;
-  font-size:23px;
-  font-weight:bold;
-}
-
-.codigo{
-  text-align:center;
-  color:#777;
-  margin:5px;
-}
-
-.stock-grande{
-  text-align:center;
-  font-size:38px;
-  font-weight:bold;
-  margin:10px;
-}
-
-.precio{
-  text-align:center;
-  font-size:18px;
-  margin:5px;
-}
-
-.dos{
-  display:flex;
-  gap:8px;
-}
-
-.dos>*{
-  flex:1;
+.info{
+  background:#e7f0ff;
+  color:#174a91;
+  padding:12px;
+  border-radius:8px;
+  margin-top:10px;
 }
 
 .stats{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:12px;
 }
 
 .stat{
-  background:#f4f4f4;
+  background:#f7f7f7;
   border-radius:12px;
-  padding:13px;
-}
-
-.stat b{
-  display:block;
-  font-size:22px;
-  margin-top:4px;
-}
-
-.alerta{
-  background:#fff0f0;
-  border:1px solid #ffbaba;
-  padding:12px;
-  border-radius:11px;
-  margin-bottom:8px;
-}
-
-.venta{
-  padding:13px 0;
-  border-bottom:1px solid #eee;
-}
-
-.vacio{
+  padding:15px;
   text-align:center;
-  color:#777;
-  padding:25px;
 }
 
-#fotoPreview{
-  width:160px;
-  height:160px;
-  display:none;
-  object-fit:contain;
-  margin:10px auto;
-  background:#eee;
-  border-radius:10px;
+.stat strong{
+  display:block;
+  font-size:24px;
+  color:#173b00;
+  margin-top:5px;
 }
 
-.positivo{
-  color:#168344;
-  font-weight:bold;
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
 }
 
-.negativo{
-  color:#d9363e;
-  font-weight:bold;
-}
-
-#diagnostico{
-  display:none;
-  margin-top:10px;
-  font-size:12px;
+th,
+td{
+  border-bottom:1px solid #ddd;
+  padding:10px 6px;
   text-align:left;
-  white-space:pre-wrap;
-  word-break:break-word;
+  vertical-align:middle;
 }
 
-.precio-real{
-  background:#f4f4f4;
+th{
+  background:#173b00;
+  color:white;
+}
+
+.producto-img{
+  width:65px;
+  height:65px;
+  object-fit:cover;
+  border-radius:8px;
+  background:#eee;
+}
+
+.acciones{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+}
+
+.preview{
+  max-width:180px;
+  max-height:180px;
   border-radius:10px;
-  padding:10px;
   margin-top:10px;
 }
 
-.btn-eliminar-venta{
-  background:#d9363e;
-  color:white;
-  border:0;
-  border-radius:9px;
-  padding:10px;
+#reader{
   width:100%;
-  font-size:14px;
-  font-weight:bold;
-  margin-top:10px;
+  max-width:500px;
+  margin:auto;
 }
 
-.btn-editar-venta{
-  background:#ed8b00;
-  color:white;
-  border:0;
-  border-radius:9px;
-  padding:10px;
-  width:100%;
-  font-size:14px;
-  font-weight:bold;
-  margin-top:10px;
+.oculto{
+  display:none;
 }
 
-.comentario{
-  background:#fff8df;
-  border:1px solid #f0d878;
-  border-radius:11px;
-  padding:12px;
-  margin:12px 0;
-  white-space:pre-wrap;
-  word-break:break-word;
-}
+@media(max-width:700px){
 
-.comentario-vacio{
-  background:#f4f4f4;
-  color:#777;
-  border-radius:11px;
-  padding:10px;
-  margin:12px 0;
-}
+  table{
+    font-size:13px;
+  }
 
-/* =====================================================
-   VENTAS POR DÍA
-===================================================== */
+  th,
+  td{
+    padding:7px 4px;
+  }
 
-.selector-fecha{
-  background:#f4f4f4;
-  border-radius:12px;
-  padding:12px;
-  margin-bottom:12px;
-}
+  .acciones{
+    flex-direction:column;
+  }
 
-.selector-fecha label{
-  margin-top:0;
-  margin-bottom:5px;
-}
-
-.selector-fecha input{
-  margin:5px 0 0;
-  background:white;
-}
-
-.resumen-dia{
-  margin-top:12px;
-}
-
-.venta-dia{
-  background:#f8f8f8;
-  border-radius:11px;
-  padding:12px;
-  margin-top:9px;
-  border:1px solid #eee;
-}
-
-.venta-dia b{
-  font-size:16px;
-}
-
-.venta-dia small{
-  color:#777;
-}
-
-/* =====================================================
-   CATÁLOGO
-===================================================== */
-
-.catalogo-info{
-  background:#f4f4f4;
-  border-radius:12px;
-  padding:13px;
-  margin-top:10px;
-  font-size:14px;
-  line-height:1.5;
+  .acciones button{
+    width:100%;
+  }
 }
 </style>
 </head>
@@ -426,63 +256,49 @@ button{
 
   <h1>📦 Mi Inventario</h1>
 
-  <div id="estadoConexion">
-    ⏳ Conectando con Firebase...
+  <div id="mensajeConexion">
+    <div class="info">
+      ⏳ Conectando con Firebase...
+    </div>
   </div>
-
-  <div id="diagnostico" class="error"></div>
 
 </header>
 
+
 <nav>
 
-  <button
-    id="nInicio"
-    class="activo"
-    onclick="ir('inicio')">
-    🏠 Inicio
+  <button onclick="mostrarSeccion('inicio')">
+    Inicio
   </button>
 
-  <button
-    id="nEscaner"
-    onclick="ir('escaner')">
-    📷 Escanear
+  <button onclick="mostrarSeccion('escanear')">
+    Escanear
   </button>
 
-  <button
-    id="nInventario"
-    onclick="ir('inventario')">
-    📦 Stock
+  <button onclick="mostrarSeccion('stock')">
+    Stock
   </button>
 
-  <button
-    id="nVentas"
-    onclick="ir('ventas')">
-    🛒 Ventas
+  <button onclick="mostrarSeccion('ventas')">
+    Ventas
   </button>
 
-  <button
-    id="nAgregar"
-    onclick="ir('agregar')">
-    ➕ Añadir
+  <button onclick="mostrarSeccion('anadir')">
+    Añadir
   </button>
 
-  <button
-    id="nCopia"
-    onclick="ir('copia')">
-    💾 Copia
+  <button onclick="mostrarSeccion('copia')">
+    Copia
   </button>
 
 </nav>
 
 
-<!-- =====================================================
+<!-- =========================
      INICIO
-===================================================== -->
+========================= -->
 
 <section id="inicio" class="seccion activa">
-
-  <div id="errorFirebaseInicio"></div>
 
   <div class="tarjeta">
 
@@ -492,32 +308,32 @@ button{
 
       <div class="stat">
         Productos
-        <b id="totalProductos">0</b>
+        <strong id="totalProductos">0</strong>
       </div>
 
       <div class="stat">
         Unidades
-        <b id="totalUnidades">0</b>
+        <strong id="totalUnidades">0</strong>
       </div>
 
       <div class="stat">
         Valor compra
-        <b id="valorCompra">0 €</b>
+        <strong id="valorCompra">0,00 €</strong>
       </div>
 
       <div class="stat">
         Valor venta
-        <b id="valorVenta">0 €</b>
+        <strong id="valorVenta">0,00 €</strong>
       </div>
 
       <div class="stat">
         Beneficio potencial
-        <b id="beneficioTotal">0 €</b>
+        <strong id="beneficioPotencial">0,00 €</strong>
       </div>
 
       <div class="stat">
         Stock bajo
-        <b id="totalBajo">0</b>
+        <strong id="stockBajo">0</strong>
       </div>
 
     </div>
@@ -525,417 +341,282 @@ button{
   </div>
 
 
-  <!-- VENTAS DE HOY -->
-
   <div class="tarjeta">
 
-    <h3>🛒 Ventas de hoy</h3>
+    <h2>💰 Ventas de hoy</h2>
 
     <div class="stats">
 
       <div class="stat">
         Ventas
-        <b id="ventasHoy">0</b>
+        <strong id="ventasHoy">0</strong>
       </div>
 
       <div class="stat">
         Ingresos
-        <b id="ingresosHoy">0 €</b>
+        <strong id="ingresosHoy">0,00 €</strong>
       </div>
 
       <div class="stat">
         Beneficio
-        <b id="beneficioHoy">0 €</b>
+        <strong id="beneficioHoy">0,00 €</strong>
       </div>
 
       <div class="stat">
         Unidades
-        <b id="unidadesVendidasHoy">0</b>
+        <strong id="unidadesHoy">0</strong>
       </div>
 
     </div>
-
-  </div>
-
-
-  <!-- VENTAS POR DÍA -->
-
-  <div class="tarjeta">
-
-    <h3>📅 Ventas por día</h3>
-
-    <div class="selector-fecha">
-
-      <label for="fechaVentas">
-        Selecciona un día:
-      </label>
-
-      <input
-        id="fechaVentas"
-        type="date"
-        onchange="mostrarVentasDia()">
-
-      <button
-        class="btn-hoy"
-        onclick="seleccionarHoy()">
-        📅 Ver hoy
-      </button>
-
-    </div>
-
-    <div
-      id="tituloVentasDia"
-      style="font-weight:bold;margin:10px 0;">
-    </div>
-
-    <div class="stats">
-
-      <div class="stat">
-        Ventas
-        <b id="ventasDia">0</b>
-      </div>
-
-      <div class="stat">
-        Ingresos
-        <b id="ingresosDia">0 €</b>
-      </div>
-
-      <div class="stat">
-        Beneficio
-        <b id="beneficioDia">0 €</b>
-      </div>
-
-      <div class="stat">
-        Unidades
-        <b id="unidadesDia">0</b>
-      </div>
-
-    </div>
-
-    <div
-      id="listaVentasDia"
-      class="resumen-dia">
-    </div>
-
-  </div>
-
-
-  <!-- STOCK BAJO -->
-
-  <div class="tarjeta">
-
-    <h3>⚠️ Stock bajo</h3>
-
-    <div id="listaBajo"></div>
 
   </div>
 
 </section>
 
 
-<!-- =====================================================
-     ESCÁNER
-===================================================== -->
+<!-- =========================
+     ESCANEAR
+========================= -->
 
-<section id="escaner" class="seccion">
+<section id="escanear" class="seccion">
 
   <div class="tarjeta">
 
-    <div
-      id="mensaje"
-      class="mensaje">
-      Pulsa iniciar y apunta al código
-    </div>
-
-    <div id="reader"></div>
+    <h2>📷 Escanear código</h2>
 
     <button
-      id="btnIniciar"
-      class="btn negro"
-      onclick="iniciarEscaner()">
+      class="btn verde"
+      onclick="iniciarScanner()"
+    >
       📷 INICIAR ESCÁNER
     </button>
 
     <button
-      id="btnParar"
       class="btn gris"
-      onclick="pararEscaner()"
-      style="display:none">
-      ⏹️ PARAR CÁMARA
+      onclick="detenerScanner()"
+    >
+      ⏹️ DETENER
     </button>
 
-  </div>
+    <div id="reader"></div>
 
-
-  <div
-    id="resultado"
-    class="tarjeta"
-    style="display:none">
-
-    <img
-      id="fotoResultado"
-      class="foto">
-
-    <div
-      id="nombreResultado"
-      class="nombre">
-    </div>
-
-    <div
-      id="codigoResultado"
-      class="codigo">
-    </div>
-
-    <div
-      id="stockResultado"
-      class="stock-grande">
-    </div>
-
-    <div
-      id="precioResultado"
-      class="precio">
-    </div>
-
-    <div
-      id="beneficioResultado"
-      class="precio">
-    </div>
-
-    <div id="comentarioResultado"></div>
-
-    <div class="dos">
-
-      <button
-        class="btn verde"
-        onclick="entradaStock()">
-        📦 +1
-      </button>
-
-      <button
-        class="btn rojo"
-        onclick="salidaStock()">
-        ➖ -1
-      </button>
-
-    </div>
-
-    <button
-      class="btn azul"
-      onclick="venderProducto()">
-      🛒 VENDER
-    </button>
-
-    <div class="dos">
-
-      <button
-        class="btn naranja"
-        onclick="editarActual()">
-        ✏️ Editar
-      </button>
-
-      <button
-        class="btn rojo"
-        onclick="eliminarActual()">
-        🗑️ Eliminar
-      </button>
-
-    </div>
+    <div id="resultadoEscaneo"></div>
 
   </div>
 
 </section>
 
 
-<!-- =====================================================
-     INVENTARIO
-===================================================== -->
+<!-- =========================
+     STOCK
+========================= -->
 
-<section id="inventario" class="seccion">
+<section id="stock" class="seccion">
 
   <div class="tarjeta">
 
-    <h2>📦 Inventario</h2>
+    <h2>📦 Stock</h2>
 
     <input
-      id="buscador"
-      type="search"
-      placeholder="🔎 Buscar producto o código..."
-      oninput="mostrarInventario()">
+      type="text"
+      id="buscarStock"
+      placeholder="🔎 Buscar producto, código..."
+      oninput="mostrarStock()"
+    >
 
-    <div id="listaInventario"></div>
+    <div style="overflow-x:auto">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Foto</th>
+
+            <th>Producto</th>
+
+            <th>Código</th>
+
+            <th>Stock</th>
+
+            <th>Compra</th>
+
+            <th>Venta</th>
+
+            <th>Beneficio</th>
+
+            <th>Acciones</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="tablaStock"></tbody>
+
+      </table>
+
+    </div>
 
   </div>
 
 </section>
 
 
-<!-- =====================================================
+<!-- =========================
      VENTAS
-===================================================== -->
+========================= -->
 
 <section id="ventas" class="seccion">
 
   <div class="tarjeta">
 
-    <h2>🛒 Historial de ventas</h2>
+    <h2>💰 Ventas</h2>
 
-    <div class="stats">
+    <input
+      type="date"
+      id="fechaVentas"
+      onchange="mostrarVentas()"
+    >
 
-      <div class="stat">
-        Ventas
-        <b id="totalVentas">0</b>
-      </div>
+    <input
+      type="text"
+      id="buscarVentas"
+      placeholder="🔎 Buscar venta..."
+      oninput="mostrarVentas()"
+    >
 
-      <div class="stat">
-        Ingresos
-        <b id="totalIngresos">0 €</b>
-      </div>
+    <div style="overflow-x:auto">
 
-      <div class="stat">
-        Beneficio
-        <b id="totalBeneficioVentas">0 €</b>
-      </div>
+      <table>
 
-      <div class="stat">
-        Unidades
-        <b id="totalUnidadesVentas">0</b>
-      </div>
+        <thead>
+
+          <tr>
+
+            <th>Fecha</th>
+
+            <th>Producto</th>
+
+            <th>Cantidad</th>
+
+            <th>Precio</th>
+
+            <th>Total</th>
+
+            <th>Beneficio</th>
+
+            <th>Acciones</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="tablaVentas"></tbody>
+
+      </table>
 
     </div>
 
   </div>
 
-
-  <div class="tarjeta">
-
-    <input
-      id="buscarVentas"
-      type="search"
-      placeholder="🔎 Buscar venta o producto..."
-      oninput="mostrarVentas()">
-
-    <div id="listaVentas"></div>
-
-  </div>
-
 </section>
 
 
-<!-- =====================================================
-     AGREGAR
-===================================================== -->
+<!-- =========================
+     AÑADIR
+========================= -->
 
-<section id="agregar" class="seccion">
+<section id="anadir" class="seccion">
 
   <div class="tarjeta">
 
-    <h2 id="tituloForm">
-      ➕ Añadir producto
-    </h2>
-
-    <div id="mensajeGuardar"></div>
-
-    <label for="fotoInput">
-      📸 Foto
-    </label>
+    <h2>➕ Añadir producto</h2>
 
     <input
-      id="fotoInput"
-      type="file"
-      accept="image/*"
-      onchange="cargarFoto(event)">
-
-    <img id="fotoPreview">
-
-
-    <label for="productoInput">
-      Producto
-    </label>
-
-    <input
-      id="productoInput"
       type="text"
-      placeholder="Nombre del producto">
-
-
-    <label for="codigoInput">
-      Código de barras
-    </label>
+      id="producto"
+      placeholder="Nombre del producto"
+    >
 
     <input
-      id="codigoInput"
       type="text"
-      inputmode="numeric"
-      placeholder="Código de barras">
-
-
-    <label for="stockInput">
-      Stock
-    </label>
+      id="codigo"
+      placeholder="Código / código de barras"
+    >
 
     <input
-      id="stockInput"
       type="number"
+      id="stock"
+      placeholder="Stock"
       min="0"
-      value="0">
-
-
-    <label for="compraInput">
-      Precio de compra (€)
-    </label>
+    >
 
     <input
-      id="compraInput"
       type="number"
+      id="precioCompra"
+      placeholder="Precio de compra"
       min="0"
       step="0.01"
-      placeholder="0.00">
-
-
-    <label for="ventaInput">
-      Precio de venta (€)
-    </label>
+    >
 
     <input
-      id="ventaInput"
       type="number"
+      id="precioVenta"
+      placeholder="Precio de venta"
       min="0"
       step="0.01"
-      placeholder="0.00">
-
-
-    <label for="comentarioInput">
-      📝 Comentario adicional
-    </label>
+    >
 
     <textarea
-      id="comentarioInput"
-      placeholder="Escribe aquí cualquier información adicional sobre este producto..."></textarea>
+      id="comentario"
+      placeholder="Comentario / descripción"
+    ></textarea>
 
+    <label>
+      📷 Foto del producto
+    </label>
 
-    <button
-      id="guardarBtn"
-      class="btn negro"
-      onclick="guardarProducto()">
-      💾 GUARDAR PRODUCTO
-    </button>
+    <input
+      type="file"
+      id="foto"
+      accept="image/*"
+      onchange="previsualizarFoto(event)"
+    >
 
-    <button
-      id="cancelarBtn"
-      class="btn gris"
-      onclick="cancelarEdicion()"
-      style="display:none">
-      ❌ CANCELAR
-    </button>
+    <img
+      id="previewFoto"
+      class="preview oculto"
+    >
+
+    <div class="acciones">
+
+      <button
+        class="btn verde"
+        onclick="guardarProducto()"
+      >
+        💾 Guardar producto
+      </button>
+
+      <button
+        class="btn gris"
+        onclick="cancelarEdicion()"
+      >
+        Cancelar
+      </button>
+
+    </div>
+
+    <div id="mensajeProducto"></div>
 
   </div>
 
 </section>
 
 
-<!-- =====================================================
+<!-- =========================
      COPIA
-===================================================== -->
+========================= -->
 
 <section id="copia" class="seccion">
 
@@ -944,80 +625,26 @@ button{
     <h2>💾 Copia de seguridad</h2>
 
     <p>
-      Guarda una copia de todos tus productos y ventas en tu móvil.
+      Descarga una copia de tus productos y ventas.
     </p>
-
-    <button
-      class="btn morado"
-      onclick="exportarCopia()">
-      💾 DESCARGAR COPIA DE SEGURIDAD
-    </button>
-
-    <div id="mensajeCopia"></div>
-
-  </div>
-
-
-  <!-- =====================================================
-       NUEVO: CATÁLOGO PÚBLICO
-  ===================================================== -->
-
-  <div class="tarjeta">
-
-    <h2>🌐 Catálogo público</h2>
-
-    <p>
-      Aquí puedes sincronizar tu inventario con la colección
-      pública que utilizará tu página de catálogo.
-    </p>
-
-    <div class="catalogo-info">
-
-      <b>Se publicará:</b><br>
-
-      ✅ Nombre del producto<br>
-      ✅ Foto<br>
-      ✅ Precio de venta<br>
-      ✅ Stock<br>
-      ✅ Descripción/comentario
-
-      <br><br>
-
-      <b>No se publicará:</b><br>
-
-      🔒 Código de barras<br>
-      🔒 Precio de compra<br>
-      🔒 Beneficio
-
-    </div>
 
     <button
       class="btn verde"
-      onclick="sincronizarCatalogoCompleto()">
-      🌐 ACTUALIZAR CATÁLOGO PÚBLICO
+      onclick="exportarCopia()"
+    >
+      💾 DESCARGAR COPIA
     </button>
-
-    <div
-      id="mensajeCatalogo"
-      class="mensaje">
-    </div>
 
   </div>
 
 </section>
 
 
-<script
-  src="https://unpkg.com/html5-qrcode"
-  type="text/javascript">
-</script>
-
-
 <script type="module">
 
-/* =====================================================
-   IMPORTACIONES FIREBASE
-===================================================== */
+/* =========================================================
+   FIREBASE
+========================================================= */
 
 import { initializeApp } from
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
@@ -1029,12 +656,7 @@ import {
   updateDoc,
   deleteDoc,
   doc,
-  getDocs,
-  query,
-  where,
-  onSnapshot,
-  setDoc,
-  writeBatch
+  onSnapshot
 } from
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
@@ -1046,608 +668,239 @@ import {
 "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
 
-/* =====================================================
-   COMENTARIO PREDETERMINADO
-===================================================== */
-
-const COMENTARIO_PREDETERMINADO =
-`-Vinted Móvil Ursu:
--Vinted Móvil Almu:
--Vinted Móvil Negro:
--Wallapop Móvil Negro:
--Vinted Móvil Rosa:
--Wallapop Móvil Rosa:
--Vinted Móvil Rojo:
--Vinted Móvil Amarillo:
--Wallapop Móvil Amarillo:`;
-
-
-/* =====================================================
-   FIREBASE
-===================================================== */
-
 const firebaseConfig = {
 
   apiKey:
-    "AIzaSyArKREs5r_6zt5FpiJn9m2Tb-J9XkitzQI",
+  "AIzaSyArKREs5r_6zt5FpiJn9m2Tb-J9XkitzQI",
 
   authDomain:
-    "mi-inventario-f03bf.firebaseapp.com",
+  "mi-inventario-f03bf.firebaseapp.com",
 
   projectId:
-    "mi-inventario-f03bf",
+  "mi-inventario-f03bf",
 
   storageBucket:
-    "mi-inventario-f03bf.firebasestorage.app",
+  "mi-inventario-f03bf.firebasestorage.app",
 
   messagingSenderId:
-    "214570994765",
+  "214570994765",
 
   appId:
-    "1:214570994765:web:0d31eedd1cfd69e1636004"
+  "1:214570994765:web:0d31eedd1cfd69e1636004"
 
 };
 
 
-let app=null;
-let db=null;
-let auth=null;
+const app =
+  initializeApp(firebaseConfig);
 
-let productos=[];
-let ventas=[];
+const db =
+  getFirestore(app);
 
-let scanner=null;
-let escaneando=false;
-
-let productoActual=null;
-let indiceEditando=null;
-
-let fotoBase64=";
+const auth =
+  getAuth(app);
 
 
-/* =====================================================
-   FUNCIONES GENERALES
-===================================================== */
+let usuario = null;
 
-function escapar(texto){
+let productos = [];
 
-  return String(texto ?? "")
+let ventas = [];
 
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+let indiceEditando = null;
 
-}
+let scanner = null;
+
+let scannerActivo = false;
 
 
-function euros(numero){
+/* =========================================================
+   UTILIDADES
+========================================================= */
 
-  return Number(numero || 0)
-    .toFixed(2)
-    .replace(".",",") +
-    " €";
+function dinero(numero){
+
+  return Number(numero || 0).toLocaleString(
+    "es-ES",
+    {
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    }
+  ) + " €";
 
 }
 
 
-function errorTexto(error){
+function fechaHoy(){
 
-  if(!error){
+  const ahora =
+    new Date();
 
-    return "Error desconocido";
-
-  }
-
-  return (
-
-    (error.code
-      ? error.code + " — "
-      : "") +
-
-    (error.message ||
-      String(error))
-
-  );
+  return ahora
+    .toISOString()
+    .split("T")[0];
 
 }
 
 
 function mostrarError(
   texto,
-  destino="errorFirebaseInicio"
+  id="mensajeProducto"
 ){
 
-  console.error(texto);
-
   const elemento =
-    document.getElementById(destino);
+    document.getElementById(id);
 
   if(elemento){
 
     elemento.innerHTML =
-      '<div class="error">' +
-      '❌ <b>Error:</b><br>' +
-      escapar(texto) +
-      '</div>';
+      `<div class="error">
+        ❌ ${texto}
+      </div>`;
 
   }
 
 }
 
 
-/* =====================================================
-   DATOS QUE SE PUBLICAN EN EL CATÁLOGO
-===================================================== */
+function mostrarOK(
+  texto,
+  id="mensajeProducto"
+){
 
-/*
-   MUY IMPORTANTE:
+  const elemento =
+    document.getElementById(id);
 
-   Esta función es la barrera entre el inventario
-   privado y el catálogo público.
+  if(elemento){
 
-   SOLO se copian estos datos:
+    elemento.innerHTML =
+      `<div class="ok">
+        ✅ ${texto}
+      </div>`;
 
-   - producto
-   - foto
-   - precioVenta
-   - stock
-   - descripcion
-
-   NO se copian:
-
-   - codigo
-   - precioCompra
-   - beneficio
-*/
-
-function datosPublicosCatalogo(p){
-
-  return {
-
-    producto:
-      p.producto || "",
-
-    foto:
-      p.foto || "",
-
-    precioVenta:
-      Number(p.precioVenta) || 0,
-
-    stock:
-      Number(p.stock) || 0,
-
-    descripcion:
-      p.comentario || ""
-
-  };
+  }
 
 }
 
 
-/* =====================================================
-   SINCRONIZAR UN PRODUCTO CON CATALOGO
-===================================================== */
+/* =========================================================
+   CONECTAR FIREBASE
+========================================================= */
 
-async function sincronizarProductoCatalogo(p){
-
-  if(!p || !p.id){
-
-    return false;
-
-  }
+async function conectar(){
 
   try{
 
-    const datosPublicos =
-      datosPublicosCatalogo(p);
-
-    await setDoc(
-
-      doc(
-        db,
-        "catalogo",
-        p.id
-      ),
-
-      datosPublicos
-
+    console.log(
+      "🔥 Iniciando Firebase..."
     );
+
+
+    await signInAnonymously(auth);
+
 
     console.log(
-      "Catálogo actualizado:",
-      p.producto
+      "✅ Solicitud de autenticación enviada"
     );
 
-    return true;
 
   }catch(error){
 
     console.error(
-      "Error sincronizando catálogo:",
+      "❌ Error conectando con Firebase:",
       error
     );
 
-    return false;
+
+    const mensaje =
+      document.getElementById(
+        "mensajeConexion"
+      );
+
+
+    mensaje.innerHTML =
+      `<div class="error">
+        ❌ Error conectando con Firebase.<br><br>
+
+        <strong>
+          ${error.code || ""}
+        </strong>
+
+        <br>
+
+        ${error.message || error}
+
+      </div>`;
 
   }
 
 }
 
 
-/* =====================================================
-   ELIMINAR DEL CATÁLOGO
-===================================================== */
+/* =========================================================
+   AUTENTICACIÓN
+========================================================= */
 
-async function eliminarProductoCatalogo(id){
+onAuthStateChanged(
+  auth,
+  user => {
 
-  if(!id){
+    if(user){
+
+      usuario =
+        user;
+
+
+      console.log(
+        "✅ Firebase conectado"
+      );
+
+
+      console.log(
+        "UID:",
+        user.uid
+      );
+
+
+      const mensaje =
+        document.getElementById(
+          "mensajeConexion"
+        );
+
+
+      mensaje.innerHTML =
+        `<div class="ok">
+          🟢 Conectado a Firebase
+        </div>`;
+
+
+      escucharDatos();
+
+
+    }else{
+
+      console.log(
+        "⏳ Esperando autenticación..."
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   ESCUCHAR PRODUCTOS Y VENTAS
+========================================================= */
+
+function escucharDatos(){
+
+  if(!usuario){
 
     return;
 
   }
 
-  try{
-
-    await deleteDoc(
-
-      doc(
-        db,
-        "catalogo",
-        id
-      )
-
-    );
-
-  }catch(error){
-
-    console.error(
-      "Error eliminando del catálogo:",
-      error
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   SINCRONIZAR TODO EL CATÁLOGO
-===================================================== */
-
-/*
-   Esta función se utiliza AHORA para pasar todos
-   los productos que ya tienes en "productos"
-   a "catalogo".
-
-   Después, las modificaciones se harán
-   automáticamente.
-*/
-
-window.sincronizarCatalogoCompleto =
-async function(){
-
-  const mensaje =
-    document.getElementById(
-      "mensajeCatalogo"
-    );
-
-  try{
-
-    if(!db){
-
-      alert(
-        "Firebase todavía no está conectado."
-      );
-
-      return;
-
-    }
-
-    if(!productos.length){
-
-      mensaje.textContent =
-        "No hay productos para sincronizar.";
-
-      alert(
-        "No hay productos en el inventario."
-      );
-
-      return;
-
-    }
-
-
-    mensaje.textContent =
-      "⏳ Preparando catálogo...";
-
-
-    /* ---------------------------------------------
-       CATÁLOGO ACTUAL
-    --------------------------------------------- */
-
-    const catalogoSnapshot =
-      await getDocs(
-        collection(
-          db,
-          "catalogo"
-        )
-      );
-
-
-    const idsActuales =
-      new Set(
-        productos.map(
-          p => p.id
-        )
-      );
-
-
-    const operaciones=[];
-
-
-    /* ---------------------------------------------
-       CREAR / ACTUALIZAR PRODUCTOS
-    --------------------------------------------- */
-
-    productos.forEach(
-      function(p){
-
-        operaciones.push({
-
-          tipo:"set",
-
-          referencia:
-            doc(
-              db,
-              "catalogo",
-              p.id
-            ),
-
-          datos:
-            datosPublicosCatalogo(p)
-
-        });
-
-      }
-    );
-
-
-    /* ---------------------------------------------
-       ELIMINAR DEL CATÁLOGO LOS QUE YA NO EXISTAN
-    --------------------------------------------- */
-
-    catalogoSnapshot.docs.forEach(
-      function(documento){
-
-        if(
-          !idsActuales.has(
-            documento.id
-          )
-        ){
-
-          operaciones.push({
-
-            tipo:"delete",
-
-            referencia:
-              documento.ref
-
-          });
-
-        }
-
-      }
-    );
-
-
-    /* ---------------------------------------------
-       FIRESTORE PERMITE 500 OPERACIONES/BATCH.
-
-       Utilizamos 450.
-    --------------------------------------------- */
-
-    const TAMANO_BATCH=450;
-
-
-    for(
-      let i=0;
-      i<operaciones.length;
-      i+=TAMANO_BATCH
-    ){
-
-      const batch =
-        writeBatch(db);
-
-      const grupo =
-        operaciones.slice(
-          i,
-          i+TAMANO_BATCH
-        );
-
-
-      grupo.forEach(
-        function(operacion){
-
-          if(
-            operacion.tipo==="delete"
-          ){
-
-            batch.delete(
-              operacion.referencia
-            );
-
-          }else{
-
-            batch.set(
-
-              operacion.referencia,
-
-              operacion.datos
-
-            );
-
-          }
-
-        }
-      );
-
-
-      mensaje.textContent =
-        "⏳ Actualizando catálogo...";
-
-
-      await batch.commit();
-
-    }
-
-
-    mensaje.innerHTML =
-      '<div class="ok">' +
-      '✅ Catálogo actualizado correctamente.<br>' +
-      'Productos sincronizados: ' +
-      productos.length +
-      '</div>';
-
-
-    alert(
-      "Catálogo actualizado correctamente.\n\n" +
-      "Productos sincronizados: " +
-      productos.length
-    );
-
-
-  }catch(error){
-
-    console.error(
-      "Error sincronizando catálogo completo:",
-      error
-    );
-
-
-    mensaje.innerHTML =
-      '<div class="error">' +
-      '❌ Error actualizando el catálogo.<br><br>' +
-      escapar(
-        errorTexto(error)
-      ) +
-      '</div>';
-
-
-    alert(
-      "No se pudo actualizar el catálogo.\n\n" +
-      errorTexto(error)
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   CONECTAR
-===================================================== */
-
-async function conectar(){
-
-  const estado =
-    document.getElementById(
-      "estadoConexion"
-    );
-
-
-  try{
-
-    estado.textContent =
-      "⏳ Iniciando Firebase...";
-
-
-    app =
-      initializeApp(
-        firebaseConfig
-      );
-
-
-    estado.textContent =
-      "⏳ Conectando con Firestore...";
-
-
-    db =
-      getFirestore(app);
-
-
-    auth =
-      getAuth(app);
-
-
-    estado.textContent =
-      "⏳ Iniciando sesión...";
-
-
-    await signInAnonymously(
-      auth
-    );
-
-
-    onAuthStateChanged(
-
-      auth,
-
-      function(usuario){
-
-        if(usuario){
-
-          estado.textContent =
-            "☁️ Inventario sincronizado";
-
-          escucharDatos();
-
-        }
-
-      }
-
-    );
-
-
-  }catch(error){
-
-    estado.textContent =
-      "❌ Error de conexión";
-
-
-    mostrarError(
-
-      "NO SE PUDO CONECTAR CON FIREBASE.\n\n" +
-
-      errorTexto(error)
-
-    );
-
-
-    const diagnostico =
-      document.getElementById(
-        "diagnostico"
-      );
-
-
-    diagnostico.style.display =
-      "block";
-
-
-    diagnostico.textContent =
-      errorTexto(error);
-
-  }
-
-}
-
-
-/* =====================================================
-   ESCUCHAR DATOS
-===================================================== */
-
-function escucharDatos(){
 
   /* PRODUCTOS */
 
@@ -1658,40 +911,34 @@ function escucharDatos(){
       "productos"
     ),
 
-    function(snapshot){
+    snapshot => {
 
-      productos=[];
-
-
-      snapshot.forEach(
-        function(d){
-
-          productos.push({
-
+      productos =
+        snapshot.docs.map(
+          d => ({
             id:d.id,
-
             ...d.data()
-
-          });
-
-        }
-      );
+          })
+        );
 
 
-      actualizarInicio();
+      mostrarStock();
 
-      mostrarInventario();
+      actualizarResumen();
 
     },
 
-    function(error){
+    error => {
+
+      console.error(
+        "❌ Error leyendo productos:",
+        error
+      );
+
 
       mostrarError(
-
-        "ERROR LEYENDO PRODUCTOS.\n\n" +
-
-        errorTexto(error)
-
+        error.message,
+        "mensajeConexion"
       );
 
     }
@@ -1708,55 +955,28 @@ function escucharDatos(){
       "ventas"
     ),
 
-    function(snapshot){
+    snapshot => {
 
-      ventas=[];
-
-
-      snapshot.forEach(
-        function(d){
-
-          ventas.push({
-
+      ventas =
+        snapshot.docs.map(
+          d => ({
             id:d.id,
-
             ...d.data()
+          })
+        );
 
-          });
-
-        }
-      );
-
-
-      ventas.sort(
-        function(a,b){
-
-          return (
-
-            new Date(b.fecha) -
-
-            new Date(a.fecha)
-
-          );
-
-        }
-      );
-
-
-      actualizarInicio();
 
       mostrarVentas();
 
+      actualizarResumen();
+
     },
 
-    function(error){
+    error => {
 
-      mostrarError(
-
-        "ERROR LEYENDO VENTAS.\n\n" +
-
-        errorTexto(error)
-
+      console.error(
+        "❌ Error leyendo ventas:",
+        error
       );
 
     }
@@ -1766,1524 +986,374 @@ function escucharDatos(){
 }
 
 
-/* =====================================================
-   NAVEGACIÓN
-===================================================== */
+/* =========================================================
+   RESUMEN
+========================================================= */
 
-window.ir =
-function(nombre){
+function actualizarResumen(){
 
-  document
-    .querySelectorAll(".seccion")
-    .forEach(
-      function(x){
+  const totalProductos =
+    productos.length;
 
-        x.classList.remove(
-          "activa"
-        );
 
-      }
+  const totalUnidades =
+    productos.reduce(
+      (total,p) =>
+        total +
+        Number(p.stock || 0),
+      0
     );
 
 
-  const seccion =
-    document.getElementById(
-      nombre
+  const valorCompra =
+    productos.reduce(
+      (total,p) =>
+        total +
+        Number(p.precioCompra || 0) *
+        Number(p.stock || 0),
+      0
     );
 
 
-  if(seccion){
-
-    seccion.classList.add(
-      "activa"
-    );
-
-  }
-
-
-  document
-    .querySelectorAll("nav button")
-    .forEach(
-      function(x){
-
-        x.classList.remove(
-          "activo"
-        );
-
-      }
+  const valorVenta =
+    productos.reduce(
+      (total,p) =>
+        total +
+        Number(p.precioVenta || 0) *
+        Number(p.stock || 0),
+      0
     );
 
 
-  const mapa={
-
-    inicio:"nInicio",
-
-    escaner:"nEscaner",
-
-    inventario:"nInventario",
-
-    ventas:"nVentas",
-
-    agregar:"nAgregar",
-
-    copia:"nCopia"
-
-  };
-
-
-  if(mapa[nombre]){
-
-    document
-      .getElementById(
-        mapa[nombre]
-      )
-      .classList.add(
-        "activo"
-      );
-
-  }
-
-};
-
-
-/* =====================================================
-   GUARDAR PRODUCTO
-===================================================== */
-
-window.guardarProducto =
-async function(){
-
-  const mensaje =
-    document.getElementById(
-      "mensajeGuardar"
+  const beneficio =
+    productos.reduce(
+      (total,p) =>
+        total +
+        (
+          Number(p.precioVenta || 0) -
+          Number(p.precioCompra || 0)
+        ) *
+        Number(p.stock || 0),
+      0
     );
 
 
-  mensaje.innerHTML="";
+  const stockBajo =
+    productos.filter(
+      p =>
+        Number(p.stock || 0) <= 2
+    ).length;
 
 
-  if(!db){
-
-    mostrarError(
-
-      "Firebase todavía no está conectado.",
-
-      "mensajeGuardar"
-
-    );
-
-    return;
-
-  }
+  document.getElementById(
+    "totalProductos"
+  ).textContent =
+    totalProductos;
 
 
-  const nombre =
-    document
-      .getElementById(
-        "productoInput"
-      )
-      .value
-      .trim();
+  document.getElementById(
+    "totalUnidades"
+  ).textContent =
+    totalUnidades;
 
 
-  const codigo =
-    document
-      .getElementById(
-        "codigoInput"
-      )
-      .value
-      .trim();
+  document.getElementById(
+    "valorCompra"
+  ).textContent =
+    dinero(valorCompra);
 
 
-  const stock =
-    Number(
-
-      document
-        .getElementById(
-          "stockInput"
-        )
-        .value
-
-    ) || 0;
+  document.getElementById(
+    "valorVenta"
+  ).textContent =
+    dinero(valorVenta);
 
 
-  const compra =
-    Number(
-
-      document
-        .getElementById(
-          "compraInput"
-        )
-        .value
-
-    ) || 0;
+  document.getElementById(
+    "beneficioPotencial"
+  ).textContent =
+    dinero(beneficio);
 
 
-  const venta =
-    Number(
-
-      document
-        .getElementById(
-          "ventaInput"
-        )
-        .value
-
-    ) || 0;
+  document.getElementById(
+    "stockBajo"
+  ).textContent =
+    stockBajo;
 
 
-  let comentario =
-    document
-      .getElementById(
-        "comentarioInput"
-      )
-      .value
-      .trim();
+  /* VENTAS DE HOY */
+
+  const hoy =
+    fechaHoy();
 
 
-  if(!comentario){
+  const ventasHoyArray =
+    ventas.filter(v => {
 
-    comentario =
-      COMENTARIO_PREDETERMINADO;
+      const fecha =
+        v.fecha ||
+        v.fechaVenta ||
+        "";
 
-  }
+      return fecha
+        .substring(0,10) === hoy;
 
-
-  if(!nombre){
-
-    mostrarError(
-
-      "Escribe el nombre del producto.",
-
-      "mensajeGuardar"
-
-    );
-
-    return;
-
-  }
+    });
 
 
-  if(!codigo){
-
-    mostrarError(
-
-      "Introduce el código de barras.",
-
-      "mensajeGuardar"
-
-    );
-
-    return;
-
-  }
-
-
-  const repetido =
-    productos.find(
-
-      function(p){
-
-        return (
-
-          String(p.codigo)
-            .trim() === codigo &&
-
-          p.id !== indiceEditando
-
-        );
-
-      }
-
+  const ingresos =
+    ventasHoyArray.reduce(
+      (total,v) =>
+        total +
+        Number(v.total || 0),
+      0
     );
 
 
-  if(repetido){
-
-    mostrarError(
-
-      "Ya existe un producto con ese código.",
-
-      "mensajeGuardar"
-
-    );
-
-    return;
-
-  }
-
-
-  const datos={
-
-    producto:nombre,
-
-    codigo:codigo,
-
-    stock:stock,
-
-    precioCompra:compra,
-
-    precioVenta:venta,
-
-    beneficio:
-      venta-compra,
-
-    foto:fotoBase64,
-
-    comentario:comentario
-
-  };
-
-
-  const boton =
-    document.getElementById(
-      "guardarBtn"
+  const beneficioHoy =
+    ventasHoyArray.reduce(
+      (total,v) =>
+        total +
+        Number(v.beneficio || 0),
+      0
     );
 
 
-  try{
-
-    boton.disabled=true;
-
-    boton.textContent =
-      "⏳ Guardando...";
-
-
-    /* ---------------------------------------------
-       EDITAR
-    --------------------------------------------- */
-
-    if(indiceEditando){
-
-      await updateDoc(
-
-        doc(
-          db,
-          "productos",
-          indiceEditando
-        ),
-
-        datos
-
-      );
-
-
-      /*
-         ACTUALIZAMOS EL CATÁLOGO
-      */
-
-      await sincronizarProductoCatalogo({
-
-        id:indiceEditando,
-
-        ...datos
-
-      });
-
-
-      mensaje.innerHTML =
-        '<div class="ok">' +
-        '✅ Producto actualizado y catálogo sincronizado.' +
-        '</div>';
-
-
-    }else{
-
-
-      /* ---------------------------------------------
-         NUEVO
-      --------------------------------------------- */
-
-      const nuevoProducto =
-        await addDoc(
-
-          collection(
-            db,
-            "productos"
-          ),
-
-          datos
-
-        );
-
-
-      /*
-         CREAMOS TAMBIÉN EL CATÁLOGO
-      */
-
-      await sincronizarProductoCatalogo({
-
-        id:
-          nuevoProducto.id,
-
-        ...datos
-
-      });
-
-
-      mensaje.innerHTML =
-        '<div class="ok">' +
-        '✅ Producto añadido y catálogo sincronizado.' +
-        '</div>';
-
-    }
-
-
-    setTimeout(
-
-      function(){
-
-        cancelarEdicion();
-
-        ir("inventario");
-
-      },
-
-      700
-
+  const unidades =
+    ventasHoyArray.reduce(
+      (total,v) =>
+        total +
+        Number(v.cantidad || 0),
+      0
     );
 
 
-  }catch(error){
-
-    mostrarError(
-
-      "NO SE PUDO GUARDAR EL PRODUCTO.\n\n" +
-
-      errorTexto(error),
-
-      "mensajeGuardar"
-
-    );
+  document.getElementById(
+    "ventasHoy"
+  ).textContent =
+    ventasHoyArray.length;
 
 
-  }finally{
-
-    boton.disabled=false;
-
-
-    if(!indiceEditando){
-
-      boton.textContent =
-        "💾 GUARDAR PRODUCTO";
-
-    }
-
-  }
-
-};
+  document.getElementById(
+    "ingresosHoy"
+  ).textContent =
+    dinero(ingresos);
 
 
-/* =====================================================
-   EDITAR PRODUCTO
-===================================================== */
-
-function iniciarEdicion(p){
-
-  indiceEditando=p.id;
+  document.getElementById(
+    "beneficioHoy"
+  ).textContent =
+    dinero(beneficioHoy);
 
 
-  document
-    .getElementById(
-      "tituloForm"
-    )
-    .textContent =
-      "✏️ Editar producto";
-
-
-  document
-    .getElementById(
-      "productoInput"
-    )
-    .value =
-      p.producto || "";
-
-
-  document
-    .getElementById(
-      "codigoInput"
-    )
-    .value =
-      p.codigo || "";
-
-
-  document
-    .getElementById(
-      "stockInput"
-    )
-    .value =
-      p.stock || 0;
-
-
-  document
-    .getElementById(
-      "compraInput"
-    )
-    .value =
-      p.precioCompra || 0;
-
-
-  document
-    .getElementById(
-      "ventaInput"
-    )
-    .value =
-      p.precioVenta || 0;
-
-
-  document
-    .getElementById(
-      "comentarioInput"
-    )
-    .value =
-      p.comentario ||
-      COMENTARIO_PREDETERMINADO;
-
-
-  fotoBase64 =
-    p.foto || "";
-
-
-  const preview =
-    document.getElementById(
-      "fotoPreview"
-    );
-
-
-  if(fotoBase64){
-
-    preview.src=
-      fotoBase64;
-
-    preview.style.display=
-      "block";
-
-  }else{
-
-    preview.style.display=
-      "none";
-
-  }
-
-
-  document
-    .getElementById(
-      "cancelarBtn"
-    )
-    .style.display=
-      "block";
-
-
-  document
-    .getElementById(
-      "guardarBtn"
-    )
-    .textContent =
-      "💾 GUARDAR CAMBIOS";
-
-
-  ir("agregar");
+  document.getElementById(
+    "unidadesHoy"
+  ).textContent =
+    unidades;
 
 }
 
 
-window.editarActual =
+/* =========================================================
+   MOSTRAR STOCK
+========================================================= */
+
+window.mostrarStock =
 function(){
 
-  if(productoActual){
-
-    iniciarEdicion(
-      productoActual
-    );
-
-  }
-
-};
-
-
-window.cancelarEdicion =
-function(){
-
-  indiceEditando=null;
-
-  fotoBase64="";
-
-
-  document
-    .getElementById(
-      "tituloForm"
-    )
-    .textContent =
-      "➕ Añadir producto";
-
-
-  document
-    .getElementById(
-      "guardarBtn"
-    )
-    .textContent =
-      "💾 GUARDAR PRODUCTO";
-
-
-  document
-    .getElementById(
-      "cancelarBtn"
-    )
-    .style.display=
-      "none";
-
-
-  document
-    .getElementById(
-      "productoInput"
-    )
-    .value="";
-
-
-  document
-    .getElementById(
-      "codigoInput"
-    )
-    .value="";
-
-
-  document
-    .getElementById(
-      "stockInput"
-    )
-    .value="0";
-
-
-  document
-    .getElementById(
-      "compraInput"
-    )
-    .value="";
-
-
-  document
-    .getElementById(
-      "ventaInput"
-    )
-    .value="";
-
-
-  document
-    .getElementById(
-      "comentarioInput"
-    )
-    .value =
-      COMENTARIO_PREDETERMINADO;
-
-
-  document
-    .getElementById(
-      "fotoInput"
-    )
-    .value="";
-
-
-  document
-    .getElementById(
-      "fotoPreview"
-    )
-    .style.display=
-      "none";
-
-
-  document
-    .getElementById(
-      "mensajeGuardar"
-    )
-    .innerHTML="";
-
-};
-
-
-/* =====================================================
-   ELIMINAR PRODUCTO
-===================================================== */
-
-async function eliminarProducto(p){
-
-  if(!confirm(
-    "¿Eliminar " +
-    p.producto +
-    "?"
-  )){
-
-    return;
-
-  }
-
-
-  try{
-
-    /* ELIMINAR INVENTARIO */
-
-    await deleteDoc(
-
-      doc(
-        db,
-        "productos",
-        p.id
-      )
-
-    );
-
-
-    /* ELIMINAR CATÁLOGO */
-
-    await eliminarProductoCatalogo(
-      p.id
-    );
-
-
-    productoActual=null;
-
-
-    document
-      .getElementById(
-        "resultado"
-      )
-      .style.display=
-        "none";
-
-
-  }catch(error){
-
-    mostrarError(
-
-      "NO SE PUDO ELIMINAR.\n\n" +
-
-      errorTexto(error)
-
-    );
-
-  }
-
-}
-
-
-window.eliminarActual =
-function(){
-
-  if(productoActual){
-
-    eliminarProducto(
-      productoActual
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   INVENTARIO
-===================================================== */
-
-window.mostrarInventario =
-function(){
-
-  const lista =
+  const tabla =
     document.getElementById(
-      "listaInventario"
+      "tablaStock"
     );
 
 
-  const input =
-    document.getElementById(
-      "buscador"
-    );
-
-
-  const textoOriginal =
-    input
-      ? input.value
-      : "";
-
-
-  const texto =
-    textoOriginal
-      .toLowerCase()
-      .trim();
+  const buscar =
+    (
+      document.getElementById(
+        "buscarStock"
+      ).value || ""
+    ).toLowerCase();
 
 
   const filtrados =
-    productos.filter(
+    productos.filter(p => {
 
-      function(p){
+      return (
 
-        const nombre =
-          String(
-            p.producto || ""
-          )
-          .toLowerCase();
+        String(
+          p.producto || ""
+        )
+        .toLowerCase()
+        .includes(buscar)
+
+        ||
+
+        String(
+          p.codigo || ""
+        )
+        .toLowerCase()
+        .includes(buscar)
+
+      );
+
+    });
 
 
-        const codigo =
-          String(
-            p.codigo || ""
-          )
-          .toLowerCase();
+  tabla.innerHTML =
+    "";
 
 
-        return (
+  filtrados.forEach(p => {
 
-          nombre.includes(texto) ||
+    const tr =
+      document.createElement("tr");
 
-          codigo.includes(texto)
 
-        );
+    tr.innerHTML = `
 
-      }
+      <td>
 
+        ${
+          p.foto
+
+          ?
+
+          `<img
+            src="${p.foto}"
+            class="producto-img"
+          >`
+
+          :
+
+          "—"
+        }
+
+      </td>
+
+      <td>
+        ${p.producto || ""}
+      </td>
+
+      <td>
+        ${p.codigo || ""}
+      </td>
+
+      <td>
+
+        <strong>
+          ${Number(p.stock || 0)}
+        </strong>
+
+        <br>
+
+        <button
+          class="btn gris"
+          onclick="cambiarStock('${p.id}',1)"
+        >
+          +1
+        </button>
+
+        <button
+          class="btn gris"
+          onclick="cambiarStock('${p.id}',-1)"
+        >
+          -1
+        </button>
+
+      </td>
+
+      <td>
+        ${dinero(p.precioCompra)}
+      </td>
+
+      <td>
+        ${dinero(p.precioVenta)}
+      </td>
+
+      <td>
+        ${dinero(
+          Number(p.precioVenta || 0) -
+          Number(p.precioCompra || 0)
+        )}
+      </td>
+
+      <td>
+
+        <div class="acciones">
+
+          <button
+            class="btn azul"
+            onclick="iniciarEdicion('${p.id}')"
+          >
+            ✏️ Editar
+          </button>
+
+          <button
+            class="btn verde"
+            onclick="venderProducto('${p.id}')"
+          >
+            💰 Vender
+          </button>
+
+          <button
+            class="btn rojo"
+            onclick="eliminarProducto('${p.id}')"
+          >
+            🗑️
+          </button>
+
+        </div>
+
+      </td>
+
+    `;
+
+
+    tabla.appendChild(tr);
+
+  });
+
+};
+
+
+/* =========================================================
+   CAMBIAR STOCK
+========================================================= */
+
+window.cambiarStock =
+async function(id,cambio){
+
+  const p =
+    productos.find(
+      x => x.id === id
     );
 
 
-  if(!filtrados.length){
-
-    lista.innerHTML =
-
-      texto
-
-        ? '<div class="vacio">' +
-          '🔎 No se encontró ningún producto.' +
-          '</div>'
-
-        : '<div class="vacio">' +
-          '📦 No hay productos.' +
-          '</div>';
+  if(!p){
 
     return;
 
   }
 
 
-  lista.innerHTML="";
-
-
-  filtrados.forEach(
-
-    function(p){
-
-      const div =
-        document.createElement(
-          "div"
-        );
-
-
-      div.className=
-        "producto";
-
-
-      const img =
-        document.createElement(
-          "img"
-        );
-
-
-      if(p.foto){
-
-        img.src=
-          p.foto;
-
-      }
-
-
-      const info =
-        document.createElement(
-          "div"
-        );
-
-
-      info.className=
-        "producto-info";
-
-
-      info.innerHTML =
-
-        "<strong>" +
-
-        escapar(
-          p.producto
-        ) +
-
-        "</strong>" +
-
-        "<small>Código: " +
-
-        escapar(
-          p.codigo
-        ) +
-
-        "</small>";
-
-
-      const stock =
-        document.createElement(
-          "div"
-        );
-
-
-      stock.className=
-        "stock";
-
-
-      stock.textContent =
-        p.stock || 0;
-
-
-      if(
-        Number(p.stock)<=2
-      ){
-
-        stock.classList.add(
-          "stock-bajo"
-        );
-
-      }
-
-
-      const editar =
-        document.createElement(
-          "button"
-        );
-
-
-      editar.className=
-        "btn naranja";
-
-
-      editar.textContent=
-        "✏️";
-
-
-      editar.onclick =
-        function(e){
-
-          e.stopPropagation();
-
-          iniciarEdicion(p);
-
-        };
-
-
-      const borrar =
-        document.createElement(
-          "button"
-        );
-
-
-      borrar.className=
-        "btn rojo";
-
-
-      borrar.textContent=
-        "🗑️";
-
-
-      borrar.onclick =
-        function(e){
-
-          e.stopPropagation();
-
-          eliminarProducto(p);
-
-        };
-
-
-      const botones =
-        document.createElement(
-          "div"
-        );
-
-
-      botones.className=
-        "dos";
-
-
-      botones.appendChild(
-        editar
-      );
-
-
-      botones.appendChild(
-        borrar
-      );
-
-
-      const derecha =
-        document.createElement(
-          "div"
-        );
-
-
-      derecha.appendChild(
-        stock
-      );
-
-
-      derecha.appendChild(
-        botones
-      );
-
-
-      div.appendChild(
-        img
-      );
-
-
-      div.appendChild(
-        info
-      );
-
-
-      div.appendChild(
-        derecha
-      );
-
-
-      div.onclick =
-        function(){
-
-          mostrarProducto(p);
-
-          ir("escaner");
-
-        };
-
-
-      lista.appendChild(
-        div
-      );
-
-    }
-
-  );
-
-};
-
-
-/* =====================================================
-   MOSTRAR PRODUCTO
-===================================================== */
-
-function mostrarProducto(p){
-
-  productoActual=p;
-
-
-  document
-    .getElementById(
-      "resultado"
-    )
-    .style.display=
-      "block";
-
-
-  document
-    .getElementById(
-      "nombreResultado"
-    )
-    .textContent =
-      p.producto || "";
-
-
-  document
-    .getElementById(
-      "codigoResultado"
-    )
-    .textContent =
-      "Código: " +
-      (p.codigo || "");
-
-
-  document
-    .getElementById(
-      "stockResultado"
-    )
-    .textContent =
-      "Stock: " +
-      (p.stock || 0);
-
-
-  document
-    .getElementById(
-      "precioResultado"
-    )
-    .textContent =
-      "Venta: " +
-      euros(
-        p.precioVenta
-      );
-
-
-  document
-    .getElementById(
-      "beneficioResultado"
-    )
-    .textContent =
-      "Beneficio/unidad: " +
-      euros(
-
-        (Number(
-          p.precioVenta
-        ) || 0)
-
-        -
-
-        (Number(
-          p.precioCompra
-        ) || 0)
-
-      );
-
-
-  const comentario =
-    document.getElementById(
-      "comentarioResultado"
-    );
-
-
-  const textoComentario =
-    p.comentario ||
-    COMENTARIO_PREDETERMINADO;
-
-
-  if(textoComentario){
-
-    comentario.innerHTML =
-
-      '<div class="comentario">' +
-
-      '📝 <b>Comentario:</b><br>' +
-
-      escapar(
-        textoComentario
-      ) +
-
-      '</div>';
-
-  }else{
-
-    comentario.innerHTML =
-
-      '<div class="comentario-vacio">' +
-
-      '📝 Sin comentario adicional.' +
-
-      '</div>';
-
-  }
-
-
-  const foto =
-    document.getElementById(
-      "fotoResultado"
-    );
-
-
-  if(p.foto){
-
-    foto.src=
-      p.foto;
-
-    foto.style.display=
-      "block";
-
-  }else{
-
-    foto.style.display=
-      "none";
-
-  }
-
-}
-
-
-/* =====================================================
-   ESCÁNER
-===================================================== */
-
-async function buscarCodigoFirebase(codigo){
-
-  codigo =
-    String(codigo).trim();
-
-
-  document
-    .getElementById(
-      "mensaje"
-    )
-    .textContent =
-      "🔎 Buscando producto...";
-
-
-  try{
-
-    const consulta =
-      query(
-
-        collection(
-          db,
-          "productos"
-        ),
-
-        where(
-          "codigo",
-          "==",
-          codigo
-        )
-
-      );
-
-
-    const resultado =
-      await getDocs(
-        consulta
-      );
-
-
-    if(resultado.empty){
-
-      document
-        .getElementById(
-          "mensaje"
-        )
-        .textContent =
-          "❌ Producto no registrado";
-
-
-      const crear =
-        confirm(
-
-          "El código " +
-          codigo +
-          " no está registrado.\n\n" +
-          "¿Quieres añadirlo ahora?"
-
-        );
-
-
-      if(crear){
-
-        ir("agregar");
-
-
-        document
-          .getElementById(
-            "codigoInput"
-          )
-          .value=
-            codigo;
-
-      }
-
-
-      return;
-
-    }
-
-
-    const d =
-      resultado.docs[0];
-
-
-    const producto={
-
-      id:d.id,
-
-      ...d.data()
-
-    };
-
-
-    mostrarProducto(
-      producto
-    );
-
-
-  }catch(error){
-
-    mostrarError(
-
-      "NO SE PUDO BUSCAR EL CÓDIGO.\n\n" +
-
-      errorTexto(error),
-
-      "mensaje"
-
-    );
-
-  }
-
-}
-
-
-window.iniciarEscaner =
-function(){
-
-  if(escaneando){
-
-    return;
-
-  }
-
-
-  if(!db){
-
-    mostrarError(
-
-      "Firebase todavía no está conectado.",
-
-      "mensaje"
-
-    );
-
-    return;
-
-  }
-
-
-  scanner =
-    new Html5Qrcode(
-      "reader"
-    );
-
-
-  scanner.start(
-
-    {
-      facingMode:"environment"
-    },
-
-    {
-      fps:10,
-
-      qrbox:{
-        width:280,
-        height:150
-      }
-
-    },
-
-    function(codigo){
-
-      pararEscaner();
-
-      buscarCodigoFirebase(
-        codigo
-      );
-
-    },
-
-    function(){}
-
-  )
-
-  .then(
-
-    function(){
-
-      escaneando=true;
-
-
-      document
-        .getElementById(
-          "btnIniciar"
-        )
-        .style.display=
-          "none";
-
-
-      document
-        .getElementById(
-          "btnParar"
-        )
-        .style.display=
-          "block";
-
-
-      document
-        .getElementById(
-          "mensaje"
-        )
-        .textContent =
-          "📷 Apunta al código de barras";
-
-    }
-
-  )
-
-  .catch(
-
-    function(error){
-
-      mostrarError(
-
-        "NO SE PUDO ABRIR LA CÁMARA.\n\n" +
-
-        errorTexto(error),
-
-        "mensaje"
-
-      );
-
-    }
-
-  );
-
-};
-
-
-window.pararEscaner =
-function(){
-
-  if(!scanner){
-
-    return;
-
-  }
-
-
-  scanner.stop()
-
-    .then(
-
-      function(){
-
-        scanner.clear();
-
-        scanner=null;
-
-        escaneando=false;
-
-
-        document
-          .getElementById(
-            "btnIniciar"
-          )
-          .style.display=
-            "block";
-
-
-        document
-          .getElementById(
-            "btnParar"
-          )
-          .style.display=
-            "none";
-
-      }
-
-    )
-
-    .catch(
-
-      function(error){
-
-        console.error(
-          error
-        );
-
-        scanner=null;
-
-        escaneando=false;
-
-      }
-
-    );
-
-};
-
-
-/* =====================================================
-   STOCK
-===================================================== */
-
-window.entradaStock =
-function(){
-
-  if(productoActual){
-
-    cambiarStock(
-      productoActual,
-      1
-    );
-
-  }
-
-};
-
-
-window.salidaStock =
-function(){
-
-  if(productoActual){
-
-    cambiarStock(
-      productoActual,
-      -1
-    );
-
-  }
-
-};
-
-
-async function cambiarStock(
-  p,
-  cantidad
-){
-
-  const actual =
-    Number(p.stock)||0;
+  const stockActual =
+    Number(p.stock || 0);
 
 
   const nuevo =
-    actual + cantidad;
+    stockActual +
+    Number(cambio);
 
 
-  if(nuevo<0){
+  if(nuevo < 0){
 
     alert(
-      "❌ No hay suficiente stock."
+      "El stock no puede ser negativo."
     );
 
     return;
 
   }
-
-
-  p.stock=nuevo;
-
-
-  if(
-
-    productoActual &&
-
-    productoActual.id===
-      p.id
-
-  ){
-
-    productoActual.stock=
-      nuevo;
-
-
-    document
-      .getElementById(
-        "stockResultado"
-      )
-      .textContent =
-        "Stock: " +
-        nuevo;
-
-  }
-
-
-  mostrarInventario();
 
 
   try{
@@ -3293,7 +1363,7 @@ async function cambiarStock(
       doc(
         db,
         "productos",
-        p.id
+        id
       ),
 
       {
@@ -3312,95 +1382,56 @@ async function cambiarStock(
 
       {
 
-        fecha:
-          new Date()
-            .toISOString(),
-
-        codigo:
-          p.codigo,
-
         producto:
-          p.producto,
+          p.producto || "",
+
+        productoId:
+          id,
 
         tipo:
-          cantidad>0
-            ? "Entrada"
-            : "Salida",
+          cambio > 0
+          ? "entrada"
+          : "salida",
 
         cantidad:
-          Math.abs(cantidad)
+          Math.abs(cambio),
+
+        fecha:
+          new Date().toISOString()
 
       }
 
     );
 
 
-    /*
-       ACTUALIZAR CATÁLOGO
-    */
-
-    await sincronizarProductoCatalogo({
-
-      ...p,
-
-      stock:nuevo
-
-    });
-
-
   }catch(error){
 
-    p.stock=actual;
+    console.error(error);
 
-
-    if(
-
-      productoActual &&
-
-      productoActual.id===
-        p.id
-
-    ){
-
-      productoActual.stock=
-        actual;
-
-
-      document
-        .getElementById(
-          "stockResultado"
-        )
-        .textContent =
-          "Stock: " +
-          actual;
-
-    }
-
-
-    mostrarInventario();
-
-
-    mostrarError(
-
-      "NO SE PUDO CAMBIAR EL STOCK.\n\n" +
-
-      errorTexto(error)
-
+    alert(
+      "Error cambiando el stock: " +
+      error.message
     );
 
   }
 
-}
+};
 
 
-/* =====================================================
+/* =========================================================
    VENDER PRODUCTO
-===================================================== */
+========================================================= */
 
 window.venderProducto =
-async function(){
+async function(id){
 
-  if(!productoActual){
+  const producto =
+    productos.find(
+      p => p.id === id
+    );
+
+
+  if(!producto){
 
     return;
 
@@ -3409,14 +1440,14 @@ async function(){
 
   const stock =
     Number(
-      productoActual.stock
-    ) || 0;
+      producto.stock || 0
+    );
 
 
-  if(stock<=0){
+  if(stock <= 0){
 
     alert(
-      "❌ No hay stock."
+      "No hay stock disponible."
     );
 
     return;
@@ -3424,34 +1455,31 @@ async function(){
   }
 
 
-  let cantidad =
+  const cantidadTexto =
     prompt(
-
       "¿Cuántas unidades quieres vender?",
-
       "1"
-
     );
 
 
-  if(cantidad===null){
+  if(cantidadTexto === null){
 
     return;
 
   }
 
 
-  cantidad =
-    parseInt(cantidad);
+  const cantidad =
+    Number(cantidadTexto);
 
 
   if(
-    !cantidad ||
-    cantidad<1
+    !Number.isInteger(cantidad) ||
+    cantidad <= 0
   ){
 
     alert(
-      "Cantidad no válida."
+      "Introduce una cantidad válida."
     );
 
     return;
@@ -3459,14 +1487,10 @@ async function(){
   }
 
 
-  if(cantidad>stock){
+  if(cantidad > stock){
 
     alert(
-
-      "❌ Stock insuficiente.\n" +
-      "Disponible: " +
-      stock
-
+      "No hay suficiente stock."
     );
 
     return;
@@ -3474,157 +1498,66 @@ async function(){
   }
 
 
-  const precioNormal =
+  const precio =
     Number(
-      productoActual.precioVenta
-    ) || 0;
+      producto.precioVenta || 0
+    );
 
 
   const compra =
     Number(
-      productoActual.precioCompra
-    ) || 0;
-
-
-  let precioTexto =
-    prompt(
-
-      "💶 ¿A cuánto has vendido finalmente CADA unidad?\n\n" +
-
-      "Precio habitual: " +
-
-      euros(precioNormal),
-
-      precioNormal.toFixed(2)
-
+      producto.precioCompra || 0
     );
-
-
-  if(precioTexto===null){
-
-    return;
-
-  }
-
-
-  precioTexto =
-    precioTexto
-      .replace(",",".")
-      .trim();
-
-
-  const precio =
-    Number(precioTexto);
-
-
-  if(
-    !Number.isFinite(precio) ||
-    precio<0
-  ){
-
-    alert(
-      "❌ Precio no válido."
-    );
-
-    return;
-
-  }
 
 
   const total =
-    precio*cantidad;
+    precio * cantidad;
 
 
   const beneficio =
-    (precio-compra)*
+    (precio - compra) *
     cantidad;
 
 
-  const confirmar =
-    confirm(
-
-      "🛒 CONFIRMAR VENTA\n\n" +
-
-      "Producto: " +
-      productoActual.producto +
-      "\n" +
-
-      "Cantidad: " +
-      cantidad +
-      "\n" +
-
-      "Precio compra/unidad: " +
-      euros(compra) +
-      "\n" +
-
-      "Precio venta/unidad: " +
-      euros(precio) +
-      "\n" +
-
-      "Total: " +
-      euros(total) +
-      "\n" +
-
-      "Beneficio: " +
-      euros(beneficio)
-
-    );
-
-
-  if(!confirmar){
-
-    return;
-
-  }
+  const nuevoStock =
+    stock - cantidad;
 
 
   try{
 
-    const ventaRef =
-      await addDoc(
+    await addDoc(
 
-        collection(
-          db,
-          "ventas"
-        ),
+      collection(
+        db,
+        "ventas"
+      ),
 
-        {
+      {
 
-          fecha:
-            new Date()
-              .toISOString(),
+        producto:
+          producto.producto || "",
 
-          codigo:
-            productoActual.codigo,
+        productoId:
+          id,
 
-          producto:
-            productoActual.producto,
+        cantidad:
+          cantidad,
 
-          cantidad:
-            cantidad,
+        precio:
+          precio,
 
-          precioCompra:
-            compra,
+        total:
+          total,
 
-          precioUnitario:
-            precio,
+        beneficio:
+          beneficio,
 
-          precioHabitual:
-            precioNormal,
+        fecha:
+          new Date().toISOString()
 
-          total:
-            total,
+      }
 
-          beneficio:
-            beneficio
-
-        }
-
-      );
-
-
-    const nuevoStock =
-      stock-cantidad;
+    );
 
 
     await updateDoc(
@@ -3632,12 +1565,11 @@ async function(){
       doc(
         db,
         "productos",
-        productoActual.id
+        id
       ),
 
       {
-        stock:
-          nuevoStock
+        stock:nuevoStock
       }
 
     );
@@ -3652,113 +1584,38 @@ async function(){
 
       {
 
-        fecha:
-          new Date()
-            .toISOString(),
-
-        codigo:
-          productoActual.codigo,
-
         producto:
-          productoActual.producto,
+          producto.producto || "",
+
+        productoId:
+          id,
 
         tipo:
-          "Venta",
+          "venta",
 
         cantidad:
           cantidad,
 
-        ventaId:
-          ventaRef.id
+        fecha:
+          new Date().toISOString()
 
       }
 
     );
 
 
-    /*
-       ACTUALIZAR CATÁLOGO
-    */
-
-    await sincronizarProductoCatalogo({
-
-      ...productoActual,
-
-      stock:
-        nuevoStock
-
-    });
-
-
-    productoActual.stock=
-      nuevoStock;
-
-
-    const productoLocal =
-      productos.find(
-
-        function(p){
-
-          return (
-            p.id===
-            productoActual.id
-          );
-
-        }
-
-      );
-
-
-    if(productoLocal){
-
-      productoLocal.stock=
-        nuevoStock;
-
-    }
-
-
-    document
-      .getElementById(
-        "stockResultado"
-      )
-      .textContent =
-        "Stock: " +
-        nuevoStock;
-
-
-    mostrarInventario();
-
-
     alert(
-
-      "🛒 Venta registrada correctamente.\n\n" +
-
-      "💰 Compra: " +
-      euros(compra) +
-      "/unidad\n" +
-
-      "💶 Venta: " +
-      euros(precio) +
-      "/unidad\n" +
-
-      "💵 Total: " +
-      euros(total) +
-      "\n\n" +
-
-      "📈 Beneficio: " +
-      euros(beneficio)
-
+      "Venta registrada correctamente."
     );
 
 
   }catch(error){
 
-    mostrarError(
+    console.error(error);
 
-      "NO SE PUDO REGISTRAR LA VENTA.\n\n" +
-
-      errorTexto(error)
-
+    alert(
+      "Error registrando la venta: " +
+      error.message
     );
 
   }
@@ -3766,752 +1623,29 @@ async function(){
 };
 
 
-/* =====================================================
-   MOSTRAR VENTAS
-===================================================== */
+/* =========================================================
+   ELIMINAR PRODUCTO
+========================================================= */
 
-window.mostrarVentas =
-function(){
+window.eliminarProducto =
+async function(id){
 
-  const lista =
-    document.getElementById(
-      "listaVentas"
-    );
-
-
-  const input =
-    document.getElementById(
-      "buscarVentas"
-    );
-
-
-  const texto =
-    (
-
-      input
-        ? input.value
-        : ""
-
-    )
-    .toLowerCase()
-    .trim();
-
-
-  const filtradas =
-    ventas.filter(
-
-      function(v){
-
-        const producto =
-          String(
-            v.producto || ""
-          )
-          .toLowerCase();
-
-
-        const codigo =
-          String(
-            v.codigo || ""
-          )
-          .toLowerCase();
-
-
-        return (
-
-          producto.includes(texto) ||
-
-          codigo.includes(texto)
-
-        );
-
-      }
-
-    );
-
-
-  let ingresos=0;
-
-  let beneficio=0;
-
-  let unidades=0;
-
-
-  ventas.forEach(
-
-    function(v){
-
-      ingresos +=
-        Number(v.total)||0;
-
-      beneficio +=
-        Number(v.beneficio)||0;
-
-      unidades +=
-        Number(v.cantidad)||0;
-
-    }
-
-  );
-
-
-  document
-    .getElementById(
-      "totalVentas"
-    )
-    .textContent=
-      ventas.length;
-
-
-  document
-    .getElementById(
-      "totalIngresos"
-    )
-    .textContent=
-      euros(ingresos);
-
-
-  document
-    .getElementById(
-      "totalBeneficioVentas"
-    )
-    .textContent=
-      euros(beneficio);
-
-
-  document
-    .getElementById(
-      "totalUnidadesVentas"
-    )
-    .textContent=
-      unidades;
-
-
-  if(!filtradas.length){
-
-    lista.innerHTML =
-
-      texto
-
-        ? '<div class="vacio">' +
-          '🔎 No se encontró ninguna venta.' +
-          '</div>'
-
-        : '<div class="vacio">' +
-          '🛒 No hay ventas.' +
-          '</div>';
-
-    return;
-
-  }
-
-
-  lista.innerHTML="";
-
-
-  filtradas.forEach(
-
-    function(v){
-
-      const div =
-        document.createElement(
-          "div"
-        );
-
-
-      div.className=
-        "venta";
-
-
-      const precioMostrar =
-        Number(
-          v.precioUnitario
-        ) || 0;
-
-
-      let precioCompra;
-
-
-      if(
-
-        v.precioCompra !==
-          undefined &&
-
-        v.precioCompra !==
-          null
-
-      ){
-
-        precioCompra =
-          Number(
-            v.precioCompra
-          ) || 0;
-
-      }else{
-
-        const producto =
-          productos.find(
-
-            function(p){
-
-              return (
-
-                String(
-                  p.codigo||""
-                ) ===
-
-                String(
-                  v.codigo||""
-                )
-
-              );
-
-            }
-
-          );
-
-
-        precioCompra =
-          producto
-
-            ? Number(
-                producto.precioCompra
-              ) || 0
-
-            : 0;
-
-      }
-
-
-      const precioHabitual =
-        Number(
-          v.precioHabitual
-        );
-
-
-      let diferenciaPrecio="";
-
-
-      if(
-        Number.isFinite(
-          precioHabitual
-        )
-      ){
-
-        if(
-          precioMostrar<
-          precioHabitual
-        ){
-
-          diferenciaPrecio =
-
-            "<br>" +
-
-            "<span class='negativo'>" +
-
-            "📉 Vendido más barato que el precio habitual" +
-
-            "</span>";
-
-        }else if(
-          precioMostrar>
-          precioHabitual
-        ){
-
-          diferenciaPrecio =
-
-            "<br>" +
-
-            "<span class='positivo'>" +
-
-            "📈 Vendido más caro que el precio habitual" +
-
-            "</span>";
-
-        }
-
-      }
-
-
-      div.innerHTML =
-
-        "<b>🛒 " +
-
-        escapar(
-          v.producto
-        ) +
-
-        "</b><br>" +
-
-        "📅 " +
-
-        new Date(v.fecha)
-          .toLocaleString(
-            "es-ES"
-          ) +
-
-        "<br>" +
-
-        "📦 Cantidad: " +
-
-        escapar(
-          v.cantidad
-        ) +
-
-        "<br>" +
-
-        "💰 Precio compra/unidad: " +
-
-        euros(
-          precioCompra
-        ) +
-
-        "<br>" +
-
-        "💶 Precio venta/unidad: " +
-
-        euros(
-          precioMostrar
-        ) +
-
-        diferenciaPrecio +
-
-        "<br>" +
-
-        "💵 Total: " +
-
-        euros(
-          v.total
-        ) +
-
-        "<br>" +
-
-        "<span class='positivo'>" +
-
-        "📈 Beneficio: " +
-
-        euros(
-          v.beneficio
-        ) +
-
-        "</span>";
-
-
-      const editar =
-        document.createElement(
-          "button"
-        );
-
-
-      editar.className=
-        "btn-editar-venta";
-
-
-      editar.textContent=
-        "✏️ EDITAR VENTA";
-
-
-      editar.onclick =
-        function(){
-
-          editarVenta(v);
-
-        };
-
-
-      div.appendChild(
-        editar
-      );
-
-
-      const borrar =
-        document.createElement(
-          "button"
-        );
-
-
-      borrar.className=
-        "btn-eliminar-venta";
-
-
-      borrar.textContent=
-        "🗑️ ELIMINAR VENTA Y DEVOLVER STOCK";
-
-
-      borrar.onclick =
-        function(){
-
-          eliminarVenta(v);
-
-        };
-
-
-      div.appendChild(
-        borrar
-      );
-
-
-      lista.appendChild(
-        div
-      );
-
-    }
-
-  );
-
-};
-
-
-/* =====================================================
-   EDITAR VENTA
-===================================================== */
-
-async function editarVenta(v){
-
-  const cantidadAnterior =
-    Number(
-      v.cantidad
-    ) || 0;
-
-
-  const precioVentaAnterior =
-    Number(
-      v.precioUnitario
-    ) || 0;
-
-
-  const producto =
+  const p =
     productos.find(
-
-      function(p){
-
-        return (
-
-          String(
-            p.codigo||""
-          ) ===
-
-          String(
-            v.codigo||""
-          )
-
-        );
-
-      }
-
+      x => x.id === id
     );
 
 
-  let precioCompraAnterior;
-
-
-  if(
-
-    v.precioCompra !==
-      undefined &&
-
-    v.precioCompra !==
-      null
-
-  ){
-
-    precioCompraAnterior =
-      Number(
-        v.precioCompra
-      ) || 0;
-
-  }else{
-
-    precioCompraAnterior =
-
-      producto
-
-        ? Number(
-            producto.precioCompra
-          ) || 0
-
-        : 0;
-
-  }
-
-
-  let nuevaCantidad =
-    prompt(
-
-      "📦 ¿Cuántas unidades se vendieron finalmente?\n\n" +
-
-      "Cantidad actual: " +
-      cantidadAnterior,
-
-      cantidadAnterior
-
-    );
-
-
-  if(nuevaCantidad===null){
+  if(!p){
 
     return;
 
   }
-
-
-  nuevaCantidad =
-    parseInt(
-      nuevaCantidad
-    );
-
-
-  if(
-
-    !Number.isInteger(
-      nuevaCantidad
-    ) ||
-
-    nuevaCantidad<1
-
-  ){
-
-    alert(
-      "❌ Cantidad no válida."
-    );
-
-    return;
-
-  }
-
-
-  let nuevoPrecioCompraTexto =
-    prompt(
-
-      "💰 ¿A cuánto compraste CADA unidad?\n\n" +
-
-      "Precio de compra actual: " +
-
-      euros(
-        precioCompraAnterior
-      ),
-
-      precioCompraAnterior
-        .toFixed(2)
-
-    );
-
-
-  if(
-    nuevoPrecioCompraTexto===
-      null
-  ){
-
-    return;
-
-  }
-
-
-  nuevoPrecioCompraTexto =
-    nuevoPrecioCompraTexto
-      .replace(",",".")
-      .trim();
-
-
-  const nuevoPrecioCompra =
-    Number(
-      nuevoPrecioCompraTexto
-    );
-
-
-  if(
-
-    !Number.isFinite(
-      nuevoPrecioCompra
-    ) ||
-
-    nuevoPrecioCompra<0
-
-  ){
-
-    alert(
-      "❌ Precio de compra no válido."
-    );
-
-    return;
-
-  }
-
-
-  let nuevoPrecioVentaTexto =
-    prompt(
-
-      "💶 ¿A cuánto se vendió finalmente CADA unidad?\n\n" +
-
-      "Precio de venta actual: " +
-
-      euros(
-        precioVentaAnterior
-      ),
-
-      precioVentaAnterior
-        .toFixed(2)
-
-    );
-
-
-  if(
-    nuevoPrecioVentaTexto===
-      null
-  ){
-
-    return;
-
-  }
-
-
-  nuevoPrecioVentaTexto =
-    nuevoPrecioVentaTexto
-      .replace(",",".")
-      .trim();
-
-
-  const nuevoPrecioVenta =
-    Number(
-      nuevoPrecioVentaTexto
-    );
-
-
-  if(
-
-    !Number.isFinite(
-      nuevoPrecioVenta
-    ) ||
-
-    nuevoPrecioVenta<0
-
-  ){
-
-    alert(
-      "❌ Precio de venta no válido."
-    );
-
-    return;
-
-  }
-
-
-  const diferencia =
-    nuevaCantidad -
-    cantidadAnterior;
-
-
-  let nuevoStock=null;
-
-
-  if(producto){
-
-    const stockActual =
-      Number(
-        producto.stock
-      ) || 0;
-
-
-    nuevoStock =
-      stockActual -
-      diferencia;
-
-
-    if(nuevoStock<0){
-
-      alert(
-
-        "❌ No se puede modificar la venta.\n\n" +
-
-        "No hay suficiente stock para aumentar " +
-
-        "la cantidad vendida.\n\n" +
-
-        "Stock disponible actualmente: " +
-
-        stockActual
-
-      );
-
-      return;
-
-    }
-
-  }
-
-
-  const nuevoTotal =
-    nuevoPrecioVenta *
-    nuevaCantidad;
-
-
-  const nuevoBeneficio =
-    (
-      nuevoPrecioVenta -
-      nuevoPrecioCompra
-    ) *
-    nuevaCantidad;
 
 
   const confirmar =
     confirm(
-
-      "✏️ MODIFICAR VENTA\n\n" +
-
-      "Producto: " +
-      v.producto +
-      "\n\n" +
-
-      "📦 Cantidad: " +
-      cantidadAnterior +
-      " → " +
-      nuevaCantidad +
-      "\n\n" +
-
-      "💰 Compra/unidad: " +
-      euros(
-        precioCompraAnterior
-      ) +
-      " → " +
-      euros(
-        nuevoPrecioCompra
-      ) +
-      "\n\n" +
-
-      "💶 Venta/unidad: " +
-      euros(
-        precioVentaAnterior
-      ) +
-      " → " +
-      euros(
-        nuevoPrecioVenta
-      ) +
-      "\n\n" +
-
-      "💵 Nuevo total: " +
-      euros(
-        nuevoTotal
-      ) +
-      "\n" +
-
-      "📈 Nuevo beneficio: " +
-      euros(
-        nuevoBeneficio
-      ) +
-      "\n\n" +
-
-      (
-        producto
-
-          ? "📦 El stock quedará en: " +
-            nuevoStock
-
-          : "⚠️ El producto ya no existe en el inventario. " +
-            "No se modificará stock."
-
-      ) +
-
-      "\n\n¿Guardar cambios?"
-
+      `¿Eliminar "${p.producto}"?`
     );
 
 
@@ -4524,1089 +1658,203 @@ async function editarVenta(v){
 
   try{
 
-    await updateDoc(
-
-      doc(
-        db,
-        "ventas",
-        v.id
-      ),
-
-      {
-
-        cantidad:
-          nuevaCantidad,
-
-        precioCompra:
-          nuevoPrecioCompra,
-
-        precioUnitario:
-          nuevoPrecioVenta,
-
-        total:
-          nuevoTotal,
-
-        beneficio:
-          nuevoBeneficio
-
-      }
-
-    );
-
-
-    if(producto){
-
-      await updateDoc(
-
-        doc(
-          db,
-          "productos",
-          producto.id
-        ),
-
-        {
-          stock:
-            nuevoStock
-        }
-
-      );
-
-
-      /*
-         ACTUALIZAR CATÁLOGO
-      */
-
-      await sincronizarProductoCatalogo({
-
-        ...producto,
-
-        stock:
-          nuevoStock
-
-      });
-
-
-      producto.stock=
-        nuevoStock;
-
-
-      if(
-
-        productoActual &&
-
-        productoActual.id===
-          producto.id
-
-      ){
-
-        productoActual.stock=
-          nuevoStock;
-
-
-        document
-          .getElementById(
-            "stockResultado"
-          )
-          .textContent =
-            "Stock: " +
-            nuevoStock;
-
-      }
-
-    }
-
-
-    if(v.id){
-
-      const consulta =
-        query(
-
-          collection(
-            db,
-            "movimientos"
-          ),
-
-          where(
-            "ventaId",
-            "==",
-            v.id
-          )
-
-        );
-
-
-      const movimientos =
-        await getDocs(
-          consulta
-        );
-
-
-      for(
-        const movimiento
-        of movimientos.docs
-      ){
-
-        await updateDoc(
-
-          doc(
-            db,
-            "movimientos",
-            movimiento.id
-          ),
-
-          {
-            cantidad:
-              nuevaCantidad
-          }
-
-        );
-
-      }
-
-    }
-
-
-    mostrarInventario();
-
-
-    alert(
-
-      "✅ Venta modificada correctamente.\n\n" +
-
-      "📦 Cantidad: " +
-      nuevaCantidad +
-      "\n" +
-
-      "💰 Compra/unidad: " +
-      euros(
-        nuevoPrecioCompra
-      ) +
-      "\n" +
-
-      "💶 Venta/unidad: " +
-      euros(
-        nuevoPrecioVenta
-      ) +
-      "\n" +
-
-      "💵 Total: " +
-      euros(
-        nuevoTotal
-      ) +
-      "\n" +
-
-      "📈 Beneficio: " +
-      euros(
-        nuevoBeneficio
-      )
-
-    );
-
-
-  }catch(error){
-
-    mostrarError(
-
-      "NO SE PUDO MODIFICAR LA VENTA.\n\n" +
-
-      errorTexto(error)
-
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   ELIMINAR VENTA
-===================================================== */
-
-async function eliminarVenta(v){
-
-  const cantidad =
-    Number(
-      v.cantidad
-    ) || 0;
-
-
-  const producto =
-    productos.find(
-
-      function(p){
-
-        return (
-
-          String(
-            p.codigo||""
-          ) ===
-
-          String(
-            v.codigo||""
-          )
-
-        );
-
-      }
-
-    );
-
-
-  let mensaje =
-
-    "⚠️ ¿Eliminar esta venta?\n\n" +
-
-    "Producto: " +
-    v.producto +
-    "\n" +
-
-    "Cantidad: " +
-    cantidad +
-    "\n" +
-
-    "Total: " +
-    euros(
-      v.total
-    ) +
-    "\n\n";
-
-
-  if(producto){
-
-    mensaje +=
-
-      "📦 Se devolverán " +
-      cantidad +
-      " unidades al stock.\n\n";
-
-  }else{
-
-    mensaje +=
-
-      "⚠️ El producto ya no existe en el inventario.\n" +
-
-      "La venta se eliminará, pero NO se podrá devolver el stock.\n\n";
-
-  }
-
-
-  mensaje +=
-    "¿Continuar?";
-
-
-  if(!confirm(mensaje)){
-
-    return;
-
-  }
-
-
-  try{
-
-    if(producto){
-
-      const stockActual =
-        Number(
-          producto.stock
-        ) || 0;
-
-
-      const nuevoStock =
-        stockActual+
-        cantidad;
-
-
-      await updateDoc(
-
-        doc(
-          db,
-          "productos",
-          producto.id
-        ),
-
-        {
-          stock:
-            nuevoStock
-        }
-
-      );
-
-
-      /*
-         ACTUALIZAR CATÁLOGO
-      */
-
-      await sincronizarProductoCatalogo({
-
-        ...producto,
-
-        stock:
-          nuevoStock
-
-      });
-
-
-      producto.stock=
-        nuevoStock;
-
-
-      if(
-
-        productoActual &&
-
-        productoActual.id===
-          producto.id
-
-      ){
-
-        productoActual.stock=
-          nuevoStock;
-
-
-        document
-          .getElementById(
-            "stockResultado"
-          )
-          .textContent=
-            "Stock: " +
-            nuevoStock;
-
-      }
-
-    }
-
-
-    if(v.id){
-
-      const consulta =
-        query(
-
-          collection(
-            db,
-            "movimientos"
-          ),
-
-          where(
-            "ventaId",
-            "==",
-            v.id
-          )
-
-        );
-
-
-      const movimientos =
-        await getDocs(
-          consulta
-        );
-
-
-      for(
-        const movimiento
-        of movimientos.docs
-      ){
-
-        await deleteDoc(
-
-          doc(
-            db,
-            "movimientos",
-            movimiento.id
-          )
-
-        );
-
-      }
-
-    }
-
-
     await deleteDoc(
 
       doc(
         db,
-        "ventas",
-        v.id
+        "productos",
+        id
       )
 
     );
 
 
-    mostrarInventario();
-
-
-    alert(
-
-      producto
-
-        ? "✅ Venta eliminada y " +
-          cantidad +
-          " unidades devueltas al stock."
-
-        : "✅ Venta eliminada.\n\n" +
-          "⚠️ No se pudo devolver stock porque el producto ya no existe."
-
+    mostrarOK(
+      "Producto eliminado correctamente."
     );
 
 
   }catch(error){
 
-    mostrarError(
+    console.error(error);
 
-      "NO SE PUDO ELIMINAR LA VENTA.\n\n" +
-
-      errorTexto(error)
-
+    alert(
+      "Error eliminando producto: " +
+      error.message
     );
 
   }
-
-}
-
-
-/* =====================================================
-   RESUMEN
-===================================================== */
-
-function actualizarInicio(){
-
-  let unidades=0;
-  let compra=0;
-  let venta=0;
-  let beneficio=0;
-  let bajo=0;
-
-
-  productos.forEach(
-
-    function(p){
-
-      const stock =
-        Number(p.stock)||0;
-
-      const pc =
-        Number(
-          p.precioCompra
-        )||0;
-
-      const pv =
-        Number(
-          p.precioVenta
-        )||0;
-
-
-      unidades +=
-        stock;
-
-      compra +=
-        stock*pc;
-
-      venta +=
-        stock*pv;
-
-      beneficio +=
-        stock*(pv-pc);
-
-
-      if(stock<=2){
-
-        bajo++;
-
-      }
-
-    }
-
-  );
-
-
-  document
-    .getElementById(
-      "totalProductos"
-    )
-    .textContent=
-      productos.length;
-
-
-  document
-    .getElementById(
-      "totalUnidades"
-    )
-    .textContent=
-      unidades;
-
-
-  document
-    .getElementById(
-      "valorCompra"
-    )
-    .textContent=
-      euros(compra);
-
-
-  document
-    .getElementById(
-      "valorVenta"
-    )
-    .textContent=
-      euros(venta);
-
-
-  document
-    .getElementById(
-      "beneficioTotal"
-    )
-    .textContent=
-      euros(beneficio);
-
-
-  document
-    .getElementById(
-      "totalBajo"
-    )
-    .textContent=
-      bajo;
-
-
-  /* VENTAS DE HOY */
-
-  const hoy =
-    new Date()
-      .toLocaleDateString(
-        "es-ES"
-      );
-
-
-  const hoyVentas =
-    ventas.filter(
-
-      function(v){
-
-        return (
-
-          new Date(v.fecha)
-            .toLocaleDateString(
-              "es-ES"
-            )
-          ===
-          hoy
-
-        );
-
-      }
-
-    );
-
-
-  let ingresos=0;
-  let beneficioHoy=0;
-  let unidadesHoy=0;
-
-
-  hoyVentas.forEach(
-
-    function(v){
-
-      ingresos +=
-        Number(v.total)||0;
-
-      beneficioHoy +=
-        Number(v.beneficio)||0;
-
-      unidadesHoy +=
-        Number(v.cantidad)||0;
-
-    }
-
-  );
-
-
-  document
-    .getElementById(
-      "ventasHoy"
-    )
-    .textContent=
-      hoyVentas.length;
-
-
-  document
-    .getElementById(
-      "ingresosHoy"
-    )
-    .textContent=
-      euros(ingresos);
-
-
-  document
-    .getElementById(
-      "beneficioHoy"
-    )
-    .textContent=
-      euros(beneficioHoy);
-
-
-  document
-    .getElementById(
-      "unidadesVendidasHoy"
-    )
-    .textContent=
-      unidadesHoy;
-
-
-  const selector =
-    document.getElementById(
-      "fechaVentas"
-    );
-
-
-  if(
-    selector &&
-    !selector.value
-  ){
-
-    selector.value =
-      fechaLocalInput(
-        new Date()
-      );
-
-  }
-
-
-  mostrarVentasDia();
-
-
-  /* STOCK BAJO */
-
-  const lista =
-    document.getElementById(
-      "listaBajo"
-    );
-
-
-  const bajos =
-    productos.filter(
-
-      function(p){
-
-        return (
-
-          Number(p.stock)||0
-
-        )<=2;
-
-      }
-
-    );
-
-
-  if(!bajos.length){
-
-    lista.innerHTML =
-
-      '<div class="vacio">' +
-
-      '✅ No hay stock bajo.' +
-
-      '</div>';
-
-  }else{
-
-    lista.innerHTML="";
-
-
-    bajos.forEach(
-
-      function(p){
-
-        const div =
-          document.createElement(
-            "div"
-          );
-
-
-        div.className=
-          "alerta";
-
-
-        div.innerHTML =
-
-          "⚠️ <b>" +
-
-          escapar(
-            p.producto
-          ) +
-
-          "</b> — Stock: " +
-
-          (p.stock||0);
-
-
-        lista.appendChild(
-          div
-        );
-
-      }
-
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   FECHA LOCAL
-===================================================== */
-
-function fechaLocalInput(fecha){
-
-  const año =
-    fecha.getFullYear();
-
-
-  const mes =
-    String(
-      fecha.getMonth()+1
-    )
-    .padStart(
-      2,
-      "0"
-    );
-
-
-  const dia =
-    String(
-      fecha.getDate()
-    )
-    .padStart(
-      2,
-      "0"
-    );
-
-
-  return (
-
-    año +
-    "-" +
-    mes +
-    "-" +
-    dia
-
-  );
-
-}
-
-
-/* =====================================================
-   VENTAS POR DÍA
-===================================================== */
-
-window.seleccionarHoy =
-function(){
-
-  const selector =
-    document.getElementById(
-      "fechaVentas"
-    );
-
-
-  if(!selector){
-
-    return;
-
-  }
-
-
-  selector.value =
-    fechaLocalInput(
-      new Date()
-    );
-
-
-  mostrarVentasDia();
 
 };
 
 
-window.mostrarVentasDia =
-function(){
+/* =========================================================
+   EDITAR PRODUCTO
+========================================================= */
 
-  const selector =
-    document.getElementById(
-      "fechaVentas"
+window.iniciarEdicion =
+function(id){
+
+  const p =
+    productos.find(
+      x => x.id === id
     );
 
 
-  const titulo =
-    document.getElementById(
-      "tituloVentasDia"
-    );
-
-
-  const lista =
-    document.getElementById(
-      "listaVentasDia"
-    );
-
-
-  if(!selector){
+  if(!p){
 
     return;
 
   }
 
 
-  const fechaSeleccionada =
-    selector.value;
+  indiceEditando =
+    id;
 
 
-  if(!fechaSeleccionada){
+  document.getElementById(
+    "producto"
+  ).value =
+    p.producto || "";
 
-    return;
 
-  }
+  document.getElementById(
+    "codigo"
+  ).value =
+    p.codigo || "";
 
 
-  const ventasDia =
-    ventas.filter(
+  document.getElementById(
+    "stock"
+  ).value =
+    Number(p.stock || 0);
 
-      function(v){
 
-        if(!v.fecha){
+  document.getElementById(
+    "precioCompra"
+  ).value =
+    Number(p.precioCompra || 0);
 
-          return false;
 
-        }
+  document.getElementById(
+    "precioVenta"
+  ).value =
+    Number(p.precioVenta || 0);
 
 
-        const fechaVenta =
-          new Date(
-            v.fecha
-          );
+  document.getElementById(
+    "comentario"
+  ).value =
+    p.comentario || "";
 
 
-        return (
+  if(p.foto){
 
-          fechaLocalInput(
-            fechaVenta
-          )
-          ===
-          fechaSeleccionada
-
-        );
-
-      }
-
-    );
-
-
-  let ingresos=0;
-  let beneficio=0;
-  let unidades=0;
-
-
-  ventasDia.forEach(
-
-    function(v){
-
-      ingresos +=
-        Number(v.total)||0;
-
-      beneficio +=
-        Number(v.beneficio)||0;
-
-      unidades +=
-        Number(v.cantidad)||0;
-
-    }
-
-  );
-
-
-  const partes =
-    fechaSeleccionada
-      .split("-");
-
-
-  const fechaBonita =
-
-    partes[2] +
-    "/" +
-    partes[1] +
-    "/" +
-    partes[0];
-
-
-  titulo.textContent =
-    "📅 " +
-    fechaBonita;
-
-
-  document
-    .getElementById(
-      "ventasDia"
-    )
-    .textContent=
-      ventasDia.length;
-
-
-  document
-    .getElementById(
-      "ingresosDia"
-    )
-    .textContent=
-      euros(ingresos);
-
-
-  document
-    .getElementById(
-      "beneficioDia"
-    )
-    .textContent=
-      euros(beneficio);
-
-
-  document
-    .getElementById(
-      "unidadesDia"
-    )
-    .textContent=
-      unidades;
-
-
-  if(!ventasDia.length){
-
-    lista.innerHTML =
-
-      '<div class="vacio">' +
-
-      '📭 No hay ventas en este día.' +
-
-      '</div>';
-
-    return;
-
-  }
-
-
-  lista.innerHTML="";
-
-
-  ventasDia.forEach(
-
-    function(v){
-
-      const div =
-        document.createElement(
-          "div"
-        );
-
-
-      div.className=
-        "venta-dia";
-
-
-      const precioUnitario =
-        Number(
-          v.precioUnitario
-        )||0;
-
-
-      const total =
-        Number(
-          v.total
-        )||0;
-
-
-      const beneficioVenta =
-        Number(
-          v.beneficio
-        )||0;
-
-
-      const hora =
-        v.fecha
-
-          ? new Date(
-              v.fecha
-            )
-            .toLocaleTimeString(
-              "es-ES",
-              {
-                hour:"2-digit",
-                minute:"2-digit"
-              }
-            )
-
-          : "";
-
-
-      div.innerHTML =
-
-        "<b>🛒 " +
-
-        escapar(
-          v.producto
-        ) +
-
-        "</b><br>" +
-
-        "<small>🕐 " +
-
-        hora +
-
-        "</small><br>" +
-
-        "📦 " +
-
-        Number(
-          v.cantidad || 0
-        ) +
-
-        " unidad(es)<br>" +
-
-        "💶 " +
-
-        euros(
-          precioUnitario
-        ) +
-
-        " / unidad<br>" +
-
-        "💵 Total: " +
-
-        euros(
-          total
-        ) +
-
-        "<br>" +
-
-        "<span class='positivo'>" +
-
-        "📈 Beneficio: " +
-
-        euros(
-          beneficioVenta
-        ) +
-
-        "</span>";
-
-
-      lista.appendChild(
-        div
+    const preview =
+      document.getElementById(
+        "previewFoto"
       );
 
-    }
 
+    preview.src =
+      p.foto;
+
+
+    preview.classList.remove(
+      "oculto"
+    );
+
+  }
+
+
+  mostrarSeccion(
+    "anadir"
   );
 
 };
 
 
-/* =====================================================
-   FOTO
-===================================================== */
+/* =========================================================
+   CANCELAR EDICIÓN
+========================================================= */
 
-window.cargarFoto =
+window.cancelarEdicion =
+function(){
+
+  indiceEditando =
+    null;
+
+
+  document.getElementById(
+    "producto"
+  ).value =
+    "";
+
+
+  document.getElementById(
+    "codigo"
+  ).value =
+    "";
+
+
+  document.getElementById(
+    "stock"
+  ).value =
+    "";
+
+
+  document.getElementById(
+    "precioCompra"
+  ).value =
+    "";
+
+
+  document.getElementById(
+    "precioVenta"
+  ).value =
+    "";
+
+
+  document.getElementById(
+    "comentario"
+  ).value =
+    "";
+
+
+  document.getElementById(
+    "foto"
+  ).value =
+    "";
+
+
+  const preview =
+    document.getElementById(
+      "previewFoto"
+    );
+
+
+  preview.src =
+    "";
+
+
+  preview.classList.add(
+    "oculto"
+  );
+
+
+  document.getElementById(
+    "mensajeProducto"
+  ).innerHTML =
+    "";
+
+};
+
+
+/* =========================================================
+   PREVISUALIZAR FOTO
+========================================================= */
+
+window.previsualizarFoto =
 function(event){
 
   const archivo =
@@ -5620,258 +1868,851 @@ function(event){
   }
 
 
-  const lector =
+  const reader =
     new FileReader();
 
 
-  lector.onload =
+  reader.onload =
     function(e){
 
-      const imagen =
-        new Image();
+      const preview =
+        document.getElementById(
+          "previewFoto"
+        );
 
 
-      imagen.onload =
-        function(){
-
-          const max=500;
-
-          let ancho=
-            imagen.width;
-
-          let alto=
-            imagen.height;
-
-
-          if(
-
-            ancho>max ||
-            alto>max
-
-          ){
-
-            if(ancho>alto){
-
-              alto=
-                alto*(max/ancho);
-
-              ancho=max;
-
-            }else{
-
-              ancho=
-                ancho*(max/alto);
-
-              alto=max;
-
-            }
-
-          }
-
-
-          const canvas =
-            document.createElement(
-              "canvas"
-            );
-
-
-          canvas.width=
-            ancho;
-
-          canvas.height=
-            alto;
-
-
-          canvas
-            .getContext("2d")
-            .drawImage(
-
-              imagen,
-
-              0,
-              0,
-
-              ancho,
-              alto
-
-            );
-
-
-          fotoBase64 =
-            canvas.toDataURL(
-
-              "image/jpeg",
-
-              0.75
-
-            );
-
-
-          const preview =
-            document.getElementById(
-              "fotoPreview"
-            );
-
-
-          preview.src=
-            fotoBase64;
-
-
-          preview.style.display=
-            "block";
-
-        };
-
-
-      imagen.src=
+      preview.src =
         e.target.result;
+
+
+      preview.classList.remove(
+        "oculto"
+      );
 
     };
 
 
-  lector.readAsDataURL(
+  reader.readAsDataURL(
     archivo
   );
 
 };
 
 
-/* =====================================================
+/* =========================================================
+   COMPRIMIR IMAGEN
+========================================================= */
+
+function comprimirImagen(archivo){
+
+  return new Promise(
+    (resolve,reject) => {
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload =
+        function(e){
+
+          const img =
+            new Image();
+
+
+          img.onload =
+            function(){
+
+              const max =
+                500;
+
+
+              let ancho =
+                img.width;
+
+              let alto =
+                img.height;
+
+
+              if(ancho > max){
+
+                alto =
+                  alto * max / ancho;
+
+                ancho =
+                  max;
+
+              }
+
+
+              if(alto > max){
+
+                ancho =
+                  ancho * max / alto;
+
+                alto =
+                  max;
+
+              }
+
+
+              const canvas =
+                document.createElement(
+                  "canvas"
+                );
+
+
+              canvas.width =
+                ancho;
+
+              canvas.height =
+                alto;
+
+
+              const ctx =
+                canvas.getContext(
+                  "2d"
+                );
+
+
+              ctx.drawImage(
+                img,
+                0,
+                0,
+                ancho,
+                alto
+              );
+
+
+              resolve(
+                canvas.toDataURL(
+                  "image/jpeg",
+                  0.75
+                )
+              );
+
+            };
+
+
+          img.onerror =
+            reject;
+
+
+          img.src =
+            e.target.result;
+
+        };
+
+
+      reader.onerror =
+        reject;
+
+
+      reader.readAsDataURL(
+        archivo
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   GUARDAR PRODUCTO
+========================================================= */
+
+window.guardarProducto =
+async function(){
+
+  if(!usuario){
+
+    mostrarError(
+      "Firebase todavía no está conectado."
+    );
+
+    return;
+
+  }
+
+
+  const nombre =
+    document.getElementById(
+      "producto"
+    ).value.trim();
+
+
+  const codigo =
+    document.getElementById(
+      "codigo"
+    ).value.trim();
+
+
+  const stock =
+    Number(
+      document.getElementById(
+        "stock"
+      ).value
+    ) || 0;
+
+
+  const compra =
+    Number(
+      document.getElementById(
+        "precioCompra"
+      ).value
+    ) || 0;
+
+
+  const venta =
+    Number(
+      document.getElementById(
+        "precioVenta"
+      ).value
+    ) || 0;
+
+
+  const comentario =
+    document.getElementById(
+      "comentario"
+    ).value.trim();
+
+
+  if(!nombre){
+
+    mostrarError(
+      "Introduce el nombre del producto."
+    );
+
+    return;
+
+  }
+
+
+  let fotoBase64 =
+    "";
+
+
+  /*
+    Si estamos editando,
+    conservar foto actual
+  */
+
+  if(indiceEditando){
+
+    const actual =
+      productos.find(
+        p =>
+          p.id === indiceEditando
+      );
+
+
+    if(actual){
+
+      fotoBase64 =
+        actual.foto || "";
+
+    }
+
+  }
+
+
+  const archivo =
+    document.getElementById(
+      "foto"
+    ).files[0];
+
+
+  try{
+
+    if(archivo){
+
+      fotoBase64 =
+        await comprimirImagen(
+          archivo
+        );
+
+    }
+
+
+    const datos = {
+
+      producto:
+        nombre,
+
+      codigo:
+        codigo,
+
+      stock:
+        stock,
+
+      precioCompra:
+        compra,
+
+      precioVenta:
+        venta,
+
+      beneficio:
+        venta - compra,
+
+      foto:
+        fotoBase64,
+
+      comentario:
+        comentario
+
+    };
+
+
+    /*
+      EDITAR
+    */
+
+    if(indiceEditando){
+
+      await updateDoc(
+
+        doc(
+          db,
+          "productos",
+          indiceEditando
+        ),
+
+        datos
+
+      );
+
+
+      mostrarOK(
+        "Producto actualizado correctamente."
+      );
+
+    }
+
+
+    /*
+      NUEVO
+    */
+
+    else{
+
+      await addDoc(
+
+        collection(
+          db,
+          "productos"
+        ),
+
+        datos
+
+      );
+
+
+      mostrarOK(
+        "Producto añadido correctamente."
+      );
+
+    }
+
+
+    cancelarEdicion();
+
+
+  }catch(error){
+
+    console.error(error);
+
+    mostrarError(
+      "Error guardando producto: " +
+      error.message
+    );
+
+  }
+
+};
+
+
+/* =========================================================
+   MOSTRAR VENTAS
+========================================================= */
+
+window.mostrarVentas =
+function(){
+
+  const tabla =
+    document.getElementById(
+      "tablaVentas"
+    );
+
+
+  const buscar =
+    (
+      document.getElementById(
+        "buscarVentas"
+      ).value || ""
+    ).toLowerCase();
+
+
+  const fechaSeleccionada =
+    document.getElementById(
+      "fechaVentas"
+    ).value;
+
+
+  let filtradas =
+    [...ventas];
+
+
+  if(fechaSeleccionada){
+
+    filtradas =
+      filtradas.filter(v => {
+
+        const fecha =
+          v.fecha ||
+          v.fechaVenta ||
+          "";
+
+        return fecha.substring(0,10)
+          === fechaSeleccionada;
+
+      });
+
+  }
+
+
+  if(buscar){
+
+    filtradas =
+      filtradas.filter(v => {
+
+        return String(
+          v.producto || ""
+        )
+        .toLowerCase()
+        .includes(buscar);
+
+      });
+
+  }
+
+
+  filtradas.sort(
+    (a,b) =>
+      String(
+        b.fecha || ""
+      ).localeCompare(
+        String(
+          a.fecha || ""
+        )
+      )
+  );
+
+
+  tabla.innerHTML =
+    "";
+
+
+  filtradas.forEach(v => {
+
+    const tr =
+      document.createElement(
+        "tr"
+      );
+
+
+    tr.innerHTML = `
+
+      <td>
+        ${
+          v.fecha
+          ?
+          new Date(v.fecha)
+            .toLocaleString("es-ES")
+          :
+          ""
+        }
+      </td>
+
+      <td>
+        ${v.producto || ""}
+      </td>
+
+      <td>
+        ${Number(v.cantidad || 0)}
+      </td>
+
+      <td>
+        ${dinero(v.precio)}
+      </td>
+
+      <td>
+        ${dinero(v.total)}
+      </td>
+
+      <td>
+        ${dinero(v.beneficio)}
+      </td>
+
+      <td>
+
+        <div class="acciones">
+
+          <button
+            class="btn azul"
+            onclick="editarVenta('${v.id}')"
+          >
+            ✏️
+          </button>
+
+          <button
+            class="btn rojo"
+            onclick="eliminarVenta('${v.id}')"
+          >
+            🗑️
+          </button>
+
+        </div>
+
+      </td>
+
+    `;
+
+
+    tabla.appendChild(tr);
+
+  });
+
+};
+
+
+/* =========================================================
+   EDITAR VENTA
+========================================================= */
+
+window.editarVenta =
+async function(id){
+
+  const venta =
+    ventas.find(
+      v => v.id === id
+    );
+
+
+  if(!venta){
+
+    return;
+
+  }
+
+
+  const producto =
+    productos.find(
+      p =>
+        p.id === venta.productoId
+    );
+
+
+  if(!producto){
+
+    alert(
+      "No se encuentra el producto."
+    );
+
+    return;
+
+  }
+
+
+  const nuevaCantidadTexto =
+    prompt(
+      "Nueva cantidad:",
+      venta.cantidad
+    );
+
+
+  if(nuevaCantidadTexto === null){
+
+    return;
+
+  }
+
+
+  const nuevaCantidad =
+    Number(
+      nuevaCantidadTexto
+    );
+
+
+  if(
+    !Number.isInteger(
+      nuevaCantidad
+    ) ||
+    nuevaCantidad <= 0
+  ){
+
+    alert(
+      "Cantidad no válida."
+    );
+
+    return;
+
+  }
+
+
+  const diferencia =
+    nuevaCantidad -
+    Number(
+      venta.cantidad || 0
+    );
+
+
+  const nuevoStock =
+    Number(
+      producto.stock || 0
+    ) -
+    diferencia;
+
+
+  if(nuevoStock < 0){
+
+    alert(
+      "No hay suficiente stock."
+    );
+
+    return;
+
+  }
+
+
+  const precio =
+    Number(
+      venta.precio || 0
+    );
+
+
+  const compra =
+    Number(
+      producto.precioCompra || 0
+    );
+
+
+  const nuevoTotal =
+    precio *
+    nuevaCantidad;
+
+
+  const nuevoBeneficio =
+    (precio - compra) *
+    nuevaCantidad;
+
+
+  try{
+
+    await updateDoc(
+
+      doc(
+        db,
+        "ventas",
+        id
+      ),
+
+      {
+
+        cantidad:
+          nuevaCantidad,
+
+        total:
+          nuevoTotal,
+
+        beneficio:
+          nuevoBeneficio
+
+      }
+
+    );
+
+
+    await updateDoc(
+
+      doc(
+        db,
+        "productos",
+        producto.id
+      ),
+
+      {
+
+        stock:
+          nuevoStock
+
+      }
+
+    );
+
+
+    alert(
+      "Venta actualizada correctamente."
+    );
+
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Error actualizando venta: " +
+      error.message
+    );
+
+  }
+
+};
+
+
+/* =========================================================
+   ELIMINAR VENTA
+========================================================= */
+
+window.eliminarVenta =
+async function(id){
+
+  const venta =
+    ventas.find(
+      v => v.id === id
+    );
+
+
+  if(!venta){
+
+    return;
+
+  }
+
+
+  const confirmar =
+    confirm(
+      "¿Eliminar esta venta?"
+    );
+
+
+  if(!confirmar){
+
+    return;
+
+  }
+
+
+  const producto =
+    productos.find(
+      p =>
+        p.id === venta.productoId
+    );
+
+
+  try{
+
+    /*
+      Restaurar stock
+    */
+
+    if(producto){
+
+      const nuevoStock =
+        Number(
+          producto.stock || 0
+        ) +
+        Number(
+          venta.cantidad || 0
+        );
+
+
+      await updateDoc(
+
+        doc(
+          db,
+          "productos",
+          producto.id
+        ),
+
+        {
+
+          stock:
+            nuevoStock
+
+        }
+
+      );
+
+    }
+
+
+    /*
+      Eliminar venta
+    */
+
+    await deleteDoc(
+
+      doc(
+        db,
+        "ventas",
+        id
+      )
+
+    );
+
+
+    alert(
+      "Venta eliminada y stock restaurado."
+    );
+
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Error eliminando venta: " +
+      error.message
+    );
+
+  }
+
+};
+
+
+/* =========================================================
    COPIA DE SEGURIDAD
-===================================================== */
+========================================================= */
 
 window.exportarCopia =
 function(){
 
   try{
 
-    const copia={
+    const copia = {
 
       fecha:
-        new Date()
-          .toISOString(),
-
+        new Date().toISOString(),
 
       productos:
-
-        productos.map(
-
-          function(p){
-
-            return {
-
-              producto:
-                p.producto||"",
-
-              codigo:
-                p.codigo||"",
-
-              stock:
-                Number(
-                  p.stock
-                )||0,
-
-              precioCompra:
-                Number(
-                  p.precioCompra
-                )||0,
-
-              precioVenta:
-                Number(
-                  p.precioVenta
-                )||0,
-
-              beneficio:
-                Number(
-                  p.beneficio
-                )||0,
-
-              foto:
-                p.foto||"",
-
-              comentario:
-                p.comentario ||
-                COMENTARIO_PREDETERMINADO
-
-            };
-
-          }
-
-        ),
-
+        productos,
 
       ventas:
-
-        ventas.map(
-
-          function(v){
-
-            return {
-
-              fecha:
-                v.fecha||"",
-
-              codigo:
-                v.codigo||"",
-
-              producto:
-                v.producto||"",
-
-              cantidad:
-                Number(
-                  v.cantidad
-                )||0,
-
-              precioCompra:
-                Number(
-                  v.precioCompra
-                )||0,
-
-              precioUnitario:
-                Number(
-                  v.precioUnitario
-                )||0,
-
-              precioHabitual:
-                Number(
-                  v.precioHabitual
-                )||0,
-
-              total:
-                Number(
-                  v.total
-                )||0,
-
-              beneficio:
-                Number(
-                  v.beneficio
-                )||0
-
-            };
-
-          }
-
-        )
+        ventas
 
     };
-
-
-    const contenido =
-      JSON.stringify(
-
-        copia,
-
-        null,
-
-        2
-
-      );
 
 
     const blob =
       new Blob(
 
-        [contenido],
+        [
+          JSON.stringify(
+            copia,
+            null,
+            2
+          )
+        ],
 
         {
           type:
@@ -5893,28 +2734,17 @@ function(){
       );
 
 
-    enlace.href=url;
+    enlace.href =
+      url;
 
 
     enlace.download =
-
-      "copia-inventario-" +
-
-      new Date()
-        .toISOString()
-        .slice(
-          0,
-          10
-        ) +
-
-      ".json";
+      `copia-inventario-${fechaHoy()}.json`;
 
 
-    document
-      .body
-      .appendChild(
-        enlace
-      );
+    document.body.appendChild(
+      enlace
+    );
 
 
     enlace.click();
@@ -5928,29 +2758,13 @@ function(){
     );
 
 
-    document
-      .getElementById(
-        "mensajeCopia"
-      )
-      .innerHTML =
-
-      '<div class="ok">' +
-
-      '✅ Copia descargada correctamente.' +
-
-      '</div>';
-
-
   }catch(error){
 
-    mostrarError(
+    console.error(error);
 
-      "NO SE PUDO CREAR LA COPIA.\n\n" +
-
-      errorTexto(error),
-
-      "mensajeCopia"
-
+    alert(
+      "Error creando la copia: " +
+      error.message
     );
 
   }
@@ -5958,9 +2772,221 @@ function(){
 };
 
 
-/* =====================================================
-   ARRANCAR
-===================================================== */
+/* =========================================================
+   NAVEGACIÓN
+========================================================= */
+
+window.mostrarSeccion =
+function(id){
+
+  document
+    .querySelectorAll(
+      ".seccion"
+    )
+    .forEach(
+      seccion =>
+        seccion.classList.remove(
+          "activa"
+        )
+    );
+
+
+  const seccion =
+    document.getElementById(
+      id
+    );
+
+
+  if(seccion){
+
+    seccion.classList.add(
+      "activa"
+    );
+
+  }
+
+
+  if(
+    id === "escanear" &&
+    !scannerActivo
+  ){
+
+    /*
+      No iniciamos automáticamente
+      para evitar problemas de cámara.
+    */
+
+  }
+
+  else if(
+    id !== "escanear"
+  ){
+
+    detenerScanner();
+
+  }
+
+};
+
+
+/* =========================================================
+   ESCÁNER
+========================================================= */
+
+window.iniciarScanner =
+function(){
+
+  if(scannerActivo){
+
+    return;
+
+  }
+
+
+  scanner =
+    new Html5Qrcode(
+      "reader"
+    );
+
+
+  scanner.start(
+
+    {
+      facingMode:
+        "environment"
+    },
+
+    {
+      fps:10,
+
+      qrbox:{
+        width:250,
+        height:150
+      }
+
+    },
+
+    codigo => {
+
+      document.getElementById(
+        "codigo"
+      ).value =
+        codigo;
+
+
+      const producto =
+        productos.find(
+          p =>
+            String(
+              p.codigo || ""
+            ) ===
+            String(codigo)
+        );
+
+
+      if(producto){
+
+        document.getElementById(
+          "resultadoEscaneo"
+        ).innerHTML =
+
+          `<div class="ok">
+
+            ✅ Producto encontrado:
+
+            <strong>
+              ${producto.producto}
+            </strong>
+
+          </div>`;
+
+      }else{
+
+        document.getElementById(
+          "resultadoEscaneo"
+        ).innerHTML =
+
+          `<div class="info">
+
+            Código escaneado:
+
+            <strong>
+              ${codigo}
+            </strong>
+
+          </div>`;
+
+      }
+
+    },
+
+    error => {
+
+      /*
+        Los errores normales de lectura
+        no se muestran continuamente.
+      */
+
+    }
+
+  )
+  .then(() => {
+
+    scannerActivo =
+      true;
+
+  })
+  .catch(error => {
+
+    console.error(
+      "Error iniciando escáner:",
+      error
+    );
+
+
+    alert(
+      "No se pudo iniciar la cámara."
+    );
+
+  });
+
+};
+
+
+window.detenerScanner =
+function(){
+
+  if(
+    scanner &&
+    scannerActivo
+  ){
+
+    scanner.stop()
+      .then(() => {
+
+        scannerActivo =
+          false;
+
+      })
+      .catch(
+        error =>
+          console.error(error)
+      );
+
+  }
+
+};
+
+
+/* =========================================================
+   INICIALIZACIÓN
+========================================================= */
+
+document.getElementById(
+  "fechaVentas"
+).value =
+  fechaHoy();
+
 
 conectar();
 
